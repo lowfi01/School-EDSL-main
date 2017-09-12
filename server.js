@@ -28,7 +28,7 @@ var Teams = require('./models/teams');
 // ----->> POST CLUBS <<------
 app.post('/clubs', (req, res) => {
     // create document - using req.body.text
-    console.log(req.body.clubName);
+    console.log(`POST /clubs: `, req.body.clubName);
     var club = new Clubs({
         clubName: req.body.clubName,
         clubPresident: req.body.clubPresident,
@@ -45,7 +45,7 @@ app.post('/clubs', (req, res) => {
     club
         .save()
         .then((doc) => {
-            console.log(club.clubName)
+            console.log(`club name`, club.clubName)
             res.send(doc);
         }, (e) => {
             res
@@ -68,7 +68,7 @@ app.patch('/clubs', (req, res) => {
         }
     }, {new: true}).then((doc) => {
         if (!doc) {
-            console.log(doc)
+            console.log(`this is a doc:`,doc)
             return res
                 .status(404)
                 .send('404');
@@ -124,11 +124,12 @@ app.get('/teams', (req, res) => {
         });
 });
 
+/// ---->GET TEAMS FILTERED BY DIVISION<--------
 app.get(`/teams/:id`, (req, res) => {
     // .find() get everything old code - Todo.find().then((todos) changed code -
     // find only _creator : ObjectId that match users ObjectId
     var div = req.params.id;
-    console.log(req.params.id)
+    console.log(`this is the get request:`, req.params.id)
     Teams
         .find( {'division.divCode' : `${div}`})
         .then((docs) => {
@@ -144,10 +145,48 @@ app.get(`/teams/:id`, (req, res) => {
         });
 });
 
+// ----->> PATCH TEAMS <<-----------
+
+app.patch('/teams/:id', (req, res) => {
+    // :id variable is the objectId
+    var _id = req.params.id
+
+    // req.body - is the object we will be passing in axios
+    var term = req.body.term;
+    console.log(`this is the teams - req.body: `, req.body)
+    console.log(`term: ${term}, typeOf: ${typeof term}`, )
+    console.log(`_id: `, _id)
+    //var body = _.pick(req.body, ['text', 'completed']);
+
+    Teams.findOneAndUpdate({
+        _id
+    }, {
+        $set: {
+            'division.divCode' : term
+        }
+    }, {new: true}).then((doc) => {
+        if (!doc) {
+            console.log(`this is the doc`, doc)
+            return res
+                .status(404)
+                .send('404');
+        };
+        //res.send("promise works");
+        res.send({doc});
+        console.log(`checking what body looks like after $push: ${doc}`);
+    }).catch((e) => {
+        res.send(e);
+        res
+            .status(400)
+            .send();
+    });
+
+});
+
 // ----->> POST TEAMS <<------
 app.post('/teams', (req, res) => {
     // create document - using req.body.text
-    console.log(req.body.teamName);
+    console.log(`POST /teams`, req.body.teamName);
     var team = new Teams({
         teamName: req.body.teamName,
         club: req.body.club,

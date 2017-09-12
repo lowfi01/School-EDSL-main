@@ -5,27 +5,40 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 
+//IMPORT COMPONENTS
+import DisplayItem from './display-teams-item';
+
 //IMPORT ACTIONS
-import {getTeams} from './../../action/index'
+import {getTeams} from './../../action/index';
 
 class DisplayTeams extends Component{
+
+
+    // Render DisplayItem - That holds add to div button & Team name
+    // Render List of Teams - <DisplayItem />
     render(){
         const teamsList = this.props.teams.map((team, index) => {
             return(
-                <div key={index}>
-                <li >
-                    <span>    </span>
-                    
-                </li>
-                {team.division.divCode}
-                </div>
+    
+                
+                <ul key={index}>
+                <DisplayItem passStateTeam={
+                        
+    // Component used to clean up code - render teamName & Button Pass down teamName
+    // & state term as props Adding Teams to division logic will be there
+
+                    team.teamName}
+
+                    passStateTerm={this.props.onStatePassDown} 
+                    passStateTeamId={team._id}/>
+                </ul>
             )
         })
 
         return(
             <div>
                 <button onClick={() => {this.props.getTeams()}} />
-                {console.log('this.props.teams: ', this.props.teams)}
+                {/*console.log('this.props.teams: ', this.props.teams)*/}
                 {teamsList}
             </div>
         )
@@ -34,12 +47,16 @@ class DisplayTeams extends Component{
 
 function mapStateToProps(state){
     return{
+        
+        // Teams - Will be populated after getTeams();
         teams: state.teams.teams
     }
 }
 
 function mapDispatchToProps(dispatch){
     return bindActionCreators({
+
+        // get list of teams from API
         getTeams
     }, dispatch)
 }
