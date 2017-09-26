@@ -8,6 +8,8 @@ export function updateDivision(term, id){
     
     //Term is passed down as a component state
     //value is defined from the dropDownMenu
+    //value of term is required as we will update the team: divisionCode with term
+    //term is passed as a request.body.value, in this instance req.body.term
     
     
     // API will _pick values passed as a url:variable

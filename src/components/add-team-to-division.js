@@ -1,11 +1,13 @@
 
 
 import React, { Component } from 'react';
+import {Grid, Col, Row} from 'react-bootstrap';
 
 
 // IMPORT COMPONENT
 import DisplayTeams from './add-team-to-division/display-teams';
-import DisplayDivision from './add-team-to-division/display-division'
+import DisplayDivision from './add-team-to-division/display-division';
+import Menu from './header'
 
 class AddTeamDivision extends Component{
         constructor(){
@@ -20,34 +22,41 @@ class AddTeamDivision extends Component{
     render(){
         return(
             
-            <div className="container">
-
+            <Grid className="container">
+            
              {/* 
                 
              */}
                 
-                <div className="row">
-                    <DisplayTeams onStatePassDown={
+                <Row className="display-teams">
 
-                        // Component state pass down as props
-                        // used to filter - Add Team to Division
+                    <Col className="teams-box" xs={12} sm={6}>
+                        <DisplayTeams onStatePassDown={
 
-                        this.state.term
-                        
-                        } />
-                    <DisplayDivision onCallBackTerm={(term) => {
+                            // Component state pass down as props
+                            // used to filter - Add Team to Division
 
-                        // CallBack passed down to display-division
-                        // returns dropDownMenu text value as a term
-                        // save term to state
-                        
-                        console.log(`term:` , term)
-                        this.setState({ term: term })
-                        
-                        //console.log(`this callback works`, this.state.term)
-                        }}/>
-                </div>
-             </div>
+                            this.state.term
+                            
+                            } />
+                    </Col>
+
+                    <Col xs={12} sm={6}>
+                        <DisplayDivision onCallBackTerm={(term) => {
+
+                            // CallBack passed down to display-division
+                            // returns dropDownMenu text value as a term
+                            // save term to state
+                            
+                            console.log(`term:` , term)
+                            this.setState({ term: term })
+                            
+                            //console.log(`this callback works`, this.state.term)
+                            }}/>
+                    </Col>
+
+                </Row>
+             </Grid>
         )
     }
 }

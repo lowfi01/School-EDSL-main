@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { ButtonToolbar, SplitButton, MenuItem } from 'react-bootstrap'
-
+import {Panel} from 'react-bootstrap';
 
 //IMPORT ACTIONS
 import {getDivision} from './../../action/index'
@@ -20,20 +20,19 @@ class DisplayDivision extends Component{
 
         const divisionList = this.props.div.map((team, index) => {
             return(
-                <div key={index}>
+                <Panel style={{marginTop:'25px'}} key={index}>
                 <li >
                     {team.teamName}
                 </li>
                 
-                </div>
+                </Panel>
             )
         })
 
         return(
-            <div>
-                <SplitButton  title="Dropdown right" pullRight id="split-button-pull-right">
+            <Panel>
+                <SplitButton  title="Select Division" pullRight id="split-button-pull-right">
                     <MenuItem onClick={(text) => {this.onSplitButton(text)}} eventKey="1">div1</MenuItem>
-                    <MenuItem  divider />
                     <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">div2</MenuItem>
                 </SplitButton>
                 
@@ -42,7 +41,7 @@ class DisplayDivision extends Component{
                     {divisionList}
                 </div>
                 
-            </div>
+            </Panel>
         
         )
     }

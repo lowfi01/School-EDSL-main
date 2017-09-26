@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { Panel } from 'react-bootstrap';
 
 
 //IMPORT COMPONENTS
@@ -12,6 +13,9 @@ import DisplayItem from './display-teams-item';
 import {getTeams} from './../../action/index';
 
 class DisplayTeams extends Component{
+    componentWillMount(){
+        this.props.getTeams()
+    }
 
 
     // Render DisplayItem - That holds add to div button & Team name
@@ -21,26 +25,26 @@ class DisplayTeams extends Component{
             return(
     
                 
-                <ul key={index}>
+                <div key={index}>
                 <DisplayItem passStateTeam={
                         
     // Component used to clean up code - render teamName & Button Pass down teamName
     // & state term as props Adding Teams to division logic will be there
 
-                    team.teamName}
+                    team}
 
                     passStateTerm={this.props.onStatePassDown} 
                     passStateTeamId={team._id}/>
-                </ul>
+                </div>
             )
         })
 
         return(
-            <div>
-                <button onClick={() => {this.props.getTeams()}} />
+            <Panel>
+                {/* <button onClick={() => {this.props.getTeams()}} /> */}
                 {/*console.log('this.props.teams: ', this.props.teams)*/}
                 {teamsList}
-            </div>
+            </Panel>
         )
     }
 }
