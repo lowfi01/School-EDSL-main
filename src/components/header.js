@@ -25,7 +25,7 @@ class Menu extends React.Component {
                         <NavItem eventKey={2} href="/contacts">Contact Us</NavItem>
                     </Nav>
                     <Nav pullRight>
-                        <NavItem eventKey={1} href="/admin">Admin</NavItem>
+                        <NavItem eventKey={1} >Admin</NavItem>
                         <NavItem eventKey={2} href="/login">Login<span> </span>
                         <Badge className="badge">!</Badge>
                         </NavItem>

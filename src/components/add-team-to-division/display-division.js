@@ -9,7 +9,8 @@ import {getDivision} from './../../action/index'
 
 
 class DisplayDivision extends Component{
-
+    
+    
     onSplitButton(text){
         var term = text.target.text
         this.props.getDivision(term);

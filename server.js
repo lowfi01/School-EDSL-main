@@ -5,6 +5,7 @@ var app = express();
 var path = require('path');
 const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+const port = process.env.PORT || 3000;
 
 
 app.use(bodyParser.json());
@@ -17,7 +18,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // API
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/sportsEDSL', {useMongoClient: true});
+//mongoose.connect('mongodb://localhost:27017/sportsEDSL', {useMongoClient: true});
+
+let db = {
+    localhost: 'mongodb://localhost:27017/TodoApp',
+    mlab: 'mongodb://lowfi:password123@ds155634.mlab.com:55634/edsl'
+};
+
+// Connect to local host
+// mongoose.connect( db.localhost || db.mlab , { useMongoClient: true });
+
+// Connect to API
+mongoose.connect( db.mlab , { useMongoClient: true });
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
@@ -222,6 +234,6 @@ app.get('*', (req, res) => {
 
 
 
-app.listen(3000, () => {
-    console.log('server is live on 3000!');
+app.listen(port, () => {
+    console.log(`server is live on ${port}!`);
 })
