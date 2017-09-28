@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AddTeamDivision from './components/add-team-to-division'
 import Menu from './components/header';
 import SignUpContainer from './components/login';
-
+import SeasonSetup from './components/season-setup/add-date'
 
 //IMPORT REDUCERS
 import reducers from './reducers'
@@ -35,6 +35,7 @@ ReactDOM.render(
                 <Switch>
                    
                     <Route exact path="/" component={AddTeamDivision} />
+                    <Route exact path="/season" component={SeasonSetup} />
                     <Route component={() => <div>Not found</div>} />
                     <Route exact path="/login" component={SignUpContainer} />
 
