@@ -165,9 +165,6 @@ app.patch('/teams/:id', (req, res) => {
 
     // req.body - is the object we will be passing in axios
     var term = req.body.term;
-    console.log(`this is the teams - req.body: `, req.body)
-    console.log(`term: ${term}, typeOf: ${typeof term}`, )
-    console.log(`_id: `, _id)
     //var body = _.pick(req.body, ['text', 'completed']);
 
     Teams.findOneAndUpdate({

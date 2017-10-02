@@ -9,10 +9,10 @@ import CreateDraw from './season-setup/create-draw';
 class SeasonSetup extends Component{
     render(){
         return(
-        <div>
-            <AddDate />
-            <CreateDraw />
-        </div>
+            <div>
+                <AddDate />
+                <CreateDraw />
+            </div>
         )
     }
 }
