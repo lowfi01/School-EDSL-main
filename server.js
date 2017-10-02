@@ -25,8 +25,8 @@ let db = {
     mlab: 'mongodb://lowfi:password123@ds155634.mlab.com:55634/edsl'
 };
 
-// Connect to local host
-mongoose.connect( db.mlab , { useMongoClient: true });
+// Fix heroku
+mongoose.connect( db.mlab, { useMongoClient: true });
 
 // Connect to API
 //mongoose.connect( db.mlab || db.localhost, { useMongoClient: true });
