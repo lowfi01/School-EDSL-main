@@ -10,7 +10,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AddTeamDivision from './components/add-team-to-division'
 import Menu from './components/header';
 import SignUpContainer from './components/login';
-import SeasonSetup from './components/season-setup/add-date'
+import SeasonSetup from './components/season-setup.js'
 
 //IMPORT REDUCERS
 import reducers from './reducers'

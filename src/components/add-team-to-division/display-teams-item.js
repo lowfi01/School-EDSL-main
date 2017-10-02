@@ -13,6 +13,10 @@ class DisplayItem extends Component{
     // Add to division onClick function
     addTeamToDivision(event){
         
+        // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
+
+
+
         // Prevent button from refreshing screen
         event.preventDefault();
 
@@ -42,7 +46,7 @@ class DisplayItem extends Component{
                 <Panel>
 
                                     <p><strong>Team:</strong> {this.props.passStateTeam.teamName} <span>   
-                                    <Button className="btn btn-success" bsSize="xsmall" onClick={(event) => {
+                                    <Button className="btn btn-success pull-right" bsSize="xsmall" onClick={(event) => {
                                         this.addTeamToDivision(event);
                                         }}>Add
                                     </Button></span>

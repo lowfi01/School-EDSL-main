@@ -21482,9 +21482,9 @@ var _login = __webpack_require__(564);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _addDate = __webpack_require__(565);
+var _seasonSetup = __webpack_require__(570);
 
-var _addDate2 = _interopRequireDefault(_addDate);
+var _seasonSetup2 = _interopRequireDefault(_seasonSetup);
 
 var _reducers = __webpack_require__(567);
 
@@ -21523,7 +21523,7 @@ _reactDom2.default.render(_react2.default.createElement(
                 _reactRouterDom.Switch,
                 null,
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _addTeamToDivision2.default }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/season', component: _addDate2.default }),
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/season', component: _seasonSetup2.default }),
                 _react2.default.createElement(_reactRouterDom.Route, { component: function component() {
                         return _react2.default.createElement(
                             'div',
@@ -49862,6 +49862,9 @@ var DisplayItem = function (_Component) {
         // Add to division onClick function
         value: function addTeamToDivision(event) {
 
+            // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
+
+
             // Prevent button from refreshing screen
             event.preventDefault();
 
@@ -49907,7 +49910,7 @@ var DisplayItem = function (_Component) {
                         null,
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { className: 'btn btn-success', bsSize: 'xsmall', onClick: function onClick(event) {
+                            { className: 'btn btn-success pull-right', bsSize: 'xsmall', onClick: function onClick(event) {
                                     _this2.addTeamToDivision(event);
                                 } },
                             'Add'
@@ -51409,6 +51412,259 @@ exports.default = function () {
 };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ }),
+/* 570 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _addDate = __webpack_require__(565);
+
+var _addDate2 = _interopRequireDefault(_addDate);
+
+var _createDraw = __webpack_require__(571);
+
+var _createDraw2 = _interopRequireDefault(_createDraw);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// COMPONENTS
+
+
+var SeasonSetup = function (_Component) {
+    _inherits(SeasonSetup, _Component);
+
+    function SeasonSetup() {
+        _classCallCheck(this, SeasonSetup);
+
+        return _possibleConstructorReturn(this, (SeasonSetup.__proto__ || Object.getPrototypeOf(SeasonSetup)).apply(this, arguments));
+    }
+
+    _createClass(SeasonSetup, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_addDate2.default, null),
+                _react2.default.createElement(_createDraw2.default, null)
+            );
+        }
+    }]);
+
+    return SeasonSetup;
+}(_react.Component);
+
+exports.default = SeasonSetup;
+
+/***/ }),
+/* 571 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var robin = __webpack_require__(572);
+
+var draw = [];
+
+var roundsArray = [];
+
+var teams = ['Richmond', 'Geelong', 'Adelaide', 'GWS', 'Bulldogs', 'James', 'DylanIsAGirl', 'hey', 'Penis', '^Standard', 'NalinJayIsSexy'];
+
+var CreateDraw = function (_Component) {
+    _inherits(CreateDraw, _Component);
+
+    function CreateDraw() {
+        _classCallCheck(this, CreateDraw);
+
+        var _this = _possibleConstructorReturn(this, (CreateDraw.__proto__ || Object.getPrototypeOf(CreateDraw)).call(this));
+
+        _this.state = {
+            teams: teams,
+            draw: draw
+        };
+
+        return _this;
+    }
+
+    _createClass(CreateDraw, [{
+        key: 'CreateDraw',
+        value: function CreateDraw() {
+
+            var teamNumber = this.state.teams.length;
+            this.setState({
+                draw: robin(teamNumber, this.state.teams)
+            });
+            if (roundsArray.length === 0) for (var i = 0; i < this.state.draw.length; i++) {
+                for (var o = 0; o < this.state.draw[0].length; o++) {
+                    // for(var x = 0; x < 2; x++) {
+                    roundsArray.push(this.state.draw[i][o] /*[x]*/); // comment will break it up into individual teams
+
+                    // }
+                }
+            }
+            // console.log("this is the new array", roundsArray); console.log("this is the
+            // draw array", this.state.draw);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var rounds = roundsArray.map(function (team, index) {
+
+                var roundNum = index / _this2.state.draw[0].length + 1;
+                if (roundNum % 1 === 0) return _react2.default.createElement(
+                    'tr',
+                    { key: index },
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        Math.floor(roundNum)
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        team[0]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        team[1]
+                    )
+                );else return _react2.default.createElement(
+                    'tr',
+                    { key: index },
+                    _react2.default.createElement('td', null),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        team[0]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        team[1]
+                    )
+                );
+            });
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.CreateDraw.bind(this) },
+                    'CreateDraw'
+                ),
+                _react2.default.createElement(
+                    'table',
+                    null,
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Round'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Home'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Away'
+                            )
+                        ),
+                        rounds
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CreateDraw;
+}(_react.Component);
+
+exports.default = CreateDraw;
+
+/***/ }),
+/* 572 */
+/***/ (function(module, exports) {
+
+const DUMMY = -1;
+// returns an array of round representations (array of player pairs).
+// http://en.wikipedia.org/wiki/Round-robin_tournament#Scheduling_algorithm
+module.exports = function (n, ps) {  // n = num players
+  var rs = [];                  // rs = round array
+  if (!ps) {
+    ps = [];
+    for (var k = 1; k <= n; k += 1) {
+      ps.push(k);
+    }
+  } else {
+    ps = ps.slice();
+  }
+
+  if (n % 2 === 1) {
+    ps.push(DUMMY); // so we can match algorithm for even numbers
+    n += 1;
+  }
+  for (var j = 0; j < n - 1; j += 1) {
+    rs[j] = []; // create inner match array for round j
+    for (var i = 0; i < n / 2; i += 1) {
+      if (ps[i] !== DUMMY && ps[n - 1 - i] !== DUMMY) {
+        rs[j].push([ps[i], ps[n - 1 - i]]); // insert pair as a match
+      }
+    }
+    ps.splice(1, 0, ps.pop()); // permutate for next round
+  }
+  return rs;
+};
+
 
 /***/ })
 /******/ ]);

@@ -26,10 +26,10 @@ let db = {
 };
 
 // Connect to local host
-// mongoose.connect( db.localhost || db.mlab , { useMongoClient: true });
+mongoose.connect( db.localhost || db.mlab , { useMongoClient: true });
 
 // Connect to API
-mongoose.connect( db.mlab , { useMongoClient: true });
+//mongoose.connect( db.mlab || db.localhost, { useMongoClient: true });
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
