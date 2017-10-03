@@ -11834,7 +11834,7 @@ function updateDivision(term, id) {
     // API will _pick values passed as a url:variable
     // API will set final value
 
-    var request = _axios2.default.patch('http://localhost:3000/teams/' + id, { term: term });
+    var request = _axios2.default.patch('/teams/' + id, { term: term });
     console.log('Request: ', request);
     console.log('id: ', id);
     console.log('term: ', term);
@@ -11854,7 +11854,7 @@ function updateDivision(term, id) {
 
 function getTeams() {
 
-    var request = _axios2.default.get('http://guarded-shelf-10743.herokuapp.com/teams/');
+    var request = _axios2.default.get('/teams');
 
     console.log('Request: ', request);
 
@@ -11866,7 +11866,7 @@ function getTeams() {
 }
 
 function getDivision(divisionName) {
-    var request = _axios2.default.get('http://localhost:3000/teams/' + divisionName);
+    var request = _axios2.default.get('/teams/' + divisionName);
 
     //console.log(`Request: `, request)
 

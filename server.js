@@ -26,7 +26,7 @@ let db = {
 };
 
 // Fix heroku
-mongoose.connect( db.mlab, {useMongoClient: true});
+mongoose.connect( db.mlab || db.localhost, {useMongoClient: true});
 
 // Connect to API
 //mongoose.connect( db.mlab || db.localhost, { useMongoClient: true });

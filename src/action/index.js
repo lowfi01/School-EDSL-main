@@ -18,7 +18,7 @@ export function updateDivision(term, id){
     // API will _pick values passed as a url:variable
     // API will set final value
     
-const request = axios.patch(`http://localhost:3000/teams/${id}`, {term})
+const request = axios.patch(`/teams/${id}`, {term})
             console.log(`Request: `, request)
             console.log(`id: `, id)
             console.log(`term: `, term)
@@ -40,7 +40,7 @@ const request = axios.patch(`http://localhost:3000/teams/${id}`, {term})
 
 export function getTeams() {
 
-const request = axios.get(`http://guarded-shelf-10743.herokuapp.com/teams/`)
+const request = axios.get(`/teams`)
 
     console.log(`Request: `, request)
 
@@ -54,7 +54,7 @@ const request = axios.get(`http://guarded-shelf-10743.herokuapp.com/teams/`)
 
 
 export function getDivision(divisionName) {
-    const request = axios.get(`http://localhost:3000/teams/${divisionName}`)
+    const request = axios.get(`/teams/${divisionName}`)
 
     //console.log(`Request: `, request)
 
