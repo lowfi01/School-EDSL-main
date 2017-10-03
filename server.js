@@ -26,7 +26,7 @@ let db = {
 };
 
 // Fix heroku
-mongoose.connect( db.mlab, { useMongoClient: true });
+mongoose.connect( db.localhost, {useMongoClient: true});
 
 // Connect to API
 //mongoose.connect( db.mlab || db.localhost, { useMongoClient: true });
@@ -34,8 +34,18 @@ mongoose.connect( db.mlab, { useMongoClient: true });
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
 
+
+// Enable CORS
+
+app.use(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+
 var Clubs = require('./models/clubs');
 var Teams = require('./models/teams');
+
 
 // ----->> POST CLUBS <<------
 app.post('/clubs', (req, res) => {

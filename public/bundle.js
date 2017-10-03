@@ -11819,6 +11819,9 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var localHost = 'http://localhost:3000/';
+var heroku = 'https://guarded-shelf-10743.herokuapp.com/';
+
 function updateDivision(term, id) {
     //find team & update division.divCode to term
 
@@ -11851,9 +11854,9 @@ function updateDivision(term, id) {
 
 function getTeams() {
 
-    var request = _axios2.default.get('http://localhost:3000/teams');
+    var request = _axios2.default.get('http://guarded-shelf-10743.herokuapp.com/teams/');
 
-    //console.log(`Request: `, request)
+    console.log('Request: ', request);
 
     return {
         type: 'GET_TEAMS',
@@ -21482,11 +21485,11 @@ var _login = __webpack_require__(564);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _seasonSetup = __webpack_require__(570);
+var _seasonSetup = __webpack_require__(565);
 
 var _seasonSetup2 = _interopRequireDefault(_seasonSetup);
 
-var _reducers = __webpack_require__(567);
+var _reducers = __webpack_require__(570);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -51082,9 +51085,71 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _addDate = __webpack_require__(566);
+
+var _addDate2 = _interopRequireDefault(_addDate);
+
+var _createDraw = __webpack_require__(568);
+
+var _createDraw2 = _interopRequireDefault(_createDraw);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// COMPONENTS
+
+
+var SeasonSetup = function (_Component) {
+    _inherits(SeasonSetup, _Component);
+
+    function SeasonSetup() {
+        _classCallCheck(this, SeasonSetup);
+
+        return _possibleConstructorReturn(this, (SeasonSetup.__proto__ || Object.getPrototypeOf(SeasonSetup)).apply(this, arguments));
+    }
+
+    _createClass(SeasonSetup, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_addDate2.default, null),
+                _react2.default.createElement(_createDraw2.default, null)
+            );
+        }
+    }]);
+
+    return SeasonSetup;
+}(_react.Component);
+
+exports.default = SeasonSetup;
+
+/***/ }),
+/* 566 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
 var _reactBootstrap = __webpack_require__(40);
 
-var _addDateOther = __webpack_require__(566);
+var _addDateOther = __webpack_require__(567);
 
 var _addDateOther2 = _interopRequireDefault(_addDateOther);
 
@@ -51211,7 +51276,7 @@ var AddDate = function (_React$Component) {
 exports.default = AddDate;
 
 /***/ }),
-/* 566 */
+/* 567 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51314,37 +51379,6 @@ var AddDateOther = function (_React$Component) {
 exports.default = AddDateOther;
 
 /***/ }),
-/* 567 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _redux = __webpack_require__(47);
-
-var _teamsReducers = __webpack_require__(568);
-
-var _teamsReducers2 = _interopRequireDefault(_teamsReducers);
-
-var _divisionReducers = __webpack_require__(569);
-
-var _divisionReducers2 = _interopRequireDefault(_divisionReducers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var rootReducer = (0, _redux.combineReducers)({
-    teams: _teamsReducers2.default,
-    divisions: _divisionReducers2.default
-
-});
-
-exports.default = rootReducer;
-
-/***/ }),
 /* 568 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51355,137 +51389,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { teams: [] };
-    var action = arguments[1];
-
-    // create switch statement
-    switch (action.type) {
-        case 'GET_TEAMS':
-            //console.log(action.payload)
-            //console.log(`this is the teams state: `, state)
-            return _extends({}, state, { teams: [].concat(_toConsumableArray(action.payload.data)) });
-        //return {...state, teams: [...action.payload.data, ...state.teams]};
-        // alternative code return state.concat([action.payload.data]);
-        case 'PATCH_TEAM_DIVISION':
-            console.log('this is working');
-            console.log('this is the payload from PATCH_DIVISION: ', action.payload);
-            return _extends({}, state, { teams: [].concat(_toConsumableArray(state.teams))
-                // }
-
-            });}
-    return state;
-};
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ }),
-/* 569 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        divisions: []
-    };
-    var action = arguments[1];
-
-    // create switch statement
-    switch (action.type) {
-        case 'GET_DIVISION':
-            //console.log(action.payload)
-            return _extends({}, state, { divisions: [].concat(_toConsumableArray(action.payload.data))
-                // alternative code return state.concat([action.payload.data]);
-
-            });}
-    return state;
-};
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/***/ }),
-/* 570 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _addDate = __webpack_require__(565);
-
-var _addDate2 = _interopRequireDefault(_addDate);
-
-var _createDraw = __webpack_require__(571);
-
-var _createDraw2 = _interopRequireDefault(_createDraw);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// COMPONENTS
-
-
-var SeasonSetup = function (_Component) {
-    _inherits(SeasonSetup, _Component);
-
-    function SeasonSetup() {
-        _classCallCheck(this, SeasonSetup);
-
-        return _possibleConstructorReturn(this, (SeasonSetup.__proto__ || Object.getPrototypeOf(SeasonSetup)).apply(this, arguments));
-    }
-
-    _createClass(SeasonSetup, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_addDate2.default, null),
-                _react2.default.createElement(_createDraw2.default, null)
-            );
-        }
-    }]);
-
-    return SeasonSetup;
-}(_react.Component);
-
-exports.default = SeasonSetup;
-
-/***/ }),
-/* 571 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -51500,7 +51403,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var robin = __webpack_require__(572);
+var robin = __webpack_require__(569);
 
 var draw = [];
 
@@ -51632,7 +51535,7 @@ var CreateDraw = function (_Component) {
 exports.default = CreateDraw;
 
 /***/ }),
-/* 572 */
+/* 569 */
 /***/ (function(module, exports) {
 
 const DUMMY = -1;
@@ -51665,6 +51568,106 @@ module.exports = function (n, ps) {  // n = num players
   return rs;
 };
 
+
+/***/ }),
+/* 570 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(47);
+
+var _teamsReducers = __webpack_require__(571);
+
+var _teamsReducers2 = _interopRequireDefault(_teamsReducers);
+
+var _divisionReducers = __webpack_require__(572);
+
+var _divisionReducers2 = _interopRequireDefault(_divisionReducers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var rootReducer = (0, _redux.combineReducers)({
+    teams: _teamsReducers2.default,
+    divisions: _divisionReducers2.default
+
+});
+
+exports.default = rootReducer;
+
+/***/ }),
+/* 571 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { teams: [] };
+    var action = arguments[1];
+
+    // create switch statement
+    switch (action.type) {
+        case 'GET_TEAMS':
+            //console.log(action.payload)
+            //console.log(`this is the teams state: `, state)
+            return _extends({}, state, { teams: [].concat(_toConsumableArray(action.payload.data)) });
+        //return {...state, teams: [...action.payload.data, ...state.teams]};
+        // alternative code return state.concat([action.payload.data]);
+        case 'PATCH_TEAM_DIVISION':
+            console.log('this is working');
+            console.log('this is the payload from PATCH_DIVISION: ', action.payload);
+            return _extends({}, state, { teams: [].concat(_toConsumableArray(state.teams))
+                // }
+
+            });}
+    return state;
+};
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/***/ }),
+/* 572 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        divisions: []
+    };
+    var action = arguments[1];
+
+    // create switch statement
+    switch (action.type) {
+        case 'GET_DIVISION':
+            //console.log(action.payload)
+            return _extends({}, state, { divisions: [].concat(_toConsumableArray(action.payload.data))
+                // alternative code return state.concat([action.payload.data]);
+
+            });}
+    return state;
+};
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /***/ })
 /******/ ]);

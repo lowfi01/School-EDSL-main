@@ -2,6 +2,9 @@
 
 import axios from 'axios';
 
+const localHost = 'http://localhost:3000/'
+const heroku = 'https://guarded-shelf-10743.herokuapp.com/'
+
 
 export function updateDivision(term, id){
     //find team & update division.divCode to term
@@ -15,7 +18,7 @@ export function updateDivision(term, id){
     // API will _pick values passed as a url:variable
     // API will set final value
     
-    const request = axios.patch(`http://localhost:3000/teams/${id}`, {term}) 
+const request = axios.patch(`http://localhost:3000/teams/${id}`, {term})
             console.log(`Request: `, request)
             console.log(`id: `, id)
             console.log(`term: `, term)
@@ -37,9 +40,9 @@ export function updateDivision(term, id){
 
 export function getTeams() {
 
-const request = axios.get('http://localhost:3000/teams')
+const request = axios.get(`http://guarded-shelf-10743.herokuapp.com/teams/`)
 
-    //console.log(`Request: `, request)
+    console.log(`Request: `, request)
 
     return {
         type: 'GET_TEAMS',
