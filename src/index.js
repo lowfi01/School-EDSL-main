@@ -6,6 +6,10 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import ReduxPromise from 'redux-promise';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import logger from 'redux-logger';
+
+
+
 //IMPORT COMPONENTS
 import AddTeamDivision from './components/add-team-to-division'
 import Menu from './components/header';
@@ -25,7 +29,7 @@ import reducers from './reducers'
 //     }
 // }
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
+const createStoreWithMiddleware = applyMiddleware(ReduxPromise, logger)(createStore);
 
 ReactDOM.render(
     <Provider store={createStoreWithMiddleware(reducers)}>

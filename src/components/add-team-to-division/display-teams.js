@@ -25,7 +25,7 @@ class DisplayTeams extends Component{
             return(
     
                 
-                <div key={index}>
+                <div  key={index}>
                 <DisplayItem passStateTeam={
                         
     // Component used to clean up code - render teamName & Button Pass down teamName
@@ -40,7 +40,7 @@ class DisplayTeams extends Component{
         })
 
         return(
-            <Panel>
+            <Panel >
                 {/* <button onClick={() => {this.props.getTeams()}} /> */}
                 {/*console.log('this.props.teams: ', this.props.teams)*/}
                 {teamsList}

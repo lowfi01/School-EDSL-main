@@ -1,4 +1,3 @@
-
 .container {
     width: auto;
     max-width: 900px;
@@ -11,4 +10,18 @@
 
 body {
     margin-top: 6em;
+}
+
+.draw {
+    width: auto;
+    max-width: 900px;
+}
+
+.button-season-setup {
+    margin-bottom: 20px;
+}
+
+.draw-panel {
+    width: auto;
+    max-width: 900px;
 }

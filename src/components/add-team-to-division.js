@@ -17,7 +17,7 @@ class AddTeamDivision extends Component{
         // Used to filter search to API & Add Teams to a division 
 
         this.state = {term : ''}
-        console.log(`this is the highest level: `, this.state.term)
+        //console.log(`local state addTeamDivision: `, this.state.term)
     }
     render(){
         return(

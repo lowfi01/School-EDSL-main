@@ -43,7 +43,7 @@ class DisplayItem extends Component{
     
     render(){
         return(
-                <Panel>
+                <Panel >
 
                                     <p><strong>Team:</strong> {this.props.passStateTeam.teamName} <span>   
                                     <Button className="btn btn-success pull-right" bsSize="xsmall" onClick={(event) => {
@@ -52,7 +52,7 @@ class DisplayItem extends Component{
                                     </Button></span>
                                     </p>
                                     <p><strong>Club:</strong> {this.props.passStateTeam.club} <strong>Division:</strong> {this.props.passStateTeam.division.divCode}</p>
-                                    {console.log(`this is the state of passStateTeam: `, this.props.passStateTeam)}
+                                    {/* {console.log(`this is the state of passStateTeam: `, this.props.passStateTeam)} */}
                                 
                  </Panel>
         )

@@ -42,7 +42,7 @@ export function getTeams() {
 
 const request = axios.get(`/teams`)
 
-    console.log(`Request: `, request)
+    //console.log(`Request: `, request)
 
     return {
         type: 'GET_TEAMS',

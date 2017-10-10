@@ -18,7 +18,7 @@ class AddDate extends React.Component{
     }
     render(){
         return(
-            <div>
+            <div className="button-season-setup">
                 <Form onSubmit={(event) => {
                     event.preventDefault();
                     console.log('start Date: ', this.state.startDate)

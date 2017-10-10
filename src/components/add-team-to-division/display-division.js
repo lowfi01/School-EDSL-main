@@ -35,6 +35,7 @@ class DisplayDivision extends Component{
                 <SplitButton  title="Select Division" pullRight id="split-button-pull-right">
                     <MenuItem onClick={(text) => {this.onSplitButton(text)}} eventKey="1">div1</MenuItem>
                     <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">div2</MenuItem>
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">div3</MenuItem>
                 </SplitButton>
                 
 
