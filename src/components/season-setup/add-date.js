@@ -53,7 +53,7 @@ class AddDate extends React.Component{
                     })} value={this.state.type}  type="setup" placeholder="Season Setup" />
                 </FormGroup>
                 {' '}
-                <Button type="submit">
+                <Button className="btn btn-primary" bsSize="small" type="submit">
                     Submit
                 </Button>
             </Form>

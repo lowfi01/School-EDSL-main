@@ -34,7 +34,7 @@ this.state = {
         
         const division1 = _.remove(team1, team => {
         //console.log(`lodash remove:`, team.division.divCode)
-        return team.division.divCode == 'div2' && 'div3';
+        return team.division.divCode == 'div1' && 'div3';
         });
 
         const divNames1 = _.map(division1, 'teamName')
@@ -42,7 +42,7 @@ this.state = {
 
         const division2 = _.remove(team2, team => {
         //console.log(`lodash remove:`, team.division.divCode)
-        return team.division.divCode == 'div1' && 'div3';
+        return team.division.divCode == 'div2' && 'div3';
         });
 
         const divNames2 = _.map(division2, 'teamName')
@@ -50,7 +50,7 @@ this.state = {
 
         _.remove(team3, team => {
         //console.log(`lodash remove:`, team.division.divCode)
-        return team.division.divCode == 'div1' && 'div2';
+        return team.division.divCode == 'div3' && 'div2';
         });
 
         console.log(team3)
@@ -108,7 +108,10 @@ this.state = {
                 // console.log(`this is the current count index`, index);
                 // console.log(`this is the team being displayed`, team);
                 // console.log(`this is the roundNum % 1, should be 0 or 1`, roundNum % 1)
-                const num = this.state.drawTeam[0].length + 1
+
+                // Create a Dynamic value to modular & then floor to represent the round numbers
+                const num = this.state.draw[`div${this.state.term}`][0].length
+                console.log(`drawTeam`, this.state.drawTeam)
                 let roundNum = (index / num + 1);
                 console.log(`result mod`, (roundNum % 1))
             if (roundNum % 1 === 0) {
@@ -143,12 +146,13 @@ this.state = {
         return (
             <Panel className="draw-panel">
                 <center> <div className="draw-content">
-                <Button onClick={this.createDraw.bind(this)} disabled={!this.state.value}>Create Division Draw</Button>
-                 <SplitButton  title={`Draw for division ${this.state.divTerm}`} pullRight id="split-button-pull-right">
+                <Button className="btn btn-primary" onClick={this.createDraw.bind(this)}  disabled={!this.state.value}>Create Division Draws</Button>
+                 <SplitButton disabled={this.state.value}  title={`View division ${this.state.divTerm} draw`} pullRight id="split-button-pull-right">
                     <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="1">1</MenuItem>
                     <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">2</MenuItem>
                     <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">3</MenuItem>
                 </SplitButton>
+                
                 </div>
                 <div className="create-draw">
                 <Table striped bordered condensed hover>

@@ -51281,7 +51281,7 @@ var AddDate = function (_React$Component) {
                     ' ',
                     _react2.default.createElement(
                         _reactBootstrap.Button,
-                        { type: 'submit' },
+                        { className: 'btn btn-primary', bsSize: 'small', type: 'submit' },
                         'Submit'
                     )
                 ),
@@ -51394,8 +51394,8 @@ var AddDateOther = function (_React$Component) {
                 ' ',
                 _react2.default.createElement(
                     _reactBootstrap.Button,
-                    { type: 'submit' },
-                    'Submit'
+                    { className: 'btn btn-success', bsSize: 'small', type: 'submit' },
+                    '+'
                 )
             );
         }
@@ -51478,7 +51478,7 @@ var CreateDraw = function (_Component) {
 
             var division1 = _lodash2.default.remove(team1, function (team) {
                 //console.log(`lodash remove:`, team.division.divCode)
-                return team.division.divCode == 'div2' && 'div3';
+                return team.division.divCode == 'div1' && 'div3';
             });
 
             var divNames1 = _lodash2.default.map(division1, 'teamName');
@@ -51486,7 +51486,7 @@ var CreateDraw = function (_Component) {
 
             var division2 = _lodash2.default.remove(team2, function (team) {
                 //console.log(`lodash remove:`, team.division.divCode)
-                return team.division.divCode == 'div1' && 'div3';
+                return team.division.divCode == 'div2' && 'div3';
             });
 
             var divNames2 = _lodash2.default.map(division2, 'teamName');
@@ -51494,7 +51494,7 @@ var CreateDraw = function (_Component) {
 
             _lodash2.default.remove(team3, function (team) {
                 //console.log(`lodash remove:`, team.division.divCode)
-                return team.division.divCode == 'div1' && 'div2';
+                return team.division.divCode == 'div3' && 'div2';
             });
 
             console.log(team3);
@@ -51552,7 +51552,10 @@ var CreateDraw = function (_Component) {
                 // console.log(`this is the current count index`, index);
                 // console.log(`this is the team being displayed`, team);
                 // console.log(`this is the roundNum % 1, should be 0 or 1`, roundNum % 1)
-                var num = _this2.state.drawTeam[0].length + 1;
+
+                // Create a Dynamic value to modular & then floor to represent the round numbers
+                var num = _this2.state.draw['div' + _this2.state.term][0].length;
+                console.log('drawTeam', _this2.state.drawTeam);
                 var roundNum = index / num + 1;
                 console.log('result mod', roundNum % 1);
                 if (roundNum % 1 === 0) {
@@ -51606,12 +51609,12 @@ var CreateDraw = function (_Component) {
                         { className: 'draw-content' },
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { onClick: this.createDraw.bind(this), disabled: !this.state.value },
-                            'Create Division Draw'
+                            { className: 'btn btn-primary', onClick: this.createDraw.bind(this), disabled: !this.state.value },
+                            'Create Division Draws'
                         ),
                         _react2.default.createElement(
                             _reactBootstrap.SplitButton,
-                            { title: 'Draw for division ' + this.state.divTerm, pullRight: true, id: 'split-button-pull-right' },
+                            { disabled: this.state.value, title: 'View division ' + this.state.divTerm + ' draw', pullRight: true, id: 'split-button-pull-right' },
                             _react2.default.createElement(
                                 _reactBootstrap.MenuItem,
                                 { onClick: function onClick(event) {

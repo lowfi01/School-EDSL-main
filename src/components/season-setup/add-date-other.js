@@ -39,8 +39,8 @@ class AddDateOther extends React.Component{
                     })} value={this.state.type} type="setup" placeholder="Public Holiday" />
                     </FormGroup>
                     {' '}
-                    <Button type="submit">
-                    Submit
+                    <Button className="btn btn-success" bsSize="small" type="submit">
+                    +
                     </Button>
             </Form>
         )
