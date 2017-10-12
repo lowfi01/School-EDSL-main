@@ -48,12 +48,10 @@ this.state = {
         const divNames2 = _.map(division2, 'teamName')
         let div2 = robin(divNames2.length, divNames2)
 
-        const divNames3 = _.remove(team3, team => {
+        const division3 = _.remove(team3, team => {
         //console.log(`lodash remove:`, team.division.divCode)
         return team.division.divCode == 'div3' && 'div2';
         });
-
-        console.log(team3)
 
         const divNames3 = _.map(team3, 'teamName')
         let div3 = robin(divNames3.length, divNames3)
@@ -109,7 +107,6 @@ this.state = {
                 // console.log(`this is the team being displayed`, team);
                 // console.log(`this is the roundNum % 1, should be 0 or 1`, roundNum % 1)
 
-                // Create a Dynamic value to modular & then floor to represent the round numbers
                 const num = this.state.draw[`div${this.state.term}`][0].length
                 console.log(`drawTeam`, this.state.drawTeam)
                 let roundNum = (index / num + 1);
