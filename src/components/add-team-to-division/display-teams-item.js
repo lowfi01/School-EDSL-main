@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Panel } from 'react-bootstrap';
 
 //IMPORT ACTIONS
-import {updateDivision} from './../../action/index';
+import {updateDivision, getTeams} from './../../action/index';
 import {getDivision, Row, Col, Grid} from './../../action/index'
 
 class DisplayItem extends Component{
@@ -48,6 +48,7 @@ class DisplayItem extends Component{
                                     <p><strong>Team:</strong> {this.props.passStateTeam.teamName} <span>   
                                     <Button className="btn btn-success pull-right" bsSize="xsmall" onClick={(event) => {
                                         this.addTeamToDivision(event);
+                                        this.props.getTeams();
                                         }}>Add
                                     </Button></span>
                                     </p>
@@ -66,7 +67,8 @@ function mapDispatchToProps(dispatch){
         // Patch Request to API - update division.CodeName
         updateDivision,
         // Get Division - used purely to keep component live
-        getDivision
+        getDivision,
+        getTeams
     }, dispatch)
 }
 

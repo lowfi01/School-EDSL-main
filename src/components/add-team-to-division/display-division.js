@@ -9,12 +9,20 @@ import {getDivision} from './../../action/index'
 
 
 class DisplayDivision extends Component{
-    
+    constructor(){
+        super()
+
+        this.state = { term: 'Selection'}
+    }
     
     onSplitButton(text){
-        var term = text.target.text
-        this.props.getDivision(term);
-        this.props.onCallBackTerm(term);
+        let term = text.target.text
+        // set term for ux dropdown
+        this.setState({term});
+        // this will fix ux and still feed API search with correct term
+        let div = `div${term}`
+        this.props.getDivision(div);
+        this.props.onCallBackTerm(div);
     }
 
     render(){
@@ -32,10 +40,10 @@ class DisplayDivision extends Component{
 
         return(
             <Panel>
-                <SplitButton  title="Select Division" pullRight id="split-button-pull-right">
-                    <MenuItem onClick={(text) => {this.onSplitButton(text)}} eventKey="1">div1</MenuItem>
-                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">div2</MenuItem>
-                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">div3</MenuItem>
+                <SplitButton  title={`Division ${this.state.term}`} pullRight id="split-button-pull-right">
+                    <MenuItem onClick={(text) => {this.onSplitButton(text)}} eventKey="1">1</MenuItem>
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">2</MenuItem>
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">3</MenuItem>
                 </SplitButton>
                 
 

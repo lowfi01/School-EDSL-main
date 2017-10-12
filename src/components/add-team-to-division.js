@@ -48,7 +48,7 @@ class AddTeamDivision extends Component{
                             // returns dropDownMenu text value as a term
                             // save term to state
                             
-                            console.log(`term:` , term)
+                            console.log(`term:`, term)
                             this.setState({ term: term })
                             
                             //console.log(`this callback works`, this.state.term)

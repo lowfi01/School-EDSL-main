@@ -2,9 +2,11 @@
 
 var mongoose = require('mongoose');
 
+// use this for club if you wish it to be a objectId
+//club: {type: mongoose.Schema.Types.ObjectId},
 var teamSchema = mongoose.Schema({ 
     teamName: String,
-    club: {type: mongoose.Schema.Types.ObjectId},
+    club: String,
     division: {
         divCode: String,
         divGrade: String,

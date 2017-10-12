@@ -28,8 +28,8 @@ let db = {
 // Fix heroku
 mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
 
-// Connect to API
-//mongoose.connect( db.mlab || db.localhost, { useMongoClient: true });
+// local environment
+//mongoose.connect( db.localhost, { useMongoClient: true });
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))

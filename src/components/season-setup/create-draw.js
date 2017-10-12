@@ -12,8 +12,14 @@ class CreateDraw extends Component{
     constructor(){
         super()
 
-        this.state = {term: 'default', drawTeam: []}
+this.state = {
+    term: 'default',
+    divTerm: '',
+    drawTeam: [],
+    value: true
+}
     }
+    
     componentWillMount(){
         this.props.getTeams();
     }   
@@ -21,6 +27,7 @@ class CreateDraw extends Component{
     
     createDraw(event){
         event.preventDefault();
+        this.setState({value: false})
         let team1 = this.props.teams.teams;
         let team2 = this.props.teams.teams;
         let team3 = this.props.teams.teams;
@@ -68,11 +75,12 @@ class CreateDraw extends Component{
         var term = text.target.text
         console.log(`state`, this.state)
 
-        this.setState({term})
+        this.setState({term, divTerm: term})
         console.log(`term`, this.state.draw.div1)
         
-        let holdMeBaby = this.state.draw[`${term}`]
-        console.log(`draw`, this.state.draw[`${term}`])
+        let div = `div${term}`
+        let holdMeBaby = this.state.draw[`${div}`]
+        console.log(`draw`, this.state.draw[`${div}`])
         
         let roundsArray = [];
         
@@ -135,11 +143,11 @@ class CreateDraw extends Component{
         return (
             <Panel className="draw-panel">
                 <center> <div className="draw-content">
-                <Button onClick={this.createDraw.bind(this)}> Hello</Button>
-                 <SplitButton  title="Select Division" pullRight id="split-button-pull-right">
-                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="1">div1</MenuItem>
-                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">div2</MenuItem>
-                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">div3</MenuItem>
+                <Button onClick={this.createDraw.bind(this)} disabled={!this.state.value}>Create Division Draw</Button>
+                 <SplitButton  title={`Draw for division ${this.state.divTerm}`} pullRight id="split-button-pull-right">
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="1">1</MenuItem>
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="2">2</MenuItem>
+                    <MenuItem onClick={(event) => {this.onSplitButton(event)}} eventKey="3">3</MenuItem>
                 </SplitButton>
                 </div>
                 <div className="create-draw">
