@@ -51497,7 +51497,7 @@ var CreateDraw = function (_Component) {
                 return team.division.divCode == 'div3' && 'div2';
             });
 
-            var divNames3 = _lodash2.default.map(team3, 'teamName');
+            var divNames3 = _lodash2.default.map(division3, 'teamName');
             var div3 = robin(divNames3.length, divNames3);
 
             console.log('round robin: ', div1);

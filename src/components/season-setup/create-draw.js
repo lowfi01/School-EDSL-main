@@ -53,7 +53,7 @@ this.state = {
         return team.division.divCode == 'div3' && 'div2';
         });
 
-        const divNames3 = _.map(team3, 'teamName')
+        const divNames3 = _.map(division3, 'teamName')
         let div3 = robin(divNames3.length, divNames3)
         
 
