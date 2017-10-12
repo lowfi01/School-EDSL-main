@@ -48,7 +48,7 @@ this.state = {
         const divNames2 = _.map(division2, 'teamName')
         let div2 = robin(divNames2.length, divNames2)
 
-        _.remove(team3, team => {
+        const divNames3 = _.remove(team3, team => {
         //console.log(`lodash remove:`, team.division.divCode)
         return team.division.divCode == 'div3' && 'div2';
         });
