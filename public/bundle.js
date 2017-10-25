@@ -67368,6 +67368,10 @@ var _reactBootstrap = __webpack_require__(35);
 
 var _reactRedux = __webpack_require__(48);
 
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _lodash = __webpack_require__(689);
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -67452,7 +67456,7 @@ var CreateDraw = function (_Component) {
                 draw: { div1: div1, div2: div2, div3: div3 }
             });
 
-            // logic to add dates to table
+            //logic to add dates to table
             console.log('season state: ' + this.props.season.season.startDate);
             console.log('season state: ' + this.props.season.season.endDate);
             // this.props.season.season.other.map(x => {
@@ -67461,7 +67465,8 @@ var CreateDraw = function (_Component) {
 
             var str = this.props.season.season.startDate;
             var res = str.split("-");
-
+            var end = this.props.season.season.endDate;
+            var resEnd = end.split("-");
             var year = parseInt(res[0], 10);
             var month = parseInt(res[1], 10);
             var day = parseInt(res[2], 10);
@@ -67471,11 +67476,22 @@ var CreateDraw = function (_Component) {
             var array = [];
             // create fixed index, to prevent null inserts
             var index = 0;
+            var starting = (0, _moment2.default)('' + res[0] + res[1] + res[2]);
+            var ending = (0, _moment2.default)('' + resEnd[0] + resEnd[1] + resEnd[2]);
+            // console.log(`a: ${starting}, b: ${ending}, props: ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]} ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
+            var diff = ending.diff(starting, 'days');
+            // console.log(`count ${diff}`);
 
-            for (var i = 0; i < 17; i++) {
+            // count number of weeks between start & end date
+            var count = diff / 7;
+
+            for (var i = 0; i < count; i++) {
 
                 //    console.log(index);
                 var date = year + '-' + month + '-' + day;
+                if (date == end) {
+                    break;
+                }
                 // check to create off days
 
                 // add current date 

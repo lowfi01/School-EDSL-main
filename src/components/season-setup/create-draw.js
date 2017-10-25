@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 let robin = require('roundrobin');
+import moment from 'moment';
 import _ from 'lodash';
 import {Table, ButtonToolbar, SplitButton, MenuItem, Panel} from 'react-bootstrap'
 
@@ -68,7 +69,7 @@ this.state = {
             draw: { div1, div2, div3 }
         })
 
-        // logic to add dates to table
+        //logic to add dates to table
         console.log(`season state: ${this.props.season.season.startDate}`)
         console.log(`season state: ${this.props.season.season.endDate}`)
         // this.props.season.season.other.map(x => {
@@ -77,7 +78,8 @@ this.state = {
 
         let str = this.props.season.season.startDate;
         let res = str.split("-");
-
+        let end = this.props.season.season.endDate;
+        let resEnd = end.split("-");
         let year = parseInt(res[0], 10);
         let month = parseInt(res[1], 10);
         let day = parseInt(res[2], 10);
@@ -87,12 +89,22 @@ this.state = {
         let array = [];
         // create fixed index, to prevent null inserts
         var index = 0;
+        const starting = moment(`${res[0]}${res[1]}${res[2]}`);
+        const ending = moment(`${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
+        // console.log(`a: ${starting}, b: ${ending}, props: ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]} ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
+        let diff = ending.diff(starting, 'days');
+        // console.log(`count ${diff}`);
 
+        // count number of weeks between start & end date
+        const count = diff / 7;
 
-        for (let i = 0; i < 17; i++) {
+        for (let i = 0; i < count; i++) {
             
         //    console.log(index);
             var date = `${year}-${month}-${day}`;
+            if(date == end){
+                break;
+            }
             // check to create off days
 
             // add current date 
