@@ -27,6 +27,9 @@ this.state = {
     
     createDraw(event){
         event.preventDefault();
+
+        // console.log(`season state: ${this.props.season.season.startDate}`)
+
         this.setState({value: false})
         let team1 = this.props.teams.teams;
         let team2 = this.props.teams.teams;
@@ -65,20 +68,90 @@ this.state = {
             draw: { div1, div2, div3 }
         })
 
-        console.log(`state`, this.state)
-        
+        // logic to add dates to table
+        console.log(`season state: ${this.props.season.season.startDate}`)
+        console.log(`season state: ${this.props.season.season.endDate}`)
+        // this.props.season.season.other.map(x => {
+        //     console.log(x)
+        // })
+
+        let str = this.props.season.season.startDate;
+        let res = str.split("-");
+
+        let year = parseInt(res[0], 10);
+        let month = parseInt(res[1], 10);
+        let day = parseInt(res[2], 10);
+
+        // console.log(`state`, this.state)
+        let monthCheck = 30;
+        let array = [];
+        // create fixed index, to prevent null inserts
+        var index = 0;
+
+
+        for (let i = 0; i < 17; i++) {
+            
+        //    console.log(index);
+            var date = `${year}-${month}-${day}`;
+            // check to create off days
+
+            // add current date 
+            array[index] = date;
+            index += 1;
+            
+
+            // add 1 week
+            day += 7;
+
+            // check if date is greater then current month
+            if(day > monthCheck){
+                month += 1;
+
+                // set correct date
+                day = day % monthCheck; 
+                if(month == 12){
+                    // set days to 31, if december
+                    monthCheck = 31;
+                    
+                } else { // calculate all other months
+                    if(month % 2 == 1){
+                        monthCheck = 31;
+                    } 
+                    if(month % 2 == 0){
+                        monthCheck = 30;
+                    } 
+                }
+
+                if (month == 2) {
+                    //set days to 28, if feb
+                    monthCheck == 28;
+                }
+                // console.log(`modulas after month check:`, day);
+                // console.log(`month`, month)
+
+                // increase years if month is 13
+                if(month > 12){
+                    month = 1;
+                    year += 1;
+                }
+            }
+        } // end loop
+
+        this.setState({
+            dates: array
+        })
     }
 
     onSplitButton(text){
         var term = text.target.text
-        console.log(`state`, this.state)
+        // console.log(`state`, this.state)
 
         this.setState({term, divTerm: term})
-        console.log(`term`, this.state.draw.div1)
+        // console.log(`term`, this.state.draw.div1)
         
         let div = `div${term}`
         let holdMeBaby = this.state.draw[`${div}`]
-        console.log(`draw`, this.state.draw[`${div}`])
+        // console.log(`draw`, this.state.draw[`${div}`])
         
         let roundsArray = [];
         
@@ -108,14 +181,14 @@ this.state = {
                 // console.log(`this is the roundNum % 1, should be 0 or 1`, roundNum % 1)
 
                 const num = this.state.draw[`div${this.state.term}`][0].length
-                console.log(`drawTeam`, this.state.drawTeam)
+                // console.log(`drawTeam`, this.state.drawTeam)
                 let roundNum = (index / num + 1);
-                console.log(`result mod`, (roundNum % 1))
+                // console.log(`result mod`, (roundNum % 1))
             if (roundNum % 1 === 0) {
                 return (
                     <tr key={index}>
                         <td>
-                            {Math.floor(roundNum)}
+                            {this.state.dates[Math.floor(roundNum) -1]}
                         </td>
                         <td>
                             {team[0]}
@@ -172,7 +245,8 @@ this.state = {
 
 function mapStateToProps(state){
     return{
-        teams: state.teams
+        teams: state.teams,
+        season: state.season
     }
 }
 

@@ -8,7 +8,7 @@ class AddDateOther extends React.Component{
         super()
 
         this.state = {
-            startDate : '2014-02-09',
+            startDate : '2018-02-17',
             type: 'Public-Holiday'
         }
 
@@ -16,7 +16,7 @@ class AddDateOther extends React.Component{
     }
 
     ComponentWillMount(){
-        document.getElementById("test").defaultValue = "2014-02-09"; 
+        document.getElementById("test").defaultValue = "2018-02-17"; 
     }
 
     render(){
