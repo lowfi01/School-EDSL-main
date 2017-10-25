@@ -10,7 +10,7 @@ class AddDate extends React.Component{
         super()
 
         this.state = { 
-            startDate : '',
+            startDate : '2017-11-4',
             endDate : '',
             type : '',
             other : []
