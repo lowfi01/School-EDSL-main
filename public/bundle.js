@@ -21420,7 +21420,7 @@ var Menu = function (_React$Component) {
                         _react2.default.createElement(
                             'a',
                             { href: '/' },
-                            'ESL-Main'
+                            'EDSL-Main'
                         )
                     ),
                     _react2.default.createElement(_reactBootstrap.Navbar.Toggle, null)
@@ -21433,12 +21433,17 @@ var Menu = function (_React$Component) {
                         null,
                         _react2.default.createElement(
                             _reactBootstrap.NavItem,
-                            { eventKey: 1, href: '/season' },
+                            { eventKey: 1, href: '/' },
+                            'Division Setup'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.NavItem,
+                            { eventKey: 2, href: '/season' },
                             'Season Setup'
                         ),
                         _react2.default.createElement(
                             _reactBootstrap.NavItem,
-                            { eventKey: 2, href: '/contacts' },
+                            { eventKey: 3, href: '/contacts' },
                             'Contact Us'
                         )
                     ),
@@ -51212,6 +51217,11 @@ var AddDate = function (_React$Component) {
     }
 
     _createClass(AddDate, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            document.getElementById('test').value = "2014-02-09";
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
@@ -51244,7 +51254,7 @@ var AddDate = function (_React$Component) {
                                 return _this2.setState({
                                     startDate: event.target.value
                                 });
-                            }, value: this.state.startDate, type: 'start', placeholder: '12/05/2017' })
+                            }, value: this.state.startDate, type: 'date', placeholder: '12/05/2017' })
                     ),
                     ' ',
                     _react2.default.createElement(
@@ -51260,24 +51270,9 @@ var AddDate = function (_React$Component) {
                                 return _this2.setState({
                                     endDate: event.target.value
                                 });
-                            }, value: this.state.endDate, type: 'end', placeholder: '12/11/2017' })
+                            }, value: this.state.endDate, type: 'date', placeholder: '12/11/2017' })
                     ),
                     ' ',
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'type' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Type'
-                        ),
-                        ' ',
-                        _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(event) {
-                                return _this2.setState({
-                                    type: event.target.value
-                                });
-                            }, value: this.state.type, type: 'setup', placeholder: 'Season Setup' })
-                    ),
                     ' ',
                     _react2.default.createElement(
                         _reactBootstrap.Button,
@@ -51339,13 +51334,19 @@ var AddDateOther = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (AddDateOther.__proto__ || Object.getPrototypeOf(AddDateOther)).call(this));
 
         _this.state = {
-            startDate: '',
+            startDate: '2014-02-09',
             type: ''
         };
+
         return _this;
     }
 
     _createClass(AddDateOther, [{
+        key: 'ComponentWillMount',
+        value: function ComponentWillMount() {
+            document.getElementById("test").defaultValue = "2014-02-09";
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
@@ -51373,7 +51374,7 @@ var AddDateOther = function (_React$Component) {
                             return _this2.setState({
                                 startDate: event.target.value
                             });
-                        }, value: this.state.startDate, type: 'start', placeholder: '12/05/2017' })
+                        }, value: this.state.startDate, id: 'test', type: 'date' })
                 ),
                 ' ',
                 _react2.default.createElement(
@@ -51494,7 +51495,7 @@ var CreateDraw = function (_Component) {
 
             var division3 = _lodash2.default.remove(team3, function (team) {
                 //console.log(`lodash remove:`, team.division.divCode)
-                return team.division.divCode == 'div3' && 'div2';
+                return team.division.divCode == 'div3' && 'div1';
             });
 
             var divNames3 = _lodash2.default.map(division3, 'teamName');

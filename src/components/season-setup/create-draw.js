@@ -50,7 +50,7 @@ this.state = {
 
         const division3 = _.remove(team3, team => {
         //console.log(`lodash remove:`, team.division.divCode)
-        return team.division.divCode == 'div3' && 'div2';
+        return team.division.divCode == 'div3' && 'div1';
         });
 
         const divNames3 = _.map(division3, 'teamName')

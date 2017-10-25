@@ -16,6 +16,10 @@ class AddDate extends React.Component{
             other : []
         }
     }
+
+    componentDidMount(){
+        document.getElementById(`test`).value = "2014-02-09"; 
+    }
     render(){
         return(
             <div className="button-season-setup">
@@ -34,7 +38,7 @@ class AddDate extends React.Component{
                 {' '}
                 <FormControl onChange={event => this.setState({
                     startDate: event.target.value
-                    })} value={this.state.startDate} type="start" placeholder="12/05/2017" />
+                    })} value={this.state.startDate} type="date" placeholder="12/05/2017" />
                 </FormGroup>
                 {' '}
                 <FormGroup controlId="endDate">
@@ -42,16 +46,16 @@ class AddDate extends React.Component{
                 {' '}
                 <FormControl onChange={event => this.setState({
                     endDate: event.target.value
-                    })} value={this.state.endDate} type="end" placeholder="12/11/2017" />
+                    })} value={this.state.endDate} type="date" placeholder="12/11/2017" />
                 </FormGroup>
                 {' '}
-                <FormGroup controlId="type">
+                {/* <FormGroup controlId="type">
                 <ControlLabel>Type</ControlLabel>
                 {' '}
                 <FormControl onChange={event => this.setState({
                     type : event.target.value
                     })} value={this.state.type}  type="setup" placeholder="Season Setup" />
-                </FormGroup>
+                </FormGroup> */}
                 {' '}
                 <Button className="btn btn-primary" bsSize="small" type="submit">
                     Submit

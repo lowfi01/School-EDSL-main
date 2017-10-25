@@ -15,14 +15,15 @@ class Menu extends React.Component {
                 <Navbar inverse fixedTop>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/">ESL-Main</a> 
+                        <a href="/">EDSL-Main</a> 
                     </Navbar.Brand>
                     <Navbar.Toggle/>
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem eventKey={1} href="/season">Season Setup</NavItem>
-                        <NavItem eventKey={2} href="/contacts">Contact Us</NavItem>
+                        <NavItem eventKey={1} href="/">Division Setup</NavItem>
+                        <NavItem eventKey={2} href="/season">Season Setup</NavItem>
+                        <NavItem eventKey={3} href="/contacts">Contact Us</NavItem>
                     </Nav>
                     <Nav pullRight>
                         <NavItem eventKey={1} >Admin</NavItem>

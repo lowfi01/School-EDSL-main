@@ -8,10 +8,17 @@ class AddDateOther extends React.Component{
         super()
 
         this.state = {
-            startDate : '',
+            startDate : '2014-02-09',
             type: ''
         }
+
+        
     }
+
+    ComponentWillMount(){
+        document.getElementById("test").defaultValue = "2014-02-09"; 
+    }
+
     render(){
         return(
                 <Form onSubmit={ (event) => {
@@ -28,7 +35,7 @@ class AddDateOther extends React.Component{
                     {' '}
                     <FormControl onChange={event => this.setState({
                     startDate: event.target.value
-                    })} value={this.state.startDate} type="start" placeholder="12/05/2017" />
+                    })} value={this.state.startDate}  id="test" type="date" />
                     </FormGroup>
                     {' '}
                     <FormGroup controlId="Setup">
