@@ -64,3 +64,11 @@ export function getDivision(divisionName) {
         payload: request
     };
 }
+
+
+export function postSeasonSetup(season) {
+     return{
+        type: 'ADD_SEASON',
+        payload: season
+    }
+}

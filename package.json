@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.4",
     "lodash": "^4.17.4",
+    "moment": "^2.19.1",
     "mongoose": "^4.11.10",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.3",

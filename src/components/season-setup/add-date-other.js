@@ -8,8 +8,8 @@ class AddDateOther extends React.Component{
         super()
 
         this.state = {
-            startDate : '',
-            type: ''
+            startDate : '2014-02-09',
+            type: 'Public-Holiday'
         }
 
         
