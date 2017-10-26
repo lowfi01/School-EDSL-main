@@ -66853,7 +66853,16 @@ var AddDate = function (_React$Component) {
         _this.state = {
             startDate: '2017-11-04',
             endDate: '2018-02-24',
-            other: [],
+            other: [{
+                startDate: '2017-12-16',
+                type: 'Christmas Break'
+            }, {
+                startDate: '2017-12-23',
+                type: 'Christmas Break'
+            }, {
+                startDate: '2017-12-30',
+                type: 'Christmas Break'
+            }],
             dateValidate: 'Saturday'
         };
 
@@ -67453,15 +67462,17 @@ var CreateDraw = function (_Component) {
             console.log('round robin: ', div3);
 
             this.setState({
-                draw: { div1: div1, div2: div2, div3: div3 }
+                draw: {
+                    div1: div1,
+                    div2: div2,
+                    div3: div3
+                }
             });
 
             //logic to add dates to table
             console.log('season state: ' + this.props.season.season.startDate);
             console.log('season state: ' + this.props.season.season.endDate);
-            // this.props.season.season.other.map(x => {
-            //     console.log(x)
-            // })
+            // this.props.season.season.other.map(x => {     console.log(x) })
 
             var str = this.props.season.season.startDate;
             var res = str.split("-");
@@ -67478,11 +67489,11 @@ var CreateDraw = function (_Component) {
             var index = 0;
             var starting = (0, _moment2.default)('' + res[0] + res[1] + res[2]);
             var ending = (0, _moment2.default)('' + resEnd[0] + resEnd[1] + resEnd[2]);
-            // console.log(`a: ${starting}, b: ${ending}, props: ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]} ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
+            // console.log(`a: ${starting}, b: ${ending}, props:
+            // ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]}
+            // ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
             var diff = ending.diff(starting, 'days');
-            // console.log(`count ${diff}`);
-
-            // count number of weeks between start & end date
+            // console.log(`count ${diff}`); count number of weeks between start & end date
             var count = diff / 7;
 
             for (var i = 0; i < count; i++) {
@@ -67492,9 +67503,7 @@ var CreateDraw = function (_Component) {
                 if (date == end) {
                     break;
                 }
-                // check to create off days
-
-                // add current date 
+                // check to create off days add current date
                 array[index] = date;
                 index += 1;
 
@@ -67524,9 +67533,7 @@ var CreateDraw = function (_Component) {
                         //set days to 28, if feb
                         monthCheck == 28;
                     }
-                    // console.log(`modulas after month check:`, day);
-                    // console.log(`month`, month)
-
+                    // console.log(`modulas after month check:`, day); console.log(`month`, month)
                     // increase years if month is 13
                     if (month > 12) {
                         month = 1;
@@ -67534,10 +67541,8 @@ var CreateDraw = function (_Component) {
                     }
                 }
             } // end loop
-
-            this.setState({
-                dates: array
-            });
+            console.log(this.props.season.season.other);
+            this.setState({ dates: array });
         }
     }, {
         key: 'onSplitButton',
@@ -67553,21 +67558,34 @@ var CreateDraw = function (_Component) {
             // console.log(`draw`, this.state.draw[`${div}`])
 
             var roundsArray = [];
+            var hold = this.state.draw;
+            console.log('holdMebaby:', hold['' + div]);
 
             for (var i = 0; i < holdMeBaby.length; i++) {
                 for (var o = 0; o < holdMeBaby[0].length; o++) {
-                    // for(var x = 0; x < 2; x++) {
-                    // console.log(`holdMeBaby count: ${i} ${o}`, holdMeBaby[i][o])
+                    // for(var x = 0; x < 2; x++) { console.log(`holdMeBaby count: ${i} ${o}`,
+                    // holdMeBaby[i][o])
                     roundsArray.push(holdMeBaby[i][o] /*[x]*/); // comment will break it up into individual teams
 
                     // }
                 }
             }
 
+            var test = [];
+            for (var i = 0; i < holdMeBaby.length; i++) {
+                // for(var x = 0; x < 2; x++) { console.log(`holdMeBaby count: ${i} ${o}`,
+                // holdMeBaby[i][o])
+                test.push(holdMeBaby[i][0] /*[x]*/); // comment will break it up into individual teams
+                test.push(holdMeBaby[i][1] /*[x]*/);
+                // }
+            }
+            console.log('test array', test);
+
             console.log('roundsArray', roundsArray);
-            this.setState({
-                drawTeam: roundsArray
-            });
+            this.setState({ drawTeam: roundsArray });
+
+            console.log('drawTeam:', roundsArray);
+            console.log('date:', this.state.dates);
         }
     }, {
         key: 'render',
@@ -67575,15 +67593,20 @@ var CreateDraw = function (_Component) {
             var _this2 = this;
 
             var draw = this.state.drawTeam.map(function (team, index) {
-                //  console.log('index', index) console.log(`team.length`, team ) 
-                // console.log(`this is the current count index`, index);
-                // console.log(`this is the team being displayed`, team);
-                // console.log(`this is the roundNum % 1, should be 0 or 1`, roundNum % 1)
+                //  console.log('index', index) console.log(`team.length`, team )
+                // console.log(`this is the current count index`, index); console.log(`this is
+                // the team being displayed`, team); console.log(`this is the roundNum % 1,
+                // should be 0 or 1`, roundNum % 1)
 
                 var num = _this2.state.draw['div' + _this2.state.term][0].length;
                 // console.log(`drawTeam`, this.state.drawTeam)
                 var roundNum = index / num + 1;
-                // console.log(`result mod`, (roundNum % 1))
+                // console.log(`result mod`, (roundNum % 1)) for(let x = 0; x <
+                // this.props.season.season.other.length; x++){     const check =
+                // this.props.season.season.other;     console.log("hello");
+                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ return (
+                //         <tr key={index}>             <td> {check[x].startDate}
+                // </td>         </tr>     )     } }
                 if (roundNum % 1 === 0) {
                     return _react2.default.createElement(
                         'tr',
@@ -67629,37 +67652,49 @@ var CreateDraw = function (_Component) {
                 _react2.default.createElement(
                     'center',
                     null,
-                    ' ',
                     _react2.default.createElement(
                         'div',
                         { className: 'draw-content' },
                         _react2.default.createElement(
                             _reactBootstrap.Button,
-                            { className: 'btn btn-primary', onClick: this.createDraw.bind(this), disabled: !this.state.value },
+                            {
+                                className: 'btn btn-primary',
+                                onClick: this.createDraw.bind(this),
+                                disabled: !this.state.value },
                             'Create Division Draws'
                         ),
                         _react2.default.createElement(
                             _reactBootstrap.SplitButton,
-                            { disabled: this.state.value, title: 'View division ' + this.state.divTerm + ' draw', pullRight: true, id: 'split-button-pull-right' },
+                            {
+                                disabled: this.state.value,
+                                title: 'View division ' + this.state.divTerm + ' draw',
+                                pullRight: true,
+                                id: 'split-button-pull-right' },
                             _react2.default.createElement(
                                 _reactBootstrap.MenuItem,
-                                { onClick: function onClick(event) {
+                                {
+                                    onClick: function onClick(event) {
                                         _this2.onSplitButton(event);
-                                    }, eventKey: '1' },
+                                    },
+                                    eventKey: '1' },
                                 '1'
                             ),
                             _react2.default.createElement(
                                 _reactBootstrap.MenuItem,
-                                { onClick: function onClick(event) {
+                                {
+                                    onClick: function onClick(event) {
                                         _this2.onSplitButton(event);
-                                    }, eventKey: '2' },
+                                    },
+                                    eventKey: '2' },
                                 '2'
                             ),
                             _react2.default.createElement(
                                 _reactBootstrap.MenuItem,
-                                { onClick: function onClick(event) {
+                                {
+                                    onClick: function onClick(event) {
                                         _this2.onSplitButton(event);
-                                    }, eventKey: '3' },
+                                    },
+                                    eventKey: '3' },
                                 '3'
                             )
                         )
@@ -67705,10 +67740,7 @@ var CreateDraw = function (_Component) {
 }(_react.Component);
 
 function mapStateToProps(state) {
-    return {
-        teams: state.teams,
-        season: state.season
-    };
+    return { teams: state.teams, season: state.season };
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, { getTeams: _action.getTeams })(CreateDraw);

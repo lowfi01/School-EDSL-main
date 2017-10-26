@@ -17,7 +17,16 @@ class AddDate extends React.Component{
         this.state = { 
             startDate : '2017-11-04',
             endDate : '2018-02-24',
-            other : [],
+            other : [{
+                startDate: '2017-12-16', 
+                type: 'Christmas Break'
+                },{
+                    startDate: '2017-12-23', 
+                    type: 'Christmas Break'
+                },{
+                    startDate: '2017-12-30',
+                    type: 'Christmas Break'
+                }],
             dateValidate : 'Saturday',
         }
 
