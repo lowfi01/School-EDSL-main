@@ -10360,8 +10360,10 @@ function updateDivision(term, id) {
 // - CREATE UNSET VALUE in MENU-DROP-DOWN 
 
 function getTeams() {
+    var team = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'div00';
 
-    var request = _axios2.default.get('/teams');
+    console.log('this is axios call for term team = : ' + team);
+    var request = _axios2.default.get('/teams/' + team);
 
     //console.log(`Request: `, request)
 
@@ -10373,7 +10375,7 @@ function getTeams() {
 }
 
 function getDivision(divisionName) {
-    var request = _axios2.default.get('/teams/' + divisionName);
+    var request = _axios2.default.get('/divisions/' + divisionName);
 
     //console.log(`Request: `, request)
 
@@ -65436,6 +65438,15 @@ var DisplayTeams = function (_Component) {
             return _react2.default.createElement(
                 _reactBootstrap.Panel,
                 null,
+                _react2.default.createElement(
+                    'center',
+                    null,
+                    _react2.default.createElement(
+                        'h4',
+                        { className: 'display-teams' },
+                        'Teams'
+                    )
+                ),
                 teamsList
             );
         }
@@ -65527,6 +65538,7 @@ var DisplayItem = function (_Component) {
 
             // Update Team detail division.clubCode
             // Requires Action - axios > api > find { $set { value }}
+            console.log('passStateTeamId: ' + this.props.passStateTeamId + ', term: ' + term);
             this.props.updateDivision(term, this.props.passStateTeamId);
 
             // Re-load Division list
@@ -66527,6 +66539,8 @@ var DisplayDivision = function (_Component) {
         var _this = _possibleConstructorReturn(this, (DisplayDivision.__proto__ || Object.getPrototypeOf(DisplayDivision)).call(this));
 
         _this.state = { term: 'Selection' };
+        var word = _this.state.term;
+
         return _this;
     }
 
@@ -66540,6 +66554,36 @@ var DisplayDivision = function (_Component) {
             var div = 'div' + term;
             this.props.getDivision(div);
             this.props.onCallBackTerm(div);
+            this.props.getTeams('div' + term);
+            console.log('term in display division: ' + this.state.term);
+        }
+
+        // Add to division onClick function
+
+    }, {
+        key: 'addTeamToDivision',
+        value: function addTeamToDivision(event, team) {
+
+            // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
+
+
+            // Prevent button from refreshing screen
+            event.preventDefault();
+
+            // Save Prop passed from from display-teams to term
+            var term = this.state.term;
+
+            //console.log(`displayItem team.id:  `, this.props.passStateTeamId)
+
+            // Update Team detail division.clubCode
+            // Requires Action - axios > api > find { $set { value }}
+            this.props.updateDivision('div0', team._id);
+
+            // Re-load Division list
+            // Updates List with new population 
+            console.log('term 22222', term);
+            this.props.getDivision('div' + term);
+            console.log('term in display division: ' + term + ', team ' + team.division.divCode);
         }
     }, {
         key: 'render',
@@ -66553,7 +66597,14 @@ var DisplayDivision = function (_Component) {
                     _react2.default.createElement(
                         'li',
                         null,
-                        team.teamName
+                        team.teamName,
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { className: 'btn btn-danger pull-right', bsSize: 'xsmall', onClick: function onClick(event) {
+                                    _this2.addTeamToDivision(event, team);
+                                } },
+                            'Remove'
+                        )
                     )
                 );
             });
@@ -66562,28 +66613,44 @@ var DisplayDivision = function (_Component) {
                 _reactBootstrap.Panel,
                 null,
                 _react2.default.createElement(
-                    _reactBootstrap.SplitButton,
-                    { title: 'Division ' + this.state.term, pullRight: true, id: 'split-button-pull-right' },
+                    'span',
+                    null,
                     _react2.default.createElement(
-                        _reactBootstrap.MenuItem,
-                        { onClick: function onClick(text) {
-                                _this2.onSplitButton(text);
-                            }, eventKey: '1' },
-                        '1'
+                        _reactBootstrap.SplitButton,
+                        { title: 'Division ' + this.state.term, pullRight: true, id: 'split-button-pull-right' },
+                        _react2.default.createElement(
+                            _reactBootstrap.MenuItem,
+                            { onClick: function onClick(text) {
+                                    _this2.onSplitButton(text);
+                                }, eventKey: '1' },
+                            '1'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.MenuItem,
+                            { onClick: function onClick(event) {
+                                    _this2.onSplitButton(event);
+                                }, eventKey: '2' },
+                            '2'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.MenuItem,
+                            { onClick: function onClick(event) {
+                                    _this2.onSplitButton(event);
+                                }, eventKey: '3' },
+                            '3'
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.MenuItem,
+                            { onClick: function onClick(event) {
+                                    _this2.onSplitButton(event);
+                                }, eventKey: '0' },
+                            '0'
+                        )
                     ),
                     _react2.default.createElement(
-                        _reactBootstrap.MenuItem,
-                        { onClick: function onClick(event) {
-                                _this2.onSplitButton(event);
-                            }, eventKey: '2' },
-                        '2'
-                    ),
-                    _react2.default.createElement(
-                        _reactBootstrap.MenuItem,
-                        { onClick: function onClick(event) {
-                                _this2.onSplitButton(event);
-                            }, eventKey: '3' },
-                        '3'
+                        'span',
+                        { className: 'pull-right' },
+                        this.props.div.length
                     )
                 ),
                 _react2.default.createElement(
@@ -66613,8 +66680,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
         // getDivision will call api to populate division state array
-        getDivision: _index.getDivision
-
+        getDivision: _index.getDivision,
+        updateDivision: _index.updateDivision,
+        getTeams: _index.getTeams
     }, dispatch);
 }
 
@@ -67413,6 +67481,7 @@ var CreateDraw = function (_Component) {
             drawTeam: [],
             value: true
         };
+
         return _this;
     }
 
@@ -67472,7 +67541,10 @@ var CreateDraw = function (_Component) {
             //logic to add dates to table
             console.log('season state: ' + this.props.season.season.startDate);
             console.log('season state: ' + this.props.season.season.endDate);
-            // this.props.season.season.other.map(x => {     console.log(x) })
+            // console.log(`this is the non playing days:`, this.props.season.season.other)
+            // console.log(`this is the playing days:`, this.state.dates)
+            // console.log(`all rounds = ${this.state.draw}, current div passed by drop down menu =  ${this.state.draw[`${div}`]}`,)
+            // // this.props.season.season.other.map(x => {     console.log(x) })
 
             var str = this.props.season.season.startDate;
             var res = str.split("-");
@@ -67541,7 +67613,10 @@ var CreateDraw = function (_Component) {
                     }
                 }
             } // end loop
-            console.log(this.props.season.season.other);
+
+            // this is the non playing days array
+            console.log("this is bye days:", this.props.season.season.other);
+
             this.setState({ dates: array });
         }
     }, {
@@ -67601,12 +67676,24 @@ var CreateDraw = function (_Component) {
                 var num = _this2.state.draw['div' + _this2.state.term][0].length;
                 // console.log(`drawTeam`, this.state.drawTeam)
                 var roundNum = index / num + 1;
-                // console.log(`result mod`, (roundNum % 1)) for(let x = 0; x <
-                // this.props.season.season.other.length; x++){     const check =
-                // this.props.season.season.other;     console.log("hello");
-                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ return (
-                //         <tr key={index}>             <td> {check[x].startDate}
-                // </td>         </tr>     )     } }
+                console.log('result mod', roundNum % 1);
+                for (var x = 0; x < _this2.props.season.season.other.length; x++) {
+                    var check = _this2.props.season.season.other;
+                    console.log("hello");
+                    if (_this2.state.dates[Math.floor(roundNum) - 1] == check[x].startDate) {
+                        return _react2.default.createElement(
+                            'tr',
+                            { key: index },
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                ' ',
+                                check[x].startDate
+                            )
+                        );
+                    }
+                }
+
                 if (roundNum % 1 === 0) {
                     return _react2.default.createElement(
                         'tr',

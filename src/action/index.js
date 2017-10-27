@@ -38,9 +38,9 @@ const request = axios.patch(`/teams/${id}`, {term})
 // - SET division to unset
 // - CREATE UNSET VALUE in MENU-DROP-DOWN 
 
-export function getTeams() {
-
-const request = axios.get(`/teams`)
+export function getTeams(team = `div00`) {
+    console.log(`this is axios call for term team = : ${team}`)
+    const request = axios.get(`/teams/${team}`)
 
     //console.log(`Request: `, request)
 
@@ -54,7 +54,7 @@ const request = axios.get(`/teams`)
 
 
 export function getDivision(divisionName) {
-    const request = axios.get(`/teams/${divisionName}`)
+    const request = axios.get(`/divisions/${divisionName}`)
 
     //console.log(`Request: `, request)
 

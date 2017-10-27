@@ -25,3 +25,8 @@ body {
     width: auto;
     max-width: 900px;
 }
+
+.display-teams {
+    margin: 3px;
+    padding: 0;
+}

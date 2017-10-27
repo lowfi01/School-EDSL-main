@@ -29,6 +29,7 @@ class DisplayItem extends Component{
         
         // Update Team detail division.clubCode
         // Requires Action - axios > api > find { $set { value }}
+        console.log(`passStateTeamId: ${this.props.passStateTeamId}, term: ${term}`)
         this.props.updateDivision(term, this.props.passStateTeamId);
 
         // Re-load Division list

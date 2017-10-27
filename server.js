@@ -128,15 +128,20 @@ app.get('/clubs', (req, res) => {
 
 
 /// -----> GET TEAMS <------
-app.get('/teams', (req, res) => {
+app.get('/teams/:id', (req, res) => {
     // .find() get everything old code - Todo.find().then((todos) changed code -
     // find only _creator : ObjectId that match users ObjectId
-    Teams
-        .find({})
+
+    // new  
+    var div = req.params.id;
+    console.log(`div = ${div}`)
+        Teams
+        .find( {'division.divCode' : { '$ne' : `${div}`}})
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
             res.send(docs);
+            console.log()
 
         })
         .catch((e) => {
@@ -147,7 +152,8 @@ app.get('/teams', (req, res) => {
 });
 
 /// ---->GET TEAMS FILTERED BY DIVISION<--------
-app.get(`/teams/:id`, (req, res) => {
+// app.get(`/teams/:id`, (req, res) => {
+app.get(`/divisions/:id`, (req, res) => {
     // .find() get everything old code - Todo.find().then((todos) changed code -
     // find only _creator : ObjectId that match users ObjectId
     var div = req.params.id;

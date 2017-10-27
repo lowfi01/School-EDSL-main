@@ -41,6 +41,7 @@ class DisplayTeams extends Component{
 
         return(
             <Panel >
+                <center><h4 className="display-teams">Teams</h4></center>
                 {/* <button onClick={() => {this.props.getTeams()}} /> */}
                 {/*console.log('this.props.teams: ', this.props.teams)*/}
                 {teamsList}
