@@ -19,14 +19,35 @@ body {
 
 .button-season-setup {
     margin-bottom: 20px;
+    float: left;
 }
 
 .draw-panel {
     width: auto;
     max-width: 900px;
+    clear: both;
 }
 
 .display-teams {
     margin: 3px;
     padding: 0;
+}
+
+.season-info {
+    width: 200px;
+    padding: 0 0;
+    margin: 0 0 10px 0;
+    float: right;
+    position: relative;
+    right: 30px;
+}
+
+
+
+ul {
+    list-style-type: none;
+}
+
+.list-dates li {
+    font-size: 10px;
 }

@@ -217,19 +217,19 @@ class CreateDraw extends Component {
                 const num = this.state.draw[`div${this.state.term}`][0].length
                 // console.log(`drawTeam`, this.state.drawTeam)
                 let roundNum = (index / num + 1);
-                console.log(`result mod`, (roundNum % 1)) 
-                for(let x = 0; x < this.props.season.season.other.length; x++){     
-                const check = this.props.season.season.other;     
-                console.log("hello");
-                if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ 
-                    return (
-                        <tr key={index}>             
-                        <td> {check[x].startDate}
-                        </td>         
-                        </tr>     
-                        )     
-                    } 
-                }
+                // console.log(`result mod`, (roundNum % 1)) 
+                // for(let x = 0; x < this.props.season.season.other.length; x++){     
+                // const check = this.props.season.season.other;     
+                // console.log("hello");
+                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ 
+                //     return (
+                //         <tr key={index}>             
+                //         <td> {check[x].startDate}
+                //         </td>         
+                //         </tr>     
+                //         )     
+                //     } 
+                // }
 
                 if (roundNum % 1 === 0) {
                     return (

@@ -15,7 +15,7 @@ class Menu extends React.Component {
                 <Navbar inverse fixedTop>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/">EDSL-Main</a> 
+                        <a>EDSL</a> 
                     </Navbar.Brand>
                     <Navbar.Toggle/>
                 </Navbar.Header>

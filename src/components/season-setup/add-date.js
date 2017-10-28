@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import {Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {Panel, Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 const date = moment();
 
 // Component
@@ -28,8 +28,10 @@ class AddDate extends React.Component{
                     type: 'Christmas Break'
                 }],
             dateValidate : 'Saturday',
+            button: false
         }
 
+        this.removeDate = this.removeDate.bind(this);
         this.validateDate = this.validateDate.bind(this);
     }
 
@@ -46,8 +48,33 @@ class AddDate extends React.Component{
         return false;
     }
 
+    list(data, index){
+        console.log(data);
+            return(
+            <ul className="list-dates" key={index}>
+            <li >
+                Start: {data.startDate} 
+                <span>   </span>
+                <Button className="btn btn-danger" bsSize="xsmall" onClick={(e) => this.removeDate(e, index)}>x</Button>
+            </li>
+            <li>
+                Type: {data.type}
+            </li>
+                
+            </ul>
+            )
+    }
+
+    removeDate(e, index){
+        e.preventDefault();
+        let hold = [...this.state.other]
+        console.log(`hello`, hold);
+        hold.splice(index, 1);
+        this.setState({other: hold})
+    }
     render(){
         return(
+            <div>
             <div className="button-season-setup">
                 <Form onSubmit={(event) => {
                     event.preventDefault();
@@ -58,6 +85,7 @@ class AddDate extends React.Component{
                         return log
                     })
                     */}
+                    this.setState({button: true})
                     console.log(this.state) ;
                     this.props.postSeasonSetup(this.state);
                     }} inline>
@@ -101,11 +129,10 @@ class AddDate extends React.Component{
                     })} value={this.state.type}  type="setup" placeholder="Season Setup" />
                 </FormGroup> */}
                 {' '}
-                <Button className="btn btn-primary" bsSize="small" type="submit">
+                <Button className="btn btn-primary" bsSize="small" type="submit" disabled={this.state.button}>
                     Submit
                 </Button>
             </Form>
-                <div>
                     <AddDateOther handleSubmitCallBack={(value) => {
                         const hold = [ ...this.state.other, value ]
                         {/* console.log(`calbavk value:`, value) */}
@@ -125,8 +152,17 @@ class AddDate extends React.Component{
                         
                         {/* console.log(`CallBack Working: `, hold); */}
                         }} />
-                </div>
+                        </div>
+                <Panel className="season-info">
+                    <h4>Season Setup</h4>
+                    
+                    <h6>Start: {this.state.startDate}<br/>
+                    End: {this.state.endDate}</h6>
+                    {this.state.other.map(this.list.bind(this))} 
+                    
+                    </Panel>
             </div>
+            
         )
     }
 }

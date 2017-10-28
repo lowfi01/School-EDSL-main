@@ -25737,8 +25737,8 @@ var Menu = function (_React$Component) {
                         null,
                         _react2.default.createElement(
                             'a',
-                            { href: '/' },
-                            'EDSL-Main'
+                            null,
+                            'EDSL'
                         )
                     ),
                     _react2.default.createElement(_reactBootstrap.Navbar.Toggle, null)
@@ -66931,9 +66931,11 @@ var AddDate = function (_React$Component) {
                 startDate: '2017-12-30',
                 type: 'Christmas Break'
             }],
-            dateValidate: 'Saturday'
+            dateValidate: 'Saturday',
+            button: false
         };
 
+        _this.removeDate = _this.removeDate.bind(_this);
         _this.validateDate = _this.validateDate.bind(_this);
         return _this;
     }
@@ -66954,90 +66956,135 @@ var AddDate = function (_React$Component) {
             return false;
         }
     }, {
-        key: 'render',
-        value: function render() {
+        key: 'list',
+        value: function list(data, index) {
             var _this2 = this;
 
+            console.log(data);
             return _react2.default.createElement(
-                'div',
-                { className: 'button-season-setup' },
+                'ul',
+                { className: 'list-dates', key: index },
                 _react2.default.createElement(
-                    _reactBootstrap.Form,
-                    { onSubmit: function onSubmit(event) {
-                            event.preventDefault();
-                            {/* console.log('start Date: ', this.state.startDate)
-                                console.log('end Date: ', this.state.endDate)
-                                console.log('type: ', this.state.type) */}
-                            {/* const test = this.state.other.map((log) => {
-                                   return log
-                                })
-                                */}
-                            console.log(_this2.state);
-                            _this2.props.postSeasonSetup(_this2.state);
-                        }, inline: true },
+                    'li',
+                    null,
+                    'Start: ',
+                    data.startDate,
                     _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'startDate' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'Start Date'
-                        ),
-                        ' ',
-                        _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(event) {
-                                var day = event.target.value;
-                                var check = (0, _moment2.default)(day).format('dddd');
-                                console.log(check);
-                                _this2.setState({ startDate: day, dateValidate: check });
-                            },
-                            value: this.state.startDate, type: 'date', placeholder: '12/05/2017' })
+                        'span',
+                        null,
+                        '   '
                     ),
-                    ' ',
-                    _react2.default.createElement(
-                        _reactBootstrap.FormGroup,
-                        { controlId: 'endDate' },
-                        _react2.default.createElement(
-                            _reactBootstrap.ControlLabel,
-                            null,
-                            'End Date'
-                        ),
-                        ' ',
-                        _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(event) {
-                                var date = event.target.value;
-
-                                // validate end date is = to start date day
-                                if (_this2.validateDate((0, _moment2.default)('' + date).format('dddd'))) {
-                                    console.log("hello world");
-                                    _this2.setState({ endDate: date });
-                                } else {
-                                    console.log('else is running');
-                                    alert('date does not match ' + _this2.state.dateValidate);
-                                }
-                            },
-
-                            value: this.state.endDate, type: 'date', placeholder: '12/11/2017' })
-                    ),
-                    ' ',
-                    ' ',
                     _react2.default.createElement(
                         _reactBootstrap.Button,
-                        { className: 'btn btn-primary', bsSize: 'small', type: 'submit' },
-                        'Submit'
+                        { className: 'btn btn-danger', bsSize: 'xsmall', onClick: function onClick(e) {
+                                return _this2.removeDate(e, index);
+                            } },
+                        'x'
                     )
                 ),
                 _react2.default.createElement(
-                    'div',
+                    'li',
                     null,
+                    'Type: ',
+                    data.type
+                )
+            );
+        }
+    }, {
+        key: 'removeDate',
+        value: function removeDate(e, index) {
+            e.preventDefault();
+            var hold = [].concat(_toConsumableArray(this.state.other));
+            console.log('hello', hold);
+            hold.splice(index, 1);
+            this.setState({ other: hold });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'button-season-setup' },
+                    _react2.default.createElement(
+                        _reactBootstrap.Form,
+                        { onSubmit: function onSubmit(event) {
+                                event.preventDefault();
+                                {/* console.log('start Date: ', this.state.startDate)
+                                    console.log('end Date: ', this.state.endDate)
+                                    console.log('type: ', this.state.type) */}
+                                {/* const test = this.state.other.map((log) => {
+                                       return log
+                                    })
+                                    */}
+                                _this3.setState({ button: true });
+                                console.log(_this3.state);
+                                _this3.props.postSeasonSetup(_this3.state);
+                            }, inline: true },
+                        _react2.default.createElement(
+                            _reactBootstrap.FormGroup,
+                            { controlId: 'startDate' },
+                            _react2.default.createElement(
+                                _reactBootstrap.ControlLabel,
+                                null,
+                                'Start Date'
+                            ),
+                            ' ',
+                            _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(event) {
+                                    var day = event.target.value;
+                                    var check = (0, _moment2.default)(day).format('dddd');
+                                    console.log(check);
+                                    _this3.setState({ startDate: day, dateValidate: check });
+                                },
+                                value: this.state.startDate, type: 'date', placeholder: '12/05/2017' })
+                        ),
+                        ' ',
+                        _react2.default.createElement(
+                            _reactBootstrap.FormGroup,
+                            { controlId: 'endDate' },
+                            _react2.default.createElement(
+                                _reactBootstrap.ControlLabel,
+                                null,
+                                'End Date'
+                            ),
+                            ' ',
+                            _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(event) {
+                                    var date = event.target.value;
+
+                                    // validate end date is = to start date day
+                                    if (_this3.validateDate((0, _moment2.default)('' + date).format('dddd'))) {
+                                        console.log("hello world");
+                                        _this3.setState({ endDate: date });
+                                    } else {
+                                        console.log('else is running');
+                                        alert('date does not match ' + _this3.state.dateValidate);
+                                    }
+                                },
+
+                                value: this.state.endDate, type: 'date', placeholder: '12/11/2017' })
+                        ),
+                        ' ',
+                        ' ',
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { className: 'btn btn-primary', bsSize: 'small', type: 'submit', disabled: this.state.button },
+                            'Submit'
+                        )
+                    ),
                     _react2.default.createElement(_addDateOther2.default, { handleSubmitCallBack: function handleSubmitCallBack(value) {
-                            var hold = [].concat(_toConsumableArray(_this2.state.other), [value]);
+                            var hold = [].concat(_toConsumableArray(_this3.state.other), [value]);
                             {/* console.log(`calbavk value:`, value) */}
                             var date = value.startDate;
                             console.log(date);
                             // validate end date is = to start date day
-                            if (_this2.validateDate((0, _moment2.default)('' + date).format('dddd'))) {
-                                _this2.setState({ other: hold });
+                            if (_this3.validateDate((0, _moment2.default)('' + date).format('dddd'))) {
+                                _this3.setState({ other: hold });
                             } else {
-                                alert('date does not match ' + _this2.state.dateValidate);
+                                alert('date does not match ' + _this3.state.dateValidate);
                             }
 
                             {/* if(hold.startDate !== ""){
@@ -67047,6 +67094,25 @@ var AddDate = function (_React$Component) {
 
                             {/* console.log(`CallBack Working: `, hold); */}
                         } })
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Panel,
+                    { className: 'season-info' },
+                    _react2.default.createElement(
+                        'h4',
+                        null,
+                        'Season Setup'
+                    ),
+                    _react2.default.createElement(
+                        'h6',
+                        null,
+                        'Start: ',
+                        this.state.startDate,
+                        _react2.default.createElement('br', null),
+                        'End: ',
+                        this.state.endDate
+                    ),
+                    this.state.other.map(this.list.bind(this))
                 )
             );
         }
@@ -67676,23 +67742,19 @@ var CreateDraw = function (_Component) {
                 var num = _this2.state.draw['div' + _this2.state.term][0].length;
                 // console.log(`drawTeam`, this.state.drawTeam)
                 var roundNum = index / num + 1;
-                console.log('result mod', roundNum % 1);
-                for (var x = 0; x < _this2.props.season.season.other.length; x++) {
-                    var check = _this2.props.season.season.other;
-                    console.log("hello");
-                    if (_this2.state.dates[Math.floor(roundNum) - 1] == check[x].startDate) {
-                        return _react2.default.createElement(
-                            'tr',
-                            { key: index },
-                            _react2.default.createElement(
-                                'td',
-                                null,
-                                ' ',
-                                check[x].startDate
-                            )
-                        );
-                    }
-                }
+                // console.log(`result mod`, (roundNum % 1)) 
+                // for(let x = 0; x < this.props.season.season.other.length; x++){     
+                // const check = this.props.season.season.other;     
+                // console.log("hello");
+                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ 
+                //     return (
+                //         <tr key={index}>             
+                //         <td> {check[x].startDate}
+                //         </td>         
+                //         </tr>     
+                //         )     
+                //     } 
+                // }
 
                 if (roundNum % 1 === 0) {
                     return _react2.default.createElement(
