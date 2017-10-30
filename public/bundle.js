@@ -10313,7 +10313,7 @@ module.exports = exports['default'];
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.updateDivision = updateDivision;
 exports.getTeams = getTeams;
@@ -10326,71 +10326,70 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var localHost = 'http://localhost:3000/';
-var heroku = 'https://guarded-shelf-10743.herokuapp.com/';
+// const localHost = 'http://localhost:3000/';
+// const heroku = 'https://guarded-shelf-10743.herokuapp.com/';
 
 function updateDivision(term, id) {
-    //find team & update division.divCode to term
+  // find team & update division.divCode to term
 
-    //Term is passed down as a component state
-    //value is defined from the dropDownMenu
-    //value of term is required as we will update the team: divisionCode with term
-    //term is passed as a request.body.value, in this instance req.body.term
+  // Term is passed down as a component state
+  // value is defined from the dropDownMenu
+  // value of term is required as we will update the team: divisionCode with term
+  // term is passed as a request.body.value, in this instance req.body.term
 
+  // API will _pick values passed as a url:variable
+  // API will set final value
 
-    // API will _pick values passed as a url:variable
-    // API will set final value
+  var request = _axios2.default.patch('/teams/' + id, { term: term });
+  console.log('Request: ', request);
+  console.log('id: ', id);
+  console.log('term: ', term);
 
-    var request = _axios2.default.patch('/teams/' + id, { term: term });
-    console.log('Request: ', request);
-    console.log('id: ', id);
-    console.log('term: ', term);
-
-    return {
-        type: 'PATCH_TEAM_DIVISION',
-        // Send promise back as payload
-        payload: request
-    };
+  return {
+    type: 'PATCH_TEAM_DIVISION',
+    // Send promise back as payload
+    payload: request
+  };
 }
 
 // CREATE AN ACTION FOR REMOVING TEAM FROM DIVISION
 
 // logic
 // - SET division to unset
-// - CREATE UNSET VALUE in MENU-DROP-DOWN 
+// - CREATE UNSET VALUE in MENU-DROP-DOWN
 
 function getTeams() {
-    var team = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'div00';
+  var team = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'div00';
 
-    console.log('this is axios call for term team = : ' + team);
-    var request = _axios2.default.get('/teams/' + team);
+  console.log('this is axios call for term team = : ' + team);
+  var request = _axios2.default.get('/teams/' + team);
 
-    //console.log(`Request: `, request)
+  // console.log(`Request: `, request)
 
-    return {
-        type: 'GET_TEAMS',
-        // Send promise back as payload
-        payload: request
-    };
+  return {
+    type: 'GET_TEAMS',
+    // Send promise back as payload
+    payload: request
+  };
 }
 
 function getDivision(divisionName) {
-    var request = _axios2.default.get('/divisions/' + divisionName);
+  var request = _axios2.default.get('/divisions/' + divisionName);
 
-    //console.log(`Request: `, request)
+  // console.log(`Request: `, request)
 
-    return {
-        type: 'GET_DIVISION',
-        // Send promise back as payload
-        payload: request
-    };
+  return {
+    type: 'GET_DIVISION',
+    // Send promise back as payload
+    payload: request
+  };
 }
 
 function postSeasonSetup(season) {
-    return {
-        type: 'ADD_SEASON',
-        payload: season
-    };
+  return {
+    type: 'ADD_SEASON',
+    payload: season
+  };
 }
 
 /***/ }),
@@ -37261,50 +37260,43 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// class App extends Component{
-//     render(){
-//         return(
-//             <div>
-//                 <AddTeamDivision />
-//             </div>
-//         )
-//     }
-// }
+// class App extends Component{     render(){         return(             <div>
+//             <AddTeamDivision />             </div>         )     } }
 
 var createStoreWithMiddleware = (0, _redux.applyMiddleware)(_reduxPromise2.default, _reduxLogger2.default)(_redux.createStore);
 
-//IMPORT REDUCERS
+// IMPORT REDUCERS
 
 
-//IMPORT COMPONENTS
+// IMPORT COMPONENTS
 
 
 _reactDom2.default.render(_react2.default.createElement(
-    _reactRedux.Provider,
-    { store: createStoreWithMiddleware(_reducers2.default) },
+  _reactRedux.Provider,
+  { store: createStoreWithMiddleware(_reducers2.default) },
+  _react2.default.createElement(
+    _reactRouterDom.BrowserRouter,
+    null,
     _react2.default.createElement(
-        _reactRouterDom.BrowserRouter,
+      'div',
+      null,
+      _react2.default.createElement(_header2.default, null),
+      _react2.default.createElement(
+        _reactRouterDom.Switch,
         null,
-        _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_header2.default, null),
-            _react2.default.createElement(
-                _reactRouterDom.Switch,
-                null,
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _addTeamToDivision2.default }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/season', component: _seasonSetup2.default }),
-                _react2.default.createElement(_reactRouterDom.Route, { component: function component() {
-                        return _react2.default.createElement(
-                            'div',
-                            null,
-                            'Not found'
-                        );
-                    } }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/login', component: _login2.default })
-            )
-        )
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _addTeamToDivision2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/season', component: _seasonSetup2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { component: function component() {
+            return _react2.default.createElement(
+              'div',
+              null,
+              'Not found'
+            );
+          } }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/login', component: _login2.default })
+      )
     )
+  )
 ), document.getElementById('root'));
 
 /***/ }),
@@ -65481,7 +65473,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -65506,116 +65498,118 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//IMPORT ACTIONS
+// IMPORT ACTIONS
 
 
 var DisplayItem = function (_Component) {
-    _inherits(DisplayItem, _Component);
+  _inherits(DisplayItem, _Component);
 
-    function DisplayItem() {
-        _classCallCheck(this, DisplayItem);
+  function DisplayItem() {
+    _classCallCheck(this, DisplayItem);
 
-        return _possibleConstructorReturn(this, (DisplayItem.__proto__ || Object.getPrototypeOf(DisplayItem)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (DisplayItem.__proto__ || Object.getPrototypeOf(DisplayItem)).apply(this, arguments));
+  }
+
+  _createClass(DisplayItem, [{
+    key: 'addTeamToDivision',
+
+    // Add to division onClick function
+    value: function addTeamToDivision(event) {
+      // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
+
+
+      // Prevent button from refreshing screen
+      event.preventDefault();
+
+      // Save Prop passed from from display-teams to term
+      var term = this.props.passStateTerm;
+
+      // console.log(`displayItem team.id:  `, this.props.passStateTeamId)
+
+      // Update Team detail division.clubCode
+      // Requires Action - axios > api > find { $set { value }}
+      console.log('passStateTeamId: ' + this.props.passStateTeamId + ', term: ' + term);
+      this.props.updateDivision(term, this.props.passStateTeamId);
+
+      // Re-load Division list
+      // Updates List with new population
+      this.props.getDivision(term);
     }
 
-    _createClass(DisplayItem, [{
-        key: 'addTeamToDivision',
+    // Render
+    // Team Name passed as prop,
+    // Button to add team to division
 
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-        // Add to division onClick function
-        value: function addTeamToDivision(event) {
+      return _react2.default.createElement(
+        _reactBootstrap.Panel,
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'strong',
+            null,
+            'Team:'
+          ),
+          ' ',
+          this.props.passStateTeam.teamName,
+          ' ',
+          _react2.default.createElement(
+            'span',
+            null,
+            _react2.default.createElement(
+              _reactBootstrap.Button,
+              {
+                className: 'btn btn-success pull-right',
+                bsSize: 'xsmall',
+                onClick: function onClick(event) {
+                  _this2.addTeamToDivision(event);
+                  _this2.props.getTeams();
+                }
+              },
+              'Add'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'strong',
+            null,
+            'Club:'
+          ),
+          ' ',
+          this.props.passStateTeam.club,
+          ' ',
+          _react2.default.createElement(
+            'strong',
+            null,
+            'Division:'
+          ),
+          ' ',
+          this.props.passStateTeam.division.divCode
+        )
+      );
+    }
+  }]);
 
-            // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
-
-
-            // Prevent button from refreshing screen
-            event.preventDefault();
-
-            // Save Prop passed from from display-teams to term
-            var term = this.props.passStateTerm;
-
-            //console.log(`displayItem team.id:  `, this.props.passStateTeamId)
-
-            // Update Team detail division.clubCode
-            // Requires Action - axios > api > find { $set { value }}
-            console.log('passStateTeamId: ' + this.props.passStateTeamId + ', term: ' + term);
-            this.props.updateDivision(term, this.props.passStateTeamId);
-
-            // Re-load Division list
-            // Updates List with new population 
-            this.props.getDivision(term);
-        }
-
-        // Render 
-        // Team Name passed as prop, 
-        // Button to add team to division
-
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(
-                _reactBootstrap.Panel,
-                null,
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    _react2.default.createElement(
-                        'strong',
-                        null,
-                        'Team:'
-                    ),
-                    ' ',
-                    this.props.passStateTeam.teamName,
-                    ' ',
-                    _react2.default.createElement(
-                        'span',
-                        null,
-                        _react2.default.createElement(
-                            _reactBootstrap.Button,
-                            { className: 'btn btn-success pull-right', bsSize: 'xsmall', onClick: function onClick(event) {
-                                    _this2.addTeamToDivision(event);
-                                    _this2.props.getTeams();
-                                } },
-                            'Add'
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    _react2.default.createElement(
-                        'strong',
-                        null,
-                        'Club:'
-                    ),
-                    ' ',
-                    this.props.passStateTeam.club,
-                    ' ',
-                    _react2.default.createElement(
-                        'strong',
-                        null,
-                        'Division:'
-                    ),
-                    ' ',
-                    this.props.passStateTeam.division.divCode
-                )
-            );
-        }
-    }]);
-
-    return DisplayItem;
+  return DisplayItem;
 }(_react.Component);
 
 function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({
-        // Patch Request to API - update division.CodeName
-        updateDivision: _index.updateDivision,
-        // Get Division - used purely to keep component live
-        getDivision: _index.getDivision,
-        getTeams: _index.getTeams
-    }, dispatch);
+  return (0, _redux.bindActionCreators)({
+    // Patch Request to API - update division.CodeName
+    updateDivision: _index.updateDivision,
+    // Get Division - used purely to keep component live
+    getDivision: _index.getDivision,
+    getTeams: _index.getTeams
+  }, dispatch);
 }
 
 exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(DisplayItem);
@@ -66502,7 +66496,7 @@ module.exports = function spread(callback) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -66531,159 +66525,178 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var DisplayDivision = function (_Component) {
-    _inherits(DisplayDivision, _Component);
+  _inherits(DisplayDivision, _Component);
 
-    function DisplayDivision() {
-        _classCallCheck(this, DisplayDivision);
+  function DisplayDivision() {
+    _classCallCheck(this, DisplayDivision);
 
-        var _this = _possibleConstructorReturn(this, (DisplayDivision.__proto__ || Object.getPrototypeOf(DisplayDivision)).call(this));
+    var _this = _possibleConstructorReturn(this, (DisplayDivision.__proto__ || Object.getPrototypeOf(DisplayDivision)).call(this));
 
-        _this.state = { term: 'Selection' };
-        var word = _this.state.term;
+    _this.state = { term: "Selection" };
+    var word = _this.state.term;
+    return _this;
+  }
 
-        return _this;
+  _createClass(DisplayDivision, [{
+    key: "onSplitButton",
+    value: function onSplitButton(text) {
+      var term = text.target.text;
+      // set term for ux dropdown
+      this.setState({ term: term });
+      // this will fix ux and still feed API search with correct term
+      var div = "div" + term;
+      this.props.getDivision(div);
+      this.props.onCallBackTerm(div);
+      this.props.getTeams("div" + term);
+      console.log("term in display division: " + this.state.term);
     }
 
-    _createClass(DisplayDivision, [{
-        key: 'onSplitButton',
-        value: function onSplitButton(text) {
-            var term = text.target.text;
-            // set term for ux dropdown
-            this.setState({ term: term });
-            // this will fix ux and still feed API search with correct term
-            var div = 'div' + term;
-            this.props.getDivision(div);
-            this.props.onCallBackTerm(div);
-            this.props.getTeams('div' + term);
-            console.log('term in display division: ' + this.state.term);
-        }
+    // Add to division onClick function
 
-        // Add to division onClick function
+  }, {
+    key: "addTeamToDivision",
+    value: function addTeamToDivision(event, team) {
+      // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
 
-    }, {
-        key: 'addTeamToDivision',
-        value: function addTeamToDivision(event, team) {
+      // Prevent button from refreshing screen
+      event.preventDefault();
 
-            // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
+      // Save Prop passed from from display-teams to term
+      var term = this.state.term;
 
+      //console.log(`displayItem team.id:  `, this.props.passStateTeamId)
 
-            // Prevent button from refreshing screen
-            event.preventDefault();
+      // Update Team detail division.clubCode
+      // Requires Action - axios > api > find { $set { value }}
+      this.props.updateDivision("div0", team._id);
 
-            // Save Prop passed from from display-teams to term
-            var term = this.state.term;
+      // Re-load Division list
+      // Updates List with new population
+      console.log("term 22222", term);
+      this.props.getDivision("div" + term);
+      console.log("term in display division: " + term + ", team " + team.division.divCode);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-            //console.log(`displayItem team.id:  `, this.props.passStateTeamId)
+      var divisionList = this.props.div.map(function (team, index) {
+        return _react2.default.createElement(
+          _reactBootstrap.Panel,
+          { style: { marginTop: "25px" }, key: index },
+          _react2.default.createElement(
+            "li",
+            null,
+            team.teamName,
+            _react2.default.createElement(
+              _reactBootstrap.Button,
+              {
+                className: "btn btn-danger pull-right",
+                bsSize: "xsmall",
+                onClick: function onClick(event) {
+                  _this2.addTeamToDivision(event, team);
+                }
+              },
+              "Remove"
+            )
+          )
+        );
+      });
 
-            // Update Team detail division.clubCode
-            // Requires Action - axios > api > find { $set { value }}
-            this.props.updateDivision('div0', team._id);
+      return _react2.default.createElement(
+        _reactBootstrap.Panel,
+        null,
+        _react2.default.createElement(
+          "span",
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.SplitButton,
+            {
+              title: "Division " + this.state.term,
+              pullRight: true,
+              id: "split-button-pull-right"
+            },
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              {
+                onClick: function onClick(text) {
+                  _this2.onSplitButton(text);
+                },
+                eventKey: "1"
+              },
+              "1"
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              {
+                onClick: function onClick(event) {
+                  _this2.onSplitButton(event);
+                },
+                eventKey: "2"
+              },
+              "2"
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              {
+                onClick: function onClick(event) {
+                  _this2.onSplitButton(event);
+                },
+                eventKey: "3"
+              },
+              "3"
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.MenuItem,
+              {
+                onClick: function onClick(event) {
+                  _this2.onSplitButton(event);
+                },
+                eventKey: "0"
+              },
+              "0"
+            )
+          ),
+          _react2.default.createElement(
+            "span",
+            { className: "pull-right" },
+            this.props.div.length
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          null,
+          divisionList
+        )
+      );
+    }
+  }]);
 
-            // Re-load Division list
-            // Updates List with new population 
-            console.log('term 22222', term);
-            this.props.getDivision('div' + term);
-            console.log('term in display division: ' + term + ', team ' + team.division.divCode);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var divisionList = this.props.div.map(function (team, index) {
-                return _react2.default.createElement(
-                    _reactBootstrap.Panel,
-                    { style: { marginTop: '25px' }, key: index },
-                    _react2.default.createElement(
-                        'li',
-                        null,
-                        team.teamName,
-                        _react2.default.createElement(
-                            _reactBootstrap.Button,
-                            { className: 'btn btn-danger pull-right', bsSize: 'xsmall', onClick: function onClick(event) {
-                                    _this2.addTeamToDivision(event, team);
-                                } },
-                            'Remove'
-                        )
-                    )
-                );
-            });
-
-            return _react2.default.createElement(
-                _reactBootstrap.Panel,
-                null,
-                _react2.default.createElement(
-                    'span',
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.SplitButton,
-                        { title: 'Division ' + this.state.term, pullRight: true, id: 'split-button-pull-right' },
-                        _react2.default.createElement(
-                            _reactBootstrap.MenuItem,
-                            { onClick: function onClick(text) {
-                                    _this2.onSplitButton(text);
-                                }, eventKey: '1' },
-                            '1'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.MenuItem,
-                            { onClick: function onClick(event) {
-                                    _this2.onSplitButton(event);
-                                }, eventKey: '2' },
-                            '2'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.MenuItem,
-                            { onClick: function onClick(event) {
-                                    _this2.onSplitButton(event);
-                                }, eventKey: '3' },
-                            '3'
-                        ),
-                        _react2.default.createElement(
-                            _reactBootstrap.MenuItem,
-                            { onClick: function onClick(event) {
-                                    _this2.onSplitButton(event);
-                                }, eventKey: '0' },
-                            '0'
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'span',
-                        { className: 'pull-right' },
-                        this.props.div.length
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    divisionList
-                )
-            );
-        }
-    }]);
-
-    return DisplayDivision;
+  return DisplayDivision;
 }(_react.Component);
 
-{/* <button className="btn" onClick={() => {this.props.getDivision('divCode')}} />
-                       {console.log('this.props.div: ', this.props.div)}
-                       {divisionList} */}
+// {
+//   /* <button className="btn" onClick={() => {this.props.getDivision('divCode')}} />
+//                     {console.log('this.props.div: ', this.props.div)}
+//                     {divisionList} */
+// }
 
 function mapStateToProps(state) {
-    return {
-        // div holds division state array populated
-        // using the value of the drop-down menu
-        div: state.divisions.divisions
-    };
+  return {
+    // div holds division state array populated
+    // using the value of the drop-down menu
+    div: state.divisions.divisions
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({
-        // getDivision will call api to populate division state array
-        getDivision: _index.getDivision,
-        updateDivision: _index.updateDivision,
-        getTeams: _index.getTeams
-    }, dispatch);
+  return (0, _redux.bindActionCreators)({
+    // getDivision will call api to populate division state array
+    getDivision: _index.getDivision,
+    updateDivision: _index.updateDivision,
+    getTeams: _index.getTeams
+  }, dispatch);
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(DisplayDivision);
@@ -67608,9 +67621,10 @@ var CreateDraw = function (_Component) {
             console.log('season state: ' + this.props.season.season.startDate);
             console.log('season state: ' + this.props.season.season.endDate);
             // console.log(`this is the non playing days:`, this.props.season.season.other)
-            // console.log(`this is the playing days:`, this.state.dates)
-            // console.log(`all rounds = ${this.state.draw}, current div passed by drop down menu =  ${this.state.draw[`${div}`]}`,)
-            // // this.props.season.season.other.map(x => {     console.log(x) })
+            // console.log(`this is the playing days:`, this.state.dates) console.log(`all
+            // rounds = ${this.state.draw}, current div passed by drop down menu =
+            // ${this.state.draw[`${div}`]}`,) // this.props.season.season.other.map(x => {
+            //    console.log(x) })
 
             var str = this.props.season.season.startDate;
             var res = str.split("-");
@@ -67637,12 +67651,28 @@ var CreateDraw = function (_Component) {
             for (var i = 0; i < count; i++) {
 
                 //    console.log(index);
+
+
                 var date = year + '-' + month + '-' + day;
                 if (date == end) {
                     break;
                 }
                 // check to create off days add current date
-                array[index] = date;
+                var pushMonth = void 0;
+                var pushDay = void 0;
+                if (month < 10) {
+                    pushMonth = '0' + month;
+                } else {
+                    pushMonth = month;
+                }
+                if (day < 10) {
+                    pushDay = '0' + day;
+                } else {
+                    pushDay = day;
+                }
+                var numDate = year + '-' + pushMonth + '-' + pushDay;
+                array[index] = numDate;
+                // array[index] = date;
                 index += 1;
 
                 // add 1 week
@@ -67680,8 +67710,25 @@ var CreateDraw = function (_Component) {
                 }
             } // end loop
 
+
             // this is the non playing days array
             console.log("this is bye days:", this.props.season.season.other);
+            var otherArr = this.props.season.season.other;
+            console.log('length:', this.props.season.season.other.length);
+
+            for (var p = 0; p < array.length; p++) {
+                for (var z = 0; z <= otherArr.length - 1; z++) {
+                    console.log('z: ' + z + '}');
+                    if (array[p] == otherArr[z].startDate) {
+                        console.log('days', array[p]);
+                        console.log('otherArr', otherArr[z].startDate);
+                        array.splice(p, 1);
+                    }
+                }
+            }
+            console.log('length:', this.props.season.season.other.length);
+            console.log('otherArr', otherArr);
+            console.log('array', array);
 
             this.setState({ dates: array });
         }
@@ -67690,6 +67737,22 @@ var CreateDraw = function (_Component) {
         value: function onSplitButton(text) {
             var term = text.target.text;
             // console.log(`state`, this.state)
+
+
+            // logic for fixing dates
+            // let datesArr = this.state.dates;
+            // let nonPlayArr = this.props.season.season.other;
+            // let divisionArr = `div${term}`;
+
+            // console.log(`datesArr`, datesArr);
+            // console.log(`nonPlayArr`, nonPlayArr);
+            // for (let p = o; p < datesArr.length; p++) {
+            //     for (let z = 0; z < nonPlayArr; z++) 
+            //         if (datesArr[p] == nonPlayArr[z].startDate){
+            //         divisionArr[p]
+            //         }
+            // }
+
 
             this.setState({ term: term, divTerm: term });
             // console.log(`term`, this.state.draw.div1)
@@ -67700,7 +67763,7 @@ var CreateDraw = function (_Component) {
 
             var roundsArray = [];
             var hold = this.state.draw;
-            console.log('holdMebaby:', hold['' + div]);
+            // console.log(`holdMebaby:`, hold[`${div}`])
 
             for (var i = 0; i < holdMeBaby.length; i++) {
                 for (var o = 0; o < holdMeBaby[0].length; o++) {
@@ -67720,13 +67783,14 @@ var CreateDraw = function (_Component) {
                 test.push(holdMeBaby[i][1] /*[x]*/);
                 // }
             }
-            console.log('test array', test);
 
-            console.log('roundsArray', roundsArray);
+            // console.log(`test array`, test);
+
+            // console.log(`roundsArray`, roundsArray)
             this.setState({ drawTeam: roundsArray });
 
-            console.log('drawTeam:', roundsArray);
-            console.log('date:', this.state.dates);
+            // console.log(`drawTeam:`, roundsArray);
+            // console.log(`date:`, this.state.dates);
         }
     }, {
         key: 'render',
@@ -67742,18 +67806,19 @@ var CreateDraw = function (_Component) {
                 var num = _this2.state.draw['div' + _this2.state.term][0].length;
                 // console.log(`drawTeam`, this.state.drawTeam)
                 var roundNum = index / num + 1;
-                // console.log(`result mod`, (roundNum % 1)) 
-                // for(let x = 0; x < this.props.season.season.other.length; x++){     
-                // const check = this.props.season.season.other;     
-                // console.log("hello");
-                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ 
-                //     return (
-                //         <tr key={index}>             
-                //         <td> {check[x].startDate}
-                //         </td>         
-                //         </tr>     
-                //         )     
-                //     } 
+                // console.log(`result mod`, (roundNum % 1))
+                // for (let x = 0; x < this.props.season.season.other.length; x++) {
+                //     const check = this.props.season.season.other;
+                //     console.log("hello");
+                //     if (this.state.dates[Math.floor(roundNum) - 1] == check[x].startDate) {
+                //         return (
+                //             <tr key={index}>
+                //                 <td>
+                //                     {check[x].startDate}
+                //                 </td>
+                //             </tr>
+                //         )
+                //     }
                 // }
 
                 if (roundNum % 1 === 0) {

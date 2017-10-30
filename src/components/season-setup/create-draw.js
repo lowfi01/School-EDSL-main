@@ -78,9 +78,10 @@ class CreateDraw extends Component {
         console.log(`season state: ${this.props.season.season.startDate}`)
         console.log(`season state: ${this.props.season.season.endDate}`)
         // console.log(`this is the non playing days:`, this.props.season.season.other)
-        // console.log(`this is the playing days:`, this.state.dates)
-        // console.log(`all rounds = ${this.state.draw}, current div passed by drop down menu =  ${this.state.draw[`${div}`]}`,)
-        // // this.props.season.season.other.map(x => {     console.log(x) })
+        // console.log(`this is the playing days:`, this.state.dates) console.log(`all
+        // rounds = ${this.state.draw}, current div passed by drop down menu =
+        // ${this.state.draw[`${div}`]}`,) // this.props.season.season.other.map(x => {
+        //    console.log(x) })
 
         let str = this.props.season.season.startDate;
         let res = str.split("-");
@@ -107,12 +108,28 @@ class CreateDraw extends Component {
         for (let i = 0; i < count; i++) {
 
             //    console.log(index);
+            
+            
             var date = `${year}-${month}-${day}`;
             if (date == end) {
                 break;
             }
             // check to create off days add current date
-            array[index] = date;
+            let pushMonth;
+            let pushDay;
+            if(month < 10){
+                pushMonth = `0${month}`
+            }else{
+                pushMonth = month;
+            }
+            if(day < 10){
+                pushDay = `0${day}`;
+            } else {
+                pushDay = day;
+            }
+            var numDate = `${year}-${pushMonth}-${pushDay}`
+            array[index] = numDate;
+            // array[index] = date;
             index += 1;
 
             // add 1 week
@@ -150,8 +167,27 @@ class CreateDraw extends Component {
             }
         } // end loop
 
+       
+
         // this is the non playing days array
-        console.log("this is bye days:" ,this.props.season.season.other);
+        console.log("this is bye days:", this.props.season.season.other);
+        let otherArr = this.props.season.season.other;
+        console.log(`length:` ,this.props.season.season.other.length )
+
+        for(let p = 0; p < array.length; p++){
+            for(let z = 0; z <= otherArr.length -1; z++){
+                console.log(`z: ${z}}`)
+                if(array[p] == otherArr[z].startDate){
+                    console.log(`days`, array[p]);
+                    console.log(`otherArr`, otherArr[z].startDate);
+                    array.splice(p, 1);
+                }
+            }
+
+        }
+        console.log(`length:` ,this.props.season.season.other.length )
+        console.log(`otherArr`, otherArr);
+        console.log(`array`, array);
 
         this.setState({dates: array})
     }
@@ -159,6 +195,22 @@ class CreateDraw extends Component {
     onSplitButton(text) {
         var term = text.target.text
         // console.log(`state`, this.state)
+
+
+         // logic for fixing dates
+        // let datesArr = this.state.dates;
+        // let nonPlayArr = this.props.season.season.other;
+        // let divisionArr = `div${term}`;
+
+        // console.log(`datesArr`, datesArr);
+        // console.log(`nonPlayArr`, nonPlayArr);
+        // for (let p = o; p < datesArr.length; p++) {
+        //     for (let z = 0; z < nonPlayArr; z++) 
+        //         if (datesArr[p] == nonPlayArr[z].startDate){
+        //         divisionArr[p]
+        //         }
+        // }
+
 
         this.setState({term, divTerm: term})
         // console.log(`term`, this.state.draw.div1)
@@ -169,7 +221,7 @@ class CreateDraw extends Component {
 
         let roundsArray = [];
         let hold = this.state.draw;
-        console.log(`holdMebaby:`, hold[`${div}`])
+        // console.log(`holdMebaby:`, hold[`${div}`])
 
         for (var i = 0; i < holdMeBaby.length; i++) {
             for (var o = 0; o < holdMeBaby[0].length; o++) {
@@ -190,20 +242,19 @@ class CreateDraw extends Component {
             // }
 
         }
-        console.log(`test array`, test);
 
-        console.log(`roundsArray`, roundsArray)
-        this.setState({drawTeam: roundsArray})
-
-        console.log(`drawTeam:`, roundsArray);
-        console.log(`date:`, this.state.dates);
-    }
-
-   
-
-    render() {
         
 
+        // console.log(`test array`, test);
+
+        // console.log(`roundsArray`, roundsArray)
+        this.setState({drawTeam: roundsArray})
+
+        // console.log(`drawTeam:`, roundsArray);
+        // console.log(`date:`, this.state.dates);
+    }
+
+    render() {
 
         const draw = this
             .state
@@ -217,18 +268,19 @@ class CreateDraw extends Component {
                 const num = this.state.draw[`div${this.state.term}`][0].length
                 // console.log(`drawTeam`, this.state.drawTeam)
                 let roundNum = (index / num + 1);
-                // console.log(`result mod`, (roundNum % 1)) 
-                // for(let x = 0; x < this.props.season.season.other.length; x++){     
-                // const check = this.props.season.season.other;     
-                // console.log("hello");
-                // if(this.state.dates[Math.floor(roundNum) -1] == check[x].startDate){ 
-                //     return (
-                //         <tr key={index}>             
-                //         <td> {check[x].startDate}
-                //         </td>         
-                //         </tr>     
-                //         )     
-                //     } 
+                // console.log(`result mod`, (roundNum % 1))
+                // for (let x = 0; x < this.props.season.season.other.length; x++) {
+                //     const check = this.props.season.season.other;
+                //     console.log("hello");
+                //     if (this.state.dates[Math.floor(roundNum) - 1] == check[x].startDate) {
+                //         return (
+                //             <tr key={index}>
+                //                 <td>
+                //                     {check[x].startDate}
+                //                 </td>
+                //             </tr>
+                //         )
+                //     }
                 // }
 
                 if (roundNum % 1 === 0) {
