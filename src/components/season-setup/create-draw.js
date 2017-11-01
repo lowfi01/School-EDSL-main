@@ -7,7 +7,7 @@ import _ from 'lodash';
 import {Table, ButtonToolbar, SplitButton, MenuItem, Panel} from 'react-bootstrap'
 
 //IMPORT ACTIONS
-import {getTeams} from './../../action';
+import {getTeams, postRound} from './../../action';
 
 class CreateDraw extends Component {
     constructor() {
@@ -55,16 +55,16 @@ class CreateDraw extends Component {
         let div2 = robin(divNames2.length, divNames2)
 
         const division3 = _.remove(team3, team => {
-            //console.log(`lodash remove:`, team.division.divCode)
+            // console.log(`lodash remove:`, team.division.divCode)
             return team.division.divCode == 'div3' && 'div1';
         });
 
         const divNames3 = _.map(division3, 'teamName')
         let div3 = robin(divNames3.length, divNames3)
 
-        console.log(`round robin: `, div1)
-        console.log(`round robin: `, div2)
-        console.log(`round robin: `, div3)
+        // console.log(`round robin: `, div1)
+        // console.log(`round robin: `, div2)
+        // console.log(`round robin: `, div3)
 
         this.setState({
             draw: {
@@ -75,8 +75,8 @@ class CreateDraw extends Component {
         })
 
         //logic to add dates to table
-        console.log(`season state: ${this.props.season.season.startDate}`)
-        console.log(`season state: ${this.props.season.season.endDate}`)
+        // console.log(`season state: ${this.props.season.season.startDate}`)
+        // console.log(`season state: ${this.props.season.season.endDate}`)
         // console.log(`this is the non playing days:`, this.props.season.season.other)
         // console.log(`this is the playing days:`, this.state.dates) console.log(`all
         // rounds = ${this.state.draw}, current div passed by drop down menu =
@@ -98,6 +98,7 @@ class CreateDraw extends Component {
         var index = 0;
         const starting = moment(`${res[0]}${res[1]}${res[2]}`);
         const ending = moment(`${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
+        this.setState({ startingDate: starting, endingDate: ending});
         // console.log(`a: ${starting}, b: ${ending}, props:
         // ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]}
         // ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
@@ -170,24 +171,24 @@ class CreateDraw extends Component {
        
 
         // this is the non playing days array
-        console.log("this is bye days:", this.props.season.season.other);
+        // console.log("this is bye days:", this.props.season.season.other);
         let otherArr = this.props.season.season.other;
-        console.log(`length:` ,this.props.season.season.other.length )
+        // console.log(`length:` ,this.props.season.season.other.length )
 
         for(let p = 0; p < array.length; p++){
             for(let z = 0; z <= otherArr.length -1; z++){
-                console.log(`z: ${z}}`)
+                // console.log(`z: ${z}}`)
                 if(array[p] == otherArr[z].startDate){
-                    console.log(`days`, array[p]);
-                    console.log(`otherArr`, otherArr[z].startDate);
+                    // console.log(`days`, array[p]);
+                    // console.log(`otherArr`, otherArr[z].startDate);
                     array.splice(p, 1);
                 }
             }
 
         }
-        console.log(`length:` ,this.props.season.season.other.length )
-        console.log(`otherArr`, otherArr);
-        console.log(`array`, array);
+        // console.log(`length:` ,this.props.season.season.other.length )
+        // console.log(`otherArr`, otherArr);
+        // console.log(`array`, array);
 
         this.setState({dates: array})
     }
@@ -233,19 +234,33 @@ class CreateDraw extends Component {
             }
         }
 
-        let test = [];
+        let newDraw = [];
         for (var i = 0; i < holdMeBaby.length; i++) {
-            // for(var x = 0; x < 2; x++) { console.log(`holdMeBaby count: ${i} ${o}`,
-            // holdMeBaby[i][o])
-            test.push(holdMeBaby[i][0]/*[x]*/) // comment will break it up into individual teams
-            test.push(holdMeBaby[i][1]/*[x]*/)
-            // }
-
+            for (var o = 0; o < holdMeBaby[0].length; o++) {
+                console.log(holdMeBaby[0].length);
+                newDraw.push({
+                    roundNumber: i+1,
+                    game: o+1,
+                    homeTeam: holdMeBaby[i][o][0],
+                    awayTeam: holdMeBaby[i][o][1],
+                    date: this.state.dates[i],
+                    divCode: div,
+                    goalsHome: 0,
+                    goalsAway: 0,
+                })
+            }
         }
 
-        
+        console.log(`holdMeBaby:`, holdMeBaby);
+        console.log(newDraw);
 
-        // console.log(`test array`, test);
+        // CREATE DRAW LOGIC
+        // newDraw.map((x) => {
+        //     this.props.postRound(x)
+        // } )
+
+        // this.props.postRound(newDraw[1])
+        
 
         // console.log(`roundsArray`, roundsArray)
         this.setState({drawTeam: roundsArray})
@@ -368,4 +383,4 @@ function mapStateToProps(state) {
     return {teams: state.teams, season: state.season}
 }
 
-export default connect(mapStateToProps, {getTeams})(CreateDraw);
+export default connect(mapStateToProps, {getTeams, postRound})(CreateDraw);

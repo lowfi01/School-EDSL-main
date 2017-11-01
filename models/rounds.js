@@ -4,12 +4,14 @@ var mongoose = require('mongoose');
 
 var roundSchema = mongoose.Schema({ 
     roundNumber: String,
+    game: Number,
     divCode: String, 
-    games: [{
-        homeTeam: mongoose.Schema.Types.ObjectId,
-        awayTeam: mongoose.Schema.Types.ObjectId
-    }],
-    date: String
+    date: String,
+    homeTeam: String,
+    awayTeam: String,
+    goalsAway: Number,
+    goalsHome: Number,
+    season: String,
 });
 
 //mongoose.Schema.Types.ObjectId

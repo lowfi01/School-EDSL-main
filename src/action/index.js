@@ -63,3 +63,17 @@ export function postSeasonSetup(season) {
     payload: season,
   };
 }
+
+
+export function postRound(term) {
+  console.log(term)
+  const request = axios.post(`/rounds`, {term});
+  console.log('Request: ', request);
+  console.log('term: ', term);
+
+  return {
+    type: 'postRound',
+    // Send promise back as payload
+    payload: request
+  };
+}

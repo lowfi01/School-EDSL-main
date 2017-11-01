@@ -26,10 +26,10 @@ let db = {
 };
 
 // Fix heroku
-mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
+//mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
 
 // local environment
-//mongoose.connect( db.localhost, { useMongoClient: true });
+mongoose.connect( db.localhost, { useMongoClient: true });
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
@@ -45,6 +45,40 @@ app.use(function (req, res, next) {
 
 var Clubs = require('./models/clubs');
 var Teams = require('./models/teams');
+var Rounds = require('./models/rounds');
+
+// ------>> POST ROUND <<< --------
+
+// ----->> POST CLUBS <<------
+app.post('/rounds', (req, res) => {
+
+    // create document - using req.body.text
+    console.log("hello world");
+    let body = req.body.term;
+    console.log(`POST /round:term  : `, body);
+    var round = new Rounds({
+                    roundNumber: body.roundNumber,
+                    game: body.game,
+                    homeTeam: body.homeTeam,
+                    awayTeam: body.awayTeam,
+                    date: body.date,
+                    divCode: body.divCode,
+                    goalsHome: body.goalsHome,
+                    goalsAway: body.goalsAway,
+                });
+
+    // save doc & send back
+    round
+        .save()
+        .then((doc) => {
+            console.log(`/POST round.homeTeam: `, round.homeTeam)
+            res.send(doc);
+        }, (e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
 
 
 // ----->> POST CLUBS <<------

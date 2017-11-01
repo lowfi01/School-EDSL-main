@@ -10319,6 +10319,7 @@ exports.updateDivision = updateDivision;
 exports.getTeams = getTeams;
 exports.getDivision = getDivision;
 exports.postSeasonSetup = postSeasonSetup;
+exports.postRound = postRound;
 
 var _axios = __webpack_require__(663);
 
@@ -10389,6 +10390,19 @@ function postSeasonSetup(season) {
   return {
     type: 'ADD_SEASON',
     payload: season
+  };
+}
+
+function postRound(term) {
+  console.log(term);
+  var request = _axios2.default.post('/rounds', { term: term });
+  console.log('Request: ', request);
+  console.log('term: ', term);
+
+  return {
+    type: 'postRound',
+    // Send promise back as payload
+    payload: request
   };
 }
 
@@ -67598,16 +67612,16 @@ var CreateDraw = function (_Component) {
             var div2 = robin(divNames2.length, divNames2);
 
             var division3 = _lodash2.default.remove(team3, function (team) {
-                //console.log(`lodash remove:`, team.division.divCode)
+                // console.log(`lodash remove:`, team.division.divCode)
                 return team.division.divCode == 'div3' && 'div1';
             });
 
             var divNames3 = _lodash2.default.map(division3, 'teamName');
             var div3 = robin(divNames3.length, divNames3);
 
-            console.log('round robin: ', div1);
-            console.log('round robin: ', div2);
-            console.log('round robin: ', div3);
+            // console.log(`round robin: `, div1)
+            // console.log(`round robin: `, div2)
+            // console.log(`round robin: `, div3)
 
             this.setState({
                 draw: {
@@ -67618,8 +67632,8 @@ var CreateDraw = function (_Component) {
             });
 
             //logic to add dates to table
-            console.log('season state: ' + this.props.season.season.startDate);
-            console.log('season state: ' + this.props.season.season.endDate);
+            // console.log(`season state: ${this.props.season.season.startDate}`)
+            // console.log(`season state: ${this.props.season.season.endDate}`)
             // console.log(`this is the non playing days:`, this.props.season.season.other)
             // console.log(`this is the playing days:`, this.state.dates) console.log(`all
             // rounds = ${this.state.draw}, current div passed by drop down menu =
@@ -67641,6 +67655,7 @@ var CreateDraw = function (_Component) {
             var index = 0;
             var starting = (0, _moment2.default)('' + res[0] + res[1] + res[2]);
             var ending = (0, _moment2.default)('' + resEnd[0] + resEnd[1] + resEnd[2]);
+            this.setState({ startingDate: starting, endingDate: ending });
             // console.log(`a: ${starting}, b: ${ending}, props:
             // ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]}
             // ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
@@ -67712,23 +67727,23 @@ var CreateDraw = function (_Component) {
 
 
             // this is the non playing days array
-            console.log("this is bye days:", this.props.season.season.other);
+            // console.log("this is bye days:", this.props.season.season.other);
             var otherArr = this.props.season.season.other;
-            console.log('length:', this.props.season.season.other.length);
+            // console.log(`length:` ,this.props.season.season.other.length )
 
             for (var p = 0; p < array.length; p++) {
                 for (var z = 0; z <= otherArr.length - 1; z++) {
-                    console.log('z: ' + z + '}');
+                    // console.log(`z: ${z}}`)
                     if (array[p] == otherArr[z].startDate) {
-                        console.log('days', array[p]);
-                        console.log('otherArr', otherArr[z].startDate);
+                        // console.log(`days`, array[p]);
+                        // console.log(`otherArr`, otherArr[z].startDate);
                         array.splice(p, 1);
                     }
                 }
             }
-            console.log('length:', this.props.season.season.other.length);
-            console.log('otherArr', otherArr);
-            console.log('array', array);
+            // console.log(`length:` ,this.props.season.season.other.length )
+            // console.log(`otherArr`, otherArr);
+            // console.log(`array`, array);
 
             this.setState({ dates: array });
         }
@@ -67775,16 +67790,33 @@ var CreateDraw = function (_Component) {
                 }
             }
 
-            var test = [];
+            var newDraw = [];
             for (var i = 0; i < holdMeBaby.length; i++) {
-                // for(var x = 0; x < 2; x++) { console.log(`holdMeBaby count: ${i} ${o}`,
-                // holdMeBaby[i][o])
-                test.push(holdMeBaby[i][0] /*[x]*/); // comment will break it up into individual teams
-                test.push(holdMeBaby[i][1] /*[x]*/);
-                // }
+                for (var o = 0; o < holdMeBaby[0].length; o++) {
+                    console.log(holdMeBaby[0].length);
+                    newDraw.push({
+                        roundNumber: i + 1,
+                        game: o + 1,
+                        homeTeam: holdMeBaby[i][o][0],
+                        awayTeam: holdMeBaby[i][o][1],
+                        date: this.state.dates[i],
+                        divCode: div,
+                        goalsHome: 0,
+                        goalsAway: 0
+                    });
+                }
             }
 
-            // console.log(`test array`, test);
+            console.log('holdMeBaby:', holdMeBaby);
+            console.log(newDraw);
+
+            // CREATE DRAW LOGIC
+            // newDraw.map((x) => {
+            //     this.props.postRound(x)
+            // } )
+
+            // this.props.postRound(newDraw[1])
+
 
             // console.log(`roundsArray`, roundsArray)
             this.setState({ drawTeam: roundsArray });
@@ -67957,7 +67989,7 @@ function mapStateToProps(state) {
     return { teams: state.teams, season: state.season };
 }
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { getTeams: _action.getTeams })(CreateDraw);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, { getTeams: _action.getTeams, postRound: _action.postRound })(CreateDraw);
 
 /***/ }),
 /* 689 */
