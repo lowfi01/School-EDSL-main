@@ -248,7 +248,10 @@ app.post('/teams', (req, res) => {
     console.log(`POST /teams`, req.body.teamName);
     var team = new Teams({
         teamName: req.body.teamName,
-        club: req.body.club,
+        club: {
+            name: req.body.name,
+            location: req.body.location
+        },
         division: {
             divCode: req.body.divCode,
             divGrade: req.body.divGrade,

@@ -65529,30 +65529,24 @@ var DisplayItem = function (_Component) {
 
     // Add to division onClick function
     value: function addTeamToDivision(event) {
-      // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD
-
-
-      // Prevent button from refreshing screen
+      // ADD GET TEAMS - WE NEED TO UPDATE DIVISION ON ADD Prevent button from
+      // refreshing screen
       event.preventDefault();
 
       // Save Prop passed from from display-teams to term
       var term = this.props.passStateTerm;
 
-      // console.log(`displayItem team.id:  `, this.props.passStateTeamId)
-
-      // Update Team detail division.clubCode
-      // Requires Action - axios > api > find { $set { value }}
+      // console.log(`displayItem team.id:  `, this.props.passStateTeamId) Update Team
+      // detail division.clubCode Requires Action - axios > api > find { $set { value
+      // }}
       console.log('passStateTeamId: ' + this.props.passStateTeamId + ', term: ' + term);
       this.props.updateDivision(term, this.props.passStateTeamId);
 
-      // Re-load Division list
-      // Updates List with new population
+      // Re-load Division list Updates List with new population
       this.props.getDivision(term);
     }
 
-    // Render
-    // Team Name passed as prop,
-    // Button to add team to division
+    // Render Team Name passed as prop, Button to add team to division
 
   }, {
     key: 'render',
@@ -65570,9 +65564,7 @@ var DisplayItem = function (_Component) {
             null,
             'Team:'
           ),
-          ' ',
           this.props.passStateTeam.teamName,
-          ' ',
           _react2.default.createElement(
             'span',
             null,
@@ -65584,8 +65576,7 @@ var DisplayItem = function (_Component) {
                 onClick: function onClick(event) {
                   _this2.addTeamToDivision(event);
                   _this2.props.getTeams();
-                }
-              },
+                } },
               'Add'
             )
           )
@@ -65598,15 +65589,12 @@ var DisplayItem = function (_Component) {
             null,
             'Club:'
           ),
-          ' ',
-          this.props.passStateTeam.club,
-          ' ',
+          this.props.passStateTeam.club.name,
           _react2.default.createElement(
             'strong',
             null,
             'Division:'
           ),
-          ' ',
           this.props.passStateTeam.division.divCode
         )
       );

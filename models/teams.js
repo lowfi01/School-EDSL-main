@@ -6,9 +6,11 @@ var mongoose = require('mongoose');
 //club: {type: mongoose.Schema.Types.ObjectId},
 var teamSchema = mongoose.Schema({ 
     teamName: String,
-    club: String,
-    division: {
-        divCode: String,
+    club: {
+        name: String,
+        location: String
+    },
+    division: {        divCode: String,
         divGrade: String,
         sponsor: String
     },
