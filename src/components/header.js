@@ -23,7 +23,8 @@ class Menu extends React.Component {
                     <Nav>
                         <NavItem eventKey={1} href="/">Division Setup</NavItem>
                         <NavItem eventKey={2} href="/season">Season Setup</NavItem>
-                        <NavItem eventKey={3} href="/contacts">Contact Us</NavItem>
+                        <NavItem eventKey={3} href="/round">Process Round</NavItem>
+                        <NavItem eventKey={4} href="/contacts">Contact Us</NavItem>
                     </Nav>
                     <Nav pullRight>
                         <NavItem eventKey={1} >Admin</NavItem>

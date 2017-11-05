@@ -12,6 +12,8 @@ var roundSchema = mongoose.Schema({
     goalsAway: Number,
     goalsHome: Number,
     season: String,
+    lock: Boolean,
+    season: String
 });
 
 //mongoose.Schema.Types.ObjectId

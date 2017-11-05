@@ -72,8 +72,42 @@ export function postRound(term) {
   console.log('term: ', term);
 
   return {
-    type: 'postRound',
+    type: 'POST_ROUND',
     // Send promise back as payload
     payload: request
   };
+}
+
+
+export function getDrawSetup(season, division){
+
+  const request = axios.get(`/rounds/${division}/${season}`);
+
+
+  console.log(request)
+  return {
+    type: 'GET_DRAW_SETUP',
+    payload: request
+  }
+
+}
+
+export function getDrawRound(season, division, roundNumber) {
+
+  const request = axios.get(`/rounds/${division}/${season}/${roundNumber}`);
+
+  console.log(`getDrawRound: `, request)
+  return {type: 'GET_DRAW_ROUND', payload: request}
+
+}
+
+export function getDraw(){
+
+  const request = axios.get('/rounds');
+
+  return {
+    type: 'GET_DRAW',
+    payload: request
+  }
+
 }

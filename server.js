@@ -26,10 +26,10 @@ let db = {
 };
 
 // Fix heroku
-mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
+//mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
 
 // local environment
-//mongoose.connect( db.localhost, { useMongoClient: true });
+mongoose.connect( db.localhost, { useMongoClient: true });
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
@@ -47,9 +47,71 @@ var Clubs = require('./models/clubs');
 var Teams = require('./models/teams');
 var Rounds = require('./models/rounds');
 
-// ------>> POST ROUND <<< --------
+// ------>> ROUND <<< --------
+app.get('/rounds/:division/:season/:round', (req, res) => {
+    var season = req.params.season;
+    var division = req.params.division;
+    var round = req.params.round
 
-// ----->> POST CLUBS <<------
+    Rounds
+        .find({season: season, divCode: division, roundNumber: round})
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            console.log(docs)
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+app.get('/rounds/:division/:season', (req, res) => {
+    var season = req.params.season;
+    var division = req.params.division;
+
+    console.log(`division: ${division} - Season: ${season}`)
+    console.log("HELLO WORLD !! ")
+    console.log("HELLO WORLD !! ")
+    console.log("HELLO WORLD !! ")
+
+    Rounds
+        .find({ season: season, divCode: division })
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            console.log(docs)
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+
+app.get('/rounds', (req, res) => {
+    Rounds
+        .find({})
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+
 app.post('/rounds', (req, res) => {
 
     // create document - using req.body.text
@@ -65,6 +127,8 @@ app.post('/rounds', (req, res) => {
                     divCode: body.divCode,
                     goalsHome: body.goalsHome,
                     goalsAway: body.goalsAway,
+                    lock: body.lock,
+                    season: body.season,
                 });
 
     // save doc & send back
@@ -260,7 +324,8 @@ app.post('/teams', (req, res) => {
         seasonYear: req.body.seasonYear,
         captain: req.body.captain,
         coach: req.body.coach,
-        contactPhone: req.body.contactPhone
+        contactPhone: req.body.contactPhone,
+        
     });
 
     // save doc & send back
