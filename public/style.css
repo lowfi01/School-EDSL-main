@@ -42,12 +42,14 @@ body {
     right: 30px;
 }
 
-
-
 ul {
     list-style-type: none;
 }
 
 .list-dates li {
     font-size: 10px;
+}
+
+.btn-group>.btn:first-child {
+    margin-left: 2px;
 }

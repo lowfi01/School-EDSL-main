@@ -1,13 +1,13 @@
-import React, {Component} from 'react'
-import {Button} from 'react-bootstrap';
-import {connect} from 'react-redux';
+import React, { Component } from 'react'
+import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 let robin = require('roundrobin');
 import moment from 'moment';
 import _ from 'lodash';
-import {Table, ButtonToolbar, SplitButton, MenuItem, Panel} from 'react-bootstrap'
+import { Table, ButtonToolbar, SplitButton, MenuItem, Panel } from 'react-bootstrap'
 
 //IMPORT ACTIONS
-import {getTeams, postRound} from './../../action';
+import { getTeams, postRound } from './../../action';
 
 class CreateDraw extends Component {
     constructor() {
@@ -33,7 +33,9 @@ class CreateDraw extends Component {
 
         // console.log(`season state: ${this.props.season.season.startDate}`)
 
-        this.setState({value: false})
+        this.setState({
+            value: false
+        })
         let team1 = this.props.teams.teams;
         let team2 = this.props.teams.teams;
         let team3 = this.props.teams.teams;
@@ -44,7 +46,7 @@ class CreateDraw extends Component {
         });
 
         const divNames1 = _.map(division1, 'teamName')
-        let div1 = robin(divNames1.length, divNames1)
+        let div1 = robin(division1.length, division1)
 
         const division2 = _.remove(team2, team => {
             //console.log(`lodash remove:`, team.division.divCode)
@@ -52,7 +54,7 @@ class CreateDraw extends Component {
         });
 
         const divNames2 = _.map(division2, 'teamName')
-        let div2 = robin(divNames2.length, divNames2)
+        let div2 = robin(division2.length, division2)
 
         const division3 = _.remove(team3, team => {
             // console.log(`lodash remove:`, team.division.divCode)
@@ -60,7 +62,7 @@ class CreateDraw extends Component {
         });
 
         const divNames3 = _.map(division3, 'teamName')
-        let div3 = robin(divNames3.length, divNames3)
+        let div3 = robin(division3.length, division3)
 
         // console.log(`round robin: `, div1) console.log(`round robin: `, div2)
         // console.log(`round robin: `, div3)
@@ -97,7 +99,10 @@ class CreateDraw extends Component {
         var index = 0;
         const starting = moment(`${res[0]}${res[1]}${res[2]}`);
         const ending = moment(`${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
-        this.setState({startingDate: year, endingDate: endYear});
+        this.setState({
+            startingDate: year,
+            endingDate: endYear
+        });
         // console.log(`a: ${starting}, b: ${ending}, props:
         // ${this.props.season.season.endDate}  starting: ${res[0]}${res[1]}${res[2]}
         // ending :${resEnd[0]}${resEnd[1]}${resEnd[2]}`);
@@ -185,7 +190,9 @@ class CreateDraw extends Component {
         // console.log(`length:` ,this.props.season.season.other.length )
         // console.log(`otherArr`, otherArr); console.log(`array`, array);
 
-        this.setState({dates: array})
+        this.setState({
+            dates: array
+        })
     }
 
     onSplitButton(text) {
@@ -196,9 +203,22 @@ class CreateDraw extends Component {
         // console.log(`nonPlayArr`, nonPlayArr); for (let p = o; p < datesArr.length;
         // p++) {     for (let z = 0; z < nonPlayArr; z++)         if (datesArr[p] ==
         // nonPlayArr[z].startDate){         divisionArr[p]         } }
+        let time = '0';
 
-        this.setState({term, divTerm: term})
+        if (term == 1)
+            time = "9:00"
+        else if (term == 2)
+            time = "11:30"
+        else
+            time = "3:00"
+
+        this.setState({
+            term,
+            divTerm: term,
+            time
+        })
         // console.log(`term`, this.state.draw.div1)
+
 
         let div = `div${term}`
         let holdMeBaby = this.state.draw[`${div}`]
@@ -212,9 +232,9 @@ class CreateDraw extends Component {
             for (var o = 0; o < holdMeBaby[0].length; o++) {
                 // for(var x = 0; x < 2; x++) { console.log(`holdMeBaby count: ${i} ${o}`,
                 // holdMeBaby[i][o])
-                roundsArray.push(holdMeBaby[i][o]/*[x]*/) // comment will break it up into individual teams
+                roundsArray.push(holdMeBaby[i][o] /*[x]*/ ) // comment will break it up into individual teams
 
-                // }
+            // }
             }
         }
 
@@ -225,8 +245,8 @@ class CreateDraw extends Component {
                 newDraw.push({
                     roundNumber: i + 1,
                     game: o + 1,
-                    homeTeam: holdMeBaby[i][o][0],
-                    awayTeam: holdMeBaby[i][o][1],
+                    homeTeam: holdMeBaby[i][o][0].teamName,
+                    awayTeam: holdMeBaby[i][o][1].teamName,
                     date: this.state.dates[i],
                     divCode: div,
                     goalsHome: 0,
@@ -237,26 +257,30 @@ class CreateDraw extends Component {
             }
         }
 
-        this.setState({currentDraw: newDraw})
+        this.setState({
+            currentDraw: newDraw
+        })
         console.log(`holdMeBaby:`, holdMeBaby);
         console.log(newDraw);
 
         // this.props.postRound(newDraw[1]) console.log(`roundsArray`, roundsArray)
-        this.setState({drawTeam: roundsArray})
-
-        // console.log(`drawTeam:`, roundsArray); console.log(`date:`,
-        // this.state.dates);
+        this.setState({
+            drawTeam: roundsArray
+        })
+        console.log('this be draw team', roundsArray);
+    // console.log(`drawTeam:`, roundsArray); console.log(`date:`,
+    // this.state.dates);
     }
 
-    saveDraw(e){
-                    e.preventDefault();
-                    // CREATE DRAW LOGIC
-                    this.state.currentDraw.map((x) => {
-                        this
-                            .props
-                            .postRound(x)
-                    })
-                }
+    saveDraw(e) {
+        e.preventDefault();
+        // CREATE DRAW LOGIC
+        this.state.currentDraw.map((x) => {
+            this
+                .props
+                .postRound(x)
+        })
+    }
     render() {
 
         const draw = this
@@ -279,32 +303,47 @@ class CreateDraw extends Component {
                 //  {check[x].startDate}                 </td>             </tr>         )     }
                 // }
 
-                
+
 
                 if (roundNum % 1 === 0) {
                     return (
-                        <tr key={index}>
-                            <td>
-                                {this.state.dates[Math.floor(roundNum) - 1]}
-                            </td>
-                            <td>
-                                {team[0]}
-                            </td>
-                            <td>
-                                {team[1]}
-                            </td>
+                        <tr key={ index }>
+                          <td>
+                            { this.state.dates[Math.floor(roundNum) - 1] }
+                          </td>
+                          <td>
+                            { this.state.time }
+                          </td>
+                          <td>
+                            { team[0].teamName }
+                          </td>
+                          <td>
+                            <a href={ `https://www.google.com/maps/place/${encodeURI(team[0].club.location).replace(/%20/g,"+")}` }>
+                              { team[0].club.location }
+                            </a>
+                          </td>
+                          <td>
+                            { team[1].teamName }
+                          </td>
                         </tr>
                     )
                 } else {
                     return (
-                        <tr key={index}>
-                            <td></td>
-                            <td>
-                                {team[0]}
-                            </td>
-                            <td>
-                                {team[1]}
-                            </td>
+                        <tr key={ index }>
+                          <td></td>
+                          <td>
+                          </td>
+                          <td>
+                            { team[0].teamName }
+                          </td>
+                          <td>
+                            <a href={ `https://www.google.com/maps/place/${encodeURI(team[0].club.location).replace(/%20/g,"+")}` } target="_blank">
+                              { team[0].club.location }
+                            </a>
+                          </td>
+                          <td>
+                            { team[1].teamName }
+                          </td>
                         </tr>
                     )
                 }
@@ -312,64 +351,58 @@ class CreateDraw extends Component {
 
         return (
             <Panel className="draw-panel">
-                <div className="draw-content" style={{ 'padding-left': '1em', 'padding-bottom': '1em'}}>
-                    <Button
-                        className="btn btn-primary"
-                        onClick={this
-                        .createDraw
-                        .bind(this)}
-                        disabled={!this.state.value}>Create Draw</Button>
-                    <SplitButton
-                        disabled={this.state.value}
-                        title={`View division ${this.state.divTerm} draw`}
-                        pullRight
-                        id="split-button-pull-right">
-                        <MenuItem
-                            onClick={(event) => {
-                            this.onSplitButton(event)
-                        }}
-                            eventKey="1">1</MenuItem>
-                        <MenuItem
-                            onClick={(event) => {
-                            this.onSplitButton(event)
-                        }}
-                            eventKey="2">2</MenuItem>
-                        <MenuItem
-                            onClick={(event) => {
-                            this.onSplitButton(event)
-                        }}
-                            eventKey="3">3</MenuItem>
-                    </SplitButton>
-
-                </div>
-                <div className="create-draw">
-                    <Table striped bordered condensed hover>
-                        <tbody>
-                            <tr>
-                                <th>Round</th>
-                                <th>Home</th>
-                                <th>Away</th>
-                            </tr>
-                            {draw}
-
-                        </tbody>
-                    </Table>
-                </div>
-                <span className="pull-right">
-                <input type="text" placeholder="Insert Label for draw"></input>
-                <Button
-                    className="btn pull-right"
-                    onClick={e => {this
-                    .saveDraw(e)
-                    }}>Save Draw</Button>
-                </span>
+              <div className="draw-content" style={ { 'padding-left': '1em', 'padding-bottom': '1em' } }>
+                <Button className="btn btn-primary" onClick={ this
+                                                                  .createDraw
+                                                                  .bind(this) } disabled={ !this.state.value }>Create Draw</Button>
+                <SplitButton disabled={ this.state.value } title={ `View division ${this.state.divTerm} draw` } pullRight id="split-button-pull-right">
+                  <MenuItem onClick={ (event) => {
+                                          this.onSplitButton(event)
+                                      } } eventKey="1">1</MenuItem>
+                  <MenuItem onClick={ (event) => {
+                                          this.onSplitButton(event)
+                                      } } eventKey="2">2</MenuItem>
+                  <MenuItem onClick={ (event) => {
+                                          this.onSplitButton(event)
+                                      } } eventKey="3">3</MenuItem>
+                </SplitButton>
+              </div>
+              <div className="create-draw">
+                <Table striped bordered condensed hover>
+                  <tbody>
+                    <tr>
+                      <th href="https://www.google.com/maps/place/11+San+Martin+Dr,+Croydon+North+VIC+3136">Round</th>
+                      <th>Time</th>
+                      <th>Home</th>
+                      <th>Location</th>
+                      <th>Away</th>
+                    </tr>
+                    { draw }
+                  </tbody>
+                </Table>
+              </div>
+              <span className="pull-right">
+                                                    <input type="text" placeholder="Insert Label for draw"></input>
+                                                    <Button
+                        className="btn pull-right"
+                        onClick={ e => {
+                                      this
+                                          .saveDraw(e)
+                                  } }>Save Draw</Button>
+                                                    </span>
             </Panel>
         )
     }
 }
 
 function mapStateToProps(state) {
-    return {teams: state.teams, season: state.season}
+    return {
+        teams: state.teams,
+        season: state.season
+    }
 }
 
-export default connect(mapStateToProps, {getTeams, postRound})(CreateDraw);
+export default connect(mapStateToProps, {
+    getTeams,
+    postRound
+})(CreateDraw);

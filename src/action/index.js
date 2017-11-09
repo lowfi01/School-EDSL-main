@@ -14,7 +14,9 @@ export function updateDivision(term, id) {
   // API will _pick values passed as a url:variable
   // API will set final value
 
-  const request = axios.patch(`/teams/${id}`, { term });
+  const request = axios.patch(`/teams/${id}`, {
+    term
+  });
   console.log('Request: ', request);
   console.log('id: ', id);
   console.log('term: ', term);
@@ -67,7 +69,9 @@ export function postSeasonSetup(season) {
 
 export function postRound(term) {
   console.log(term)
-  const request = axios.post(`/rounds`, {term});
+  const request = axios.post(`/rounds`, {
+    term
+  });
   console.log('Request: ', request);
   console.log('term: ', term);
 
@@ -79,7 +83,7 @@ export function postRound(term) {
 }
 
 
-export function getDrawSetup(season, division){
+export function getDrawSetup(season, division) {
 
   const request = axios.get(`/rounds/${division}/${season}`);
 
@@ -97,16 +101,41 @@ export function getDrawRound(season, division, roundNumber) {
   const request = axios.get(`/rounds/${division}/${season}/${roundNumber}`);
 
   console.log(`getDrawRound: `, request)
-  return {type: 'GET_DRAW_ROUND', payload: request}
+  return {
+    type: 'GET_DRAW_ROUND',
+    payload: request
+  }
 
 }
 
-export function getDraw(){
+export function getDraw() {
 
   const request = axios.get('/rounds');
 
   return {
     type: 'GET_DRAW',
+    payload: request
+  }
+
+}
+
+export function patchRound(home, away, id) {
+
+  const request = axios.patch(`/rounds/${home}/${away}/${id}`);
+
+  return {
+    type: 'PATCH_ROUND',
+    payload: request
+  }
+
+}
+
+export function patchRoundLock(lock, id) {
+
+  const request = axios.patch(`/rounds/${lock}/${id}`);
+
+  return {
+    type: 'LOCK_ROUND',
     payload: request
   }
 

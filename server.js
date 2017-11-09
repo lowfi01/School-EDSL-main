@@ -9,7 +9,9 @@ const port = process.env.PORT || 3000;
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -29,7 +31,9 @@ let db = {
 //mongoose.connect(db.mlab || db.localhost, {useMongoClient: true});
 
 // local environment
-mongoose.connect( db.localhost, { useMongoClient: true });
+mongoose.connect(db.localhost, {
+    useMongoClient: true
+});
 
 // MIDDLEWARE TO DEFINE FOLDER FOR STATIC FILES & IMGS
 app.use(express.static('public'))
@@ -37,24 +41,98 @@ app.use(express.static('public'))
 
 // Enable CORS
 
-app.use(function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
-    });
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 var Clubs = require('./models/clubs');
 var Teams = require('./models/teams');
 var Rounds = require('./models/rounds');
 
 // ------>> ROUND <<< --------
+app.patch('/rounds/:lock/:id', (req, res) => {
+    const _id = req.params.id;
+    const lock = req.params.lock;
+
+    Rounds.findOneAndUpdate({
+        _id
+    }, {
+        '$set': {
+            lock: lock
+        }
+    }, {
+        new: true
+    }).then((doc) => {
+        if (!doc) {
+            console.log(`this is a doc:`, doc)
+            return res
+                .status(404)
+                .send('404');
+        }
+        ;
+        //res.send("promise works");
+        res.send({
+            doc
+        });
+        console.log(`checking what body looks like after $push: ${doc}`);
+    }).catch((e) => {
+        res.send(e);
+        res
+            .status(400)
+            .send();
+    });
+
+});
+
+
+app.patch('/rounds/:home/:away/:id', (req, res) => {
+    const home = req.params.home;
+    const away = req.params.away;
+    const _id = req.params.id;
+
+    Rounds.findOneAndUpdate({
+        _id
+    }, {
+        '$set': {
+            goalsAway: away,
+            goalsHome: home,
+        }
+    }, {
+        new: true
+    }).then((doc) => {
+        if (!doc) {
+            console.log(`this is a doc:`, doc)
+            return res
+                .status(404)
+                .send('404');
+        }
+        ;
+        //res.send("promise works");
+        res.send({
+            doc
+        });
+        console.log(`checking what body looks like after $push: ${doc}`);
+    }).catch((e) => {
+        res.send(e);
+        res
+            .status(400)
+            .send();
+    });
+
+});
 app.get('/rounds/:division/:season/:round', (req, res) => {
     var season = req.params.season;
     var division = req.params.division;
     var round = req.params.round
 
     Rounds
-        .find({season: season, divCode: division, roundNumber: round})
+        .find({
+            season: season,
+            divCode: division,
+            roundNumber: round
+        })
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
@@ -79,7 +157,10 @@ app.get('/rounds/:division/:season', (req, res) => {
     console.log("HELLO WORLD !! ")
 
     Rounds
-        .find({ season: season, divCode: division })
+        .find({
+            season: season,
+            divCode: division
+        })
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
@@ -119,17 +200,17 @@ app.post('/rounds', (req, res) => {
     let body = req.body.term;
     console.log(`POST /round:term  : `, body);
     var round = new Rounds({
-                    roundNumber: body.roundNumber,
-                    game: body.game,
-                    homeTeam: body.homeTeam,
-                    awayTeam: body.awayTeam,
-                    date: body.date,
-                    divCode: body.divCode,
-                    goalsHome: body.goalsHome,
-                    goalsAway: body.goalsAway,
-                    lock: body.lock,
-                    season: body.season,
-                });
+        roundNumber: body.roundNumber,
+        game: body.game,
+        homeTeam: body.homeTeam,
+        awayTeam: body.awayTeam,
+        date: body.date,
+        divCode: body.divCode,
+        goalsHome: body.goalsHome,
+        goalsAway: body.goalsAway,
+        lock: body.lock,
+        season: body.season,
+    });
 
     // save doc & send back
     round
@@ -186,15 +267,20 @@ app.patch('/clubs', (req, res) => {
         $push: {
             teams: team
         }
-    }, {new: true}).then((doc) => {
+    }, {
+        new: true
+    }).then((doc) => {
         if (!doc) {
-            console.log(`this is a doc:`,doc)
+            console.log(`this is a doc:`, doc)
             return res
                 .status(404)
                 .send('404');
-        };
+        }
+        ;
         //res.send("promise works");
-        res.send({doc});
+        res.send({
+            doc
+        });
         console.log(`checking what body looks like after $push: ${doc}`);
     }).catch((e) => {
         res.send(e);
@@ -233,8 +319,12 @@ app.get('/teams/:id', (req, res) => {
     // new  
     var div = req.params.id;
     console.log(`div = ${div}`)
-        Teams
-        .find( {'division.divCode' : { '$ne' : `${div}`}})
+    Teams
+        .find({
+            'division.divCode': {
+                '$ne': `${div}`
+            }
+        })
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
@@ -257,7 +347,9 @@ app.get(`/divisions/:id`, (req, res) => {
     var div = req.params.id;
     console.log(`this is the get request:`, req.params.id)
     Teams
-        .find( {'division.divCode' : `${div}`})
+        .find({
+            'division.divCode': `${div}`
+        })
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
@@ -285,17 +377,22 @@ app.patch('/teams/:id', (req, res) => {
         _id
     }, {
         $set: {
-            'division.divCode' : term
+            'division.divCode': term
         }
-    }, {new: true}).then((doc) => {
+    }, {
+        new: true
+    }).then((doc) => {
         if (!doc) {
             console.log(`this is the doc`, doc)
             return res
                 .status(404)
                 .send('404');
-        };
+        }
+        ;
         //res.send("promise works");
-        res.send({doc});
+        res.send({
+            doc
+        });
         console.log(`checking what body looks like after $push: ${doc}`);
     }).catch((e) => {
         res.send(e);
@@ -325,7 +422,7 @@ app.post('/teams', (req, res) => {
         captain: req.body.captain,
         coach: req.body.coach,
         contactPhone: req.body.contactPhone,
-        
+
     });
 
     // save doc & send back
@@ -343,7 +440,7 @@ app.post('/teams', (req, res) => {
 
 app.get('*', (req, res) => {
     // resolve & sendFile, public/index.html
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html' ))
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
 })
 
 
