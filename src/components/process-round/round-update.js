@@ -177,7 +177,7 @@ class RoundUpdate extends Component {
             }
 
             console.log(`lockRound: ${value} ${_id} `)
-            this.props.patchRoundLock(true, _id);
+            this.props.patchRoundLock(false, _id);
 
         }
         this.getRound(this.state.getRoundTerm);
