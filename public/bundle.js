@@ -54072,7 +54072,7 @@ var withRouter = function withRouter(Component) {
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -54107,63 +54107,64 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var AddTeamDivision = function (_Component) {
-        _inherits(AddTeamDivision, _Component);
+    _inherits(AddTeamDivision, _Component);
 
-        function AddTeamDivision() {
-                _classCallCheck(this, AddTeamDivision);
+    function AddTeamDivision() {
+        _classCallCheck(this, AddTeamDivision);
 
-                // Component state - Defined in Display-Division dropDownMenu.text
-                // Used to filter search to API & Add Teams to a division 
+        // Component state - Defined in Display-Division dropDownMenu.text
+        // Used to filter search to API & Add Teams to a division 
 
-                var _this = _possibleConstructorReturn(this, (AddTeamDivision.__proto__ || Object.getPrototypeOf(AddTeamDivision)).call(this));
+        var _this = _possibleConstructorReturn(this, (AddTeamDivision.__proto__ || Object.getPrototypeOf(AddTeamDivision)).call(this));
 
-                _this.state = { term: ''
-                        //console.log(`local state addTeamDivision: `, this.state.term)
-                };return _this;
+        _this.state = {
+            term: ''
+            //console.log(`local state addTeamDivision: `, this.state.term)
+        };return _this;
+    }
+
+    _createClass(AddTeamDivision, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                _reactBootstrap.Grid,
+                { className: 'container' },
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    { className: 'display-teams' },
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { className: 'teams-box', xs: 12, sm: 6 },
+                        _react2.default.createElement(_displayTeams2.default, { onStatePassDown: // Component state pass down as props
+                            // used to filter - Add Team to Division
+
+                            this.state.term })
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { xs: 12, sm: 6 },
+                        _react2.default.createElement(_displayDivision2.default, { onCallBackTerm: function onCallBackTerm(term) {
+
+                                // CallBack passed down to display-division
+                                // returns dropDownMenu text value as a term
+                                // save term to state
+
+                                console.log('term:', term);
+                                _this2.setState({
+                                    term: term
+                                });
+
+                                //console.log(`this callback works`, this.state.term)
+                            } })
+                    )
+                )
+            );
         }
+    }]);
 
-        _createClass(AddTeamDivision, [{
-                key: 'render',
-                value: function render() {
-                        var _this2 = this;
-
-                        return _react2.default.createElement(
-                                _reactBootstrap.Grid,
-                                { className: 'container' },
-                                _react2.default.createElement(
-                                        _reactBootstrap.Row,
-                                        { className: 'display-teams' },
-                                        _react2.default.createElement(
-                                                _reactBootstrap.Col,
-                                                { className: 'teams-box', xs: 12, sm: 6 },
-                                                _react2.default.createElement(_displayTeams2.default, { onStatePassDown:
-
-                                                        // Component state pass down as props
-                                                        // used to filter - Add Team to Division
-
-                                                        this.state.term })
-                                        ),
-                                        _react2.default.createElement(
-                                                _reactBootstrap.Col,
-                                                { xs: 12, sm: 6 },
-                                                _react2.default.createElement(_displayDivision2.default, { onCallBackTerm: function onCallBackTerm(term) {
-
-                                                                // CallBack passed down to display-division
-                                                                // returns dropDownMenu text value as a term
-                                                                // save term to state
-
-                                                                console.log('term:', term);
-                                                                _this2.setState({ term: term });
-
-                                                                //console.log(`this callback works`, this.state.term)
-                                                        } })
-                                        )
-                                )
-                        );
-                }
-        }]);
-
-        return AddTeamDivision;
+    return AddTeamDivision;
 }(_react.Component);
 
 exports.default = AddTeamDivision;
@@ -85298,6 +85299,10 @@ var _reactRedux = __webpack_require__(41);
 
 var _reactDom = __webpack_require__(20);
 
+var _lodash = __webpack_require__(689);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _action = __webpack_require__(57);
 
 var _roundItem = __webpack_require__(693);
@@ -85337,6 +85342,23 @@ function removeDouble(a, term) {
 }
 ;
 
+function removeDoubleNumber(a) {
+    // a = draw term = drop down menu item
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for (var i = 0; i < len; i++) {
+        var item = a[i];
+        if (seen[item] !== 1) {
+            seen[item] = 1;
+            out[j++] = item;
+        }
+    }
+    return out;
+}
+;
+
 var RoundUpdate = function (_Component) {
     _inherits(RoundUpdate, _Component);
 
@@ -85362,7 +85384,7 @@ var RoundUpdate = function (_Component) {
             seasonTerm: "Season",
             wait: true,
             currentRound: [],
-            time: "Loading...",
+            time: "  Loading...",
             data: {
                 0: {
                     home: '0',
@@ -85398,6 +85420,7 @@ var RoundUpdate = function (_Component) {
         _this.onChangeHandler = _this.onChangeHandler.bind(_this);
         _this.setData = _this.setData.bind(_this);
         _this.lockRound = _this.lockRound.bind(_this);
+        _this.findLock = _this.findLock.bind(_this);
         return _this;
     }
 
@@ -85410,11 +85433,40 @@ var RoundUpdate = function (_Component) {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
             console.log('this.nextProps.round: ', nextProps.round);
+            console.log('this.props', this.props);
             console.log('this.nextProps:', nextProps);
+
+            if (this.props.drawRound != nextProps.drawRound) {
+                this.findLock(nextProps.drawRound);
+            }
 
             if (nextProps.round.length > 1) {
                 this.setData(nextProps.round);
             }
+        }
+    }, {
+        key: 'findLock',
+        value: function findLock(roundArray) {
+            var holdArray = [];
+            roundArray.map(function (x) {
+                if (x.lock == true) {
+                    console.log('we have found a lock true!!:', x.roundNumber);
+                    holdArray.push(x.roundNumber);
+                }
+            });
+
+            var lockResult = removeDoubleNumber(holdArray);
+            var drawResult = removeDouble(roundArray, 'roundNumber');
+            drawResult = drawResult.filter(function (x) {
+                return lockResult.indexOf(x) < 0;
+            });
+
+            this.setState({
+                lockTermRound: drawResult[0]
+            });
+
+            this.getRound(drawResult[0]);
+            // console.log(`result of holdArray:  ${lockResult}  drawResults:  ${drawResult}`);
         }
     }, {
         key: 'setData',
@@ -85436,7 +85488,6 @@ var RoundUpdate = function (_Component) {
     }, {
         key: 'setupRounds',
         value: function setupRounds(div) {
-
             console.log(this.state);
             var _state = this.state,
                 season = _state.season,
@@ -85451,12 +85502,14 @@ var RoundUpdate = function (_Component) {
                 season = _state2.season,
                 division = _state2.division;
 
+            console.log('division: ' + division);
             this.props.getDrawRound(season, division, term);
         }
     }, {
         key: 'handleSubmit',
         value: function handleSubmit(e, term) {
             console.log('state!!!!!!!!!:', this.state);
+
             e.preventDefault();
 
             for (var i = 0; i < this.props.round.length; i++) {
@@ -85490,7 +85543,7 @@ var RoundUpdate = function (_Component) {
                 }
 
                 console.log('lockRound: ' + value + ' ' + _id + ' ');
-                this.props.patchRoundLock(false, _id);
+                this.props.patchRoundLock(true, _id);
             }
             this.getRound(this.state.getRoundTerm);
         }
@@ -85521,7 +85574,7 @@ var RoundUpdate = function (_Component) {
                             _react2.default.createElement(
                                 _reactBootstrap.ControlLabel,
                                 null,
-                                'Score'
+                                'Gaols'
                             ),
                             _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(e) {
                                     _this3.onChangeHandler(e, index, 'home', x._id);
@@ -85543,7 +85596,7 @@ var RoundUpdate = function (_Component) {
                             _react2.default.createElement(
                                 _reactBootstrap.ControlLabel,
                                 null,
-                                'Score'
+                                'Goals'
                             ),
                             _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(e) {
                                     _this3.onChangeHandler(e, index, 'away', x._id);
@@ -85617,13 +85670,19 @@ var RoundUpdate = function (_Component) {
                             }
                             _this4.setState({
                                 getRoundTerm: getRoundTerm,
+                                lockTermRound: getRoundTerm,
                                 wait: true
                             });
                             _this4.getRound(getRoundTerm);
                         }, draw: removeDouble(this.props.drawRound, 'roundNumber'), term: "Round" }),
                     _react2.default.createElement(
-                        'label',
-                        { htmlFor: '' },
+                        'span',
+                        null,
+                        '. '
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Badge,
+                        null,
                         this.state.time
                     )
                 ),
@@ -85644,6 +85703,12 @@ var RoundUpdate = function (_Component) {
                                 _react2.default.createElement(
                                     'th',
                                     null,
+                                    '#',
+                                    this.state.lockTermRound
+                                ),
+                                _react2.default.createElement(
+                                    'th',
+                                    null,
                                     'Home Team'
                                 ),
                                 _react2.default.createElement(
@@ -85654,7 +85719,7 @@ var RoundUpdate = function (_Component) {
                                 _react2.default.createElement(
                                     'th',
                                     null,
-                                    'away Team'
+                                    'Away Team'
                                 ),
                                 _react2.default.createElement(
                                     'th',
@@ -85678,15 +85743,20 @@ var RoundUpdate = function (_Component) {
                         _reactBootstrap.Button,
                         { onClick: function onClick(e) {
                                 _this4.lockRound(e);
-                            } },
-                        'Lock Round'
+                            }, className: 'btn btn-danger glyphicon glyphicon-lock' },
+                        'Lock'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        '.  '
                     ),
                     _react2.default.createElement(
                         _reactBootstrap.Button,
                         { onClick: function onClick(e) {
                                 e.preventDefault();
                                 _this4.setData(_this4.props.round);
-                            } },
+                            }, className: 'btn btn-info glyphicon glyphicon-refresh' },
                         'Cancel'
                     )
                 )

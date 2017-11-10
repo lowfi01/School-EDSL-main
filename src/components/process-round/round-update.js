@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Table, SplitButton, MenuItem, Panel, Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Badge, Table, SplitButton, MenuItem, Panel, Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { findDOMNode } from 'react-dom';
+import _ from 'lodash';
 
 //Actions
 import { getDraw, getDrawSetup, getDrawRound, patchRound, patchRoundLock } from './../../action';
@@ -26,6 +27,24 @@ function removeDouble(a, term) {
 }
 ;
 
+function removeDoubleNumber(a) {
+    // a = draw term = drop down menu item
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for (var i = 0; i < len; i++) {
+        var item = a[i];
+        if (seen[item] !== 1) {
+            seen[item] = 1;
+            out[j++] = item;
+        }
+    }
+    return out;
+}
+;
+
+
 class RoundUpdate extends Component {
     constructor() {
         super()
@@ -36,7 +55,7 @@ class RoundUpdate extends Component {
             seasonTerm: "Season",
             wait: true,
             currentRound: [],
-            time: "Loading...",
+            time: "  Loading...",
             data: {
                 0: {
                     home: '0',
@@ -73,6 +92,7 @@ class RoundUpdate extends Component {
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.setData = this.setData.bind(this);
         this.lockRound = this.lockRound.bind(this);
+        this.findLock = this.findLock.bind(this);
     }
 
     componentWillMount() {
@@ -84,13 +104,40 @@ class RoundUpdate extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log('this.nextProps.round: ', nextProps.round)
+        console.log('this.props', this.props)
         console.log('this.nextProps:', nextProps)
 
+        if (this.props.drawRound != nextProps.drawRound) {
+            this.findLock(nextProps.drawRound)
+        }
 
         if (nextProps.round.length > 1) {
             this.setData(nextProps.round)
         }
 
+    }
+
+    findLock(roundArray) {
+        let holdArray = [];
+        roundArray.map((x) => {
+            if (x.lock == true) {
+                console.log(`we have found a lock true!!:`, x.roundNumber)
+                holdArray.push(x.roundNumber);
+            }
+        })
+
+        const lockResult = removeDoubleNumber(holdArray);
+        let drawResult = removeDouble(roundArray, 'roundNumber');
+        drawResult = drawResult.filter((x) => {
+            return lockResult.indexOf(x) < 0;
+        })
+
+        this.setState({
+            lockTermRound: drawResult[0]
+        });
+
+        this.getRound(drawResult[0]);
+    // console.log(`result of holdArray:  ${lockResult}  drawResults:  ${drawResult}`);
     }
 
     setData(data) {
@@ -112,7 +159,6 @@ class RoundUpdate extends Component {
     }
 
     setupRounds(div) {
-
         console.log(this.state);
         let {season, division} = this.state
         this.props.getDrawSetup(season, div);
@@ -120,30 +166,27 @@ class RoundUpdate extends Component {
 
     getRound(term) {
         let {season, division} = this.state
+        console.log(`division: ${division}`)
         this.props.getDrawRound(season, division, term);
 
     }
 
     handleSubmit(e, term) {
         console.log(`state!!!!!!!!!:`, this.state)
+
         e.preventDefault();
 
         for (let i = 0; i < this.props.round.length; i++) {
             let {home, away, _id} = this.state.data[i];
             console.log(this.state.data[i])
             this.props.patchRound(home, away, _id);
-
         }
 
         this.getRound(this.state.getRoundTerm);
 
-
-
     }
 
     onChangeHandler = (e, index, term, id) => {
-
-
 
         this.setState({
             data: {
@@ -156,8 +199,6 @@ class RoundUpdate extends Component {
             },
         });
 
-
-
         // console.log('e.target.value: ', e.target.value);
         console.log(`state`, this.state);
     }
@@ -169,7 +210,7 @@ class RoundUpdate extends Component {
         for (let i = 0; i < this.props.round.length; i++) {
             let {lock, _id} = this.state.data[i];
 
-            const value = true
+            const value = true;
             if (lock == false) {
                 value == true
             } else {
@@ -177,7 +218,7 @@ class RoundUpdate extends Component {
             }
 
             console.log(`lockRound: ${value} ${_id} `)
-            this.props.patchRoundLock(false, _id);
+            this.props.patchRoundLock(true, _id);
 
         }
         this.getRound(this.state.getRoundTerm);
@@ -194,14 +235,13 @@ class RoundUpdate extends Component {
             }
             return (
 
-
                 <tr key={ index }>
                   <td>
                     { x.homeTeam }
                   </td>
                   <td>
                     <FormGroup>
-                      <ControlLabel>Score</ControlLabel>
+                      <ControlLabel>Gaols</ControlLabel>
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `home`, x._id)
                                                   console.log(this.state)
@@ -213,7 +253,7 @@ class RoundUpdate extends Component {
                   </td>
                   <td>
                     <FormGroup>
-                      <ControlLabel>Score</ControlLabel>
+                      <ControlLabel>Goals</ControlLabel>
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `away`, x._id);
                                               } } type="text" placeholder={ x.goalsAway } value={ this.state.data[`${index}`].away } disabled={ disable } />
@@ -266,14 +306,16 @@ class RoundUpdate extends Component {
                                             }
                                             this.setState({
                                                 getRoundTerm,
+                                                lockTermRound: getRoundTerm,
                                                 wait: true
                                             })
                                             this.getRound(getRoundTerm);
                                         
                                         } } draw={ removeDouble(this.props.drawRound, 'roundNumber') } term={ "Round" } />
-                <label htmlFor="">
+                <span>. </span>
+                <Badge>
                   { this.state.time }
-                </label>
+                </Badge>
               </div>
               <Form onSubmit={ e => {
                                    this.handleSubmit(e);
@@ -281,9 +323,12 @@ class RoundUpdate extends Component {
                 <Table>
                   <thead>
                     <tr>
+                      <th>#
+                        { this.state.lockTermRound }
+                      </th>
                       <th>Home Team</th>
                       <th>Score</th>
-                      <th>away Team</th>
+                      <th>Away Team</th>
                       <th>Score</th>
                     </tr>
                   </thead>
@@ -294,11 +339,12 @@ class RoundUpdate extends Component {
                 <Button type="submit" className="btn btn-success pull-right">Save</Button>
                 <Button onClick={ e => {
                                       this.lockRound(e)
-                                  } }>Lock Round</Button>
+                                  } } className="btn btn-danger glyphicon glyphicon-lock">Lock</Button>
+                <span>.  </span>
                 <Button onClick={ e => {
                                       e.preventDefault();
                                       this.setData(this.props.round);
-                                  } }>Cancel</Button>
+                                  } } className="btn btn-info glyphicon glyphicon-refresh">Cancel</Button>
               </Form>
             </Panel>
         )

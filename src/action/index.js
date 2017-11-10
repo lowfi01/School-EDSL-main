@@ -126,7 +126,7 @@ export function patchRound(home, away, id) {
   return {
     type: 'PATCH_ROUND',
     payload: request
-  }
+  };
 
 }
 
