@@ -81,6 +81,22 @@ class RoundUpdate extends Component {
                     home: null,
                     away: null
                 },
+                6: {
+                    home: null,
+                    away: null
+                },
+                7: {
+                    home: null,
+                    away: null
+                },
+                8: {
+                    home: null,
+                    away: null
+                },
+                9: {
+                    home: null,
+                    away: null
+                },
             },
 
 
@@ -229,6 +245,11 @@ class RoundUpdate extends Component {
 
         return (
         this.props.round.map((x, index) => {
+
+
+
+            const classNameHome = `${this.state.data[`${index}`].home? `success`: `error`}`;
+            const classNameAway = `${this.state.data[`${index}`].away? `success`: `error`}`;
             let disable = false;
             if (x.lock) {
                 disable = true;
@@ -240,7 +261,7 @@ class RoundUpdate extends Component {
                     { x.homeTeam }
                   </td>
                   <td>
-                    <FormGroup>
+                    <FormGroup validationState={ classNameHome }>
                       <ControlLabel>Gaols</ControlLabel>
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `home`, x._id)
@@ -253,7 +274,7 @@ class RoundUpdate extends Component {
                     { x.awayTeam }
                   </td>
                   <td>
-                    <FormGroup>
+                    <FormGroup validationState={ classNameAway }>
                       <ControlLabel>Goals</ControlLabel>
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `away`, x._id);
@@ -347,10 +368,10 @@ class RoundUpdate extends Component {
                   </tbody>
                 </Table>
                 <Button type="submit" className="btn btn-success pull-right">Save</Button>
-                { /* <Button onClick={ e => {
-                                                                                                                                                                      this.lockRound(e)
-                                                                                                                                                                  } } className="btn btn-danger glyphicon glyphicon-lock pull-left">Lock</Button>
-                                                                                                                                                <span>.  </span> */ }
+                <Button onClick={ e => {
+                                      this.lockRound(e)
+                                  } } className="btn btn-danger glyphicon glyphicon-lock pull-left">Lock</Button>
+                <span> { ' ' } </span>
                 <Button onClick={ e => {
                                       e.preventDefault();
                                       this.setData(this.props.round);

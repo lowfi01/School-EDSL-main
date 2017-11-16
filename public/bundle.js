@@ -85436,6 +85436,22 @@ var RoundUpdate = function (_Component) {
                 5: {
                     home: null,
                     away: null
+                },
+                6: {
+                    home: null,
+                    away: null
+                },
+                7: {
+                    home: null,
+                    away: null
+                },
+                8: {
+                    home: null,
+                    away: null
+                },
+                9: {
+                    home: null,
+                    away: null
                 }
             }
 
@@ -85580,6 +85596,9 @@ var RoundUpdate = function (_Component) {
             var _this3 = this;
 
             return this.props.round.map(function (x, index) {
+
+                var classNameHome = '' + (_this3.state.data['' + index].home ? 'success' : 'error');
+                var classNameAway = '' + (_this3.state.data['' + index].away ? 'success' : 'error');
                 var disable = false;
                 if (x.lock) {
                     disable = true;
@@ -85597,7 +85616,7 @@ var RoundUpdate = function (_Component) {
                         null,
                         _react2.default.createElement(
                             _reactBootstrap.FormGroup,
-                            null,
+                            { validationState: classNameHome },
                             _react2.default.createElement(
                                 _reactBootstrap.ControlLabel,
                                 null,
@@ -85620,7 +85639,7 @@ var RoundUpdate = function (_Component) {
                         null,
                         _react2.default.createElement(
                             _reactBootstrap.FormGroup,
-                            null,
+                            { validationState: classNameAway },
                             _react2.default.createElement(
                                 _reactBootstrap.ControlLabel,
                                 null,
@@ -85786,6 +85805,20 @@ var RoundUpdate = function (_Component) {
                         _reactBootstrap.Button,
                         { type: 'submit', className: 'btn btn-success pull-right' },
                         'Save'
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Button,
+                        { onClick: function onClick(e) {
+                                _this4.lockRound(e);
+                            }, className: 'btn btn-danger glyphicon glyphicon-lock pull-left' },
+                        'Lock'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        ' ',
+                        ' ',
+                        ' '
                     ),
                     _react2.default.createElement(
                         _reactBootstrap.Button,
