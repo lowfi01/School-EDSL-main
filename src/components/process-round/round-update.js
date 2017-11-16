@@ -58,28 +58,28 @@ class RoundUpdate extends Component {
             time: "  Loading...",
             data: {
                 0: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
                 1: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
                 2: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
                 3: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
                 4: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
                 5: {
-                    home: '0',
-                    away: '0'
+                    home: null,
+                    away: null
                 },
             },
 
@@ -245,7 +245,8 @@ class RoundUpdate extends Component {
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `home`, x._id)
                                                   console.log(this.state)
-                                              } } type="text" placeholder={ x.goalsHome } value={ this.state.data[`${index}`].home } disabled={ disable } />
+                                              } } type="text" placeholder={ x.goalsHome } value={ this.state.data[`${index}`].home || " " } disabled={ disable } style={ { width: "50px" } }
+                      />
                     </FormGroup>
                   </td>
                   <td>
@@ -256,8 +257,14 @@ class RoundUpdate extends Component {
                       <ControlLabel>Goals</ControlLabel>
                       <FormControl onChange={ e => {
                                                   this.onChangeHandler(e, index, `away`, x._id);
-                                              } } type="text" placeholder={ x.goalsAway } value={ this.state.data[`${index}`].away } disabled={ disable } />
+                                              } } type="text" placeholder={ x.goalsAway } value={ this.state.data[`${index}`].away || " " } disabled={ disable } style={ { width: "50px" } }
+                      />
                     </FormGroup>
+                  </td>
+                  <td>
+                    <label>Lock Game </label>
+                    <span>{ " " }  </span>
+                    <Button className="btn btn-danger glyphicon glyphicon-lock btn-xs" type="checkbox" value="" />
                   </td>
                 </tr>
 
@@ -277,6 +284,7 @@ class RoundUpdate extends Component {
               <center>
                 <h2>Update Round</h2>
               </center>
+              { /* <div style={ { width: "800px" } }> */ }
               <div id="id1">
                 <label htmlFor="">Select Season: </label>
                 <RoundItem onCallback={ (season) => {
@@ -312,10 +320,12 @@ class RoundUpdate extends Component {
                                             this.getRound(getRoundTerm);
                                         
                                         } } draw={ removeDouble(this.props.drawRound, 'roundNumber') } term={ "Round" } />
-                <span>. </span>
+                <span> { " " }  </span>
                 <Badge>
                   { this.state.time }
                 </Badge>
+              </div>
+              <div>
               </div>
               <Form onSubmit={ e => {
                                    this.handleSubmit(e);
@@ -323,13 +333,13 @@ class RoundUpdate extends Component {
                 <Table>
                   <thead>
                     <tr>
-                      <th>#
-                        { this.state.lockTermRound }
-                      </th>
                       <th>Home Team</th>
                       <th>Score</th>
                       <th>Away Team</th>
                       <th>Score</th>
+                      <th>Round #
+                        { this.state.lockTermRound }
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -337,14 +347,14 @@ class RoundUpdate extends Component {
                   </tbody>
                 </Table>
                 <Button type="submit" className="btn btn-success pull-right">Save</Button>
-                <Button onClick={ e => {
-                                      this.lockRound(e)
-                                  } } className="btn btn-danger glyphicon glyphicon-lock">Lock</Button>
-                <span>.  </span>
+                { /* <Button onClick={ e => {
+                                                                                                                                                                      this.lockRound(e)
+                                                                                                                                                                  } } className="btn btn-danger glyphicon glyphicon-lock pull-left">Lock</Button>
+                                                                                                                                                <span>.  </span> */ }
                 <Button onClick={ e => {
                                       e.preventDefault();
                                       this.setData(this.props.round);
-                                  } } className="btn btn-info glyphicon glyphicon-refresh">Cancel</Button>
+                                  } } className="btn btn-info glyphicon glyphicon-refresh pull-left">Cancel</Button>
               </Form>
             </Panel>
         )
