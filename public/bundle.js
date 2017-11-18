@@ -85407,6 +85407,7 @@ var RoundUpdate = function (_Component) {
         };
 
         _this.state = {
+            submit: true,
             defaultSeason: "2017 - 2018",
             seasonTerm: "Season",
             wait: true,
@@ -85464,6 +85465,7 @@ var RoundUpdate = function (_Component) {
         _this.setData = _this.setData.bind(_this);
         _this.lockRound = _this.lockRound.bind(_this);
         _this.findLock = _this.findLock.bind(_this);
+        _this.disableSubmit = _this.disableSubmit.bind(_this);
         return _this;
     }
 
@@ -85485,6 +85487,7 @@ var RoundUpdate = function (_Component) {
 
             if (nextProps.round.length > 1) {
                 this.setData(nextProps.round);
+                this.disableSubmit(nextProps.round);
             }
         }
     }, {
@@ -85509,17 +85512,41 @@ var RoundUpdate = function (_Component) {
             });
 
             this.getRound(drawResult[0]);
-            // console.log(`result of holdArray:  ${lockResult}  drawResults:  ${drawResult}`);
+        }
+    }, {
+        key: 'disableSubmit',
+        value: function disableSubmit(data) {
+            var _this2 = this;
+
+            data.map(function (x, index) {
+                var _state$data$index = _this2.state.data[index],
+                    home = _state$data$index.home,
+                    away = _state$data$index.away;
+
+                if (home == 0 && away == 0) {
+                    console.log('VALUE IS  = to 0');
+                    _this2.setState({
+                        submit: true
+                    });
+                } else if (home !== 0 && away !== 0) {
+                    // console.log(`away:`, away);
+                    // console.log(`home:`, home);
+                    console.log('VALUE IS = to null');
+                    _this2.setState({
+                        submit: false
+                    });
+                }
+            });
         }
     }, {
         key: 'setData',
         value: function setData(data) {
-            var _this2 = this;
+            var _this3 = this;
 
             data.map(function (x, index) {
-                _this2.setState({
+                _this3.setState({
                     time: x.date,
-                    data: _extends({}, _this2.state.data, _this2.state.data[index] = _extends({}, _this2.state.data[index], {
+                    data: _extends({}, _this3.state.data, _this3.state.data[index] = _extends({}, _this3.state.data[index], {
                         _id: x._id,
                         home: x.goalsHome,
                         away: x.goalsAway,
@@ -85591,14 +85618,24 @@ var RoundUpdate = function (_Component) {
             this.getRound(this.state.getRoundTerm);
         }
     }, {
+        key: 'lockRoundSingle',
+        value: function lockRoundSingle(e, _id, lock) {
+            e.preventDefault();
+
+            this.props.patchRoundLock(!lock, _id);
+            this.getRound(this.state.lockTermRound);
+        }
+    }, {
         key: 'renderForms',
         value: function renderForms() {
-            var _this3 = this;
+            var _this4 = this;
 
             return this.props.round.map(function (x, index) {
 
-                var classNameHome = '' + (_this3.state.data['' + index].home ? 'success' : 'error');
-                var classNameAway = '' + (_this3.state.data['' + index].away ? 'success' : 'error');
+                var classNameHome = '' + (_this4.state.data['' + index].home ? 'success' : 'error');
+                var classNameAway = '' + (_this4.state.data['' + index].away ? 'success' : 'error');
+                var className = x.lock ? 'btn-success glyphicon glyphicon-remove-sign btn-xs' : 'btn btn-danger glyphicon glyphicon-lock btn-xs';
+                var lockGame = x.lock ? 'Unlock game' : 'lock game';
                 var disable = false;
                 if (x.lock) {
                     disable = true;
@@ -85622,11 +85659,11 @@ var RoundUpdate = function (_Component) {
                                 null,
                                 'Gaols'
                             ),
-                            _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(e) {
-                                    _this3.onChangeHandler(e, index, 'home', x._id);
-                                    console.log(_this3.state);
-                                }, type: 'text', placeholder: x.goalsHome, value: _this3.state.data['' + index].home || " ", disabled: disable, style: { width: "50px" }
-                            })
+                            _react2.default.createElement(_reactBootstrap.FormControl, { id: x.homeTeam + '-home', name: x.homeTeam + '-home', type: 'text', placeholder: x.goalsHome, value: _this4.state.data['' + index].home || " ", disabled: disable,
+                                style: { width: "50px" }, onChange: function onChange(e) {
+                                    _this4.onChangeHandler(e, index, 'home', x._id);
+                                    console.log(_this4.state);
+                                } })
                         )
                     ),
                     _react2.default.createElement(
@@ -85645,10 +85682,10 @@ var RoundUpdate = function (_Component) {
                                 null,
                                 'Goals'
                             ),
-                            _react2.default.createElement(_reactBootstrap.FormControl, { onChange: function onChange(e) {
-                                    _this3.onChangeHandler(e, index, 'away', x._id);
-                                }, type: 'text', placeholder: x.goalsAway, value: _this3.state.data['' + index].away || " ", disabled: disable, style: { width: "50px" }
-                            })
+                            _react2.default.createElement(_reactBootstrap.FormControl, { id: x.awayTeam + '-away', name: x.awayTeam + '-away', type: 'text', placeholder: x.goalsAway, value: _this4.state.data['' + index].away || " ", disabled: disable,
+                                style: { width: "50px" }, onChange: function onChange(e) {
+                                    _this4.onChangeHandler(e, index, 'away', x._id);
+                                } })
                         )
                     ),
                     _react2.default.createElement(
@@ -85657,7 +85694,8 @@ var RoundUpdate = function (_Component) {
                         _react2.default.createElement(
                             'label',
                             null,
-                            'Lock Game '
+                            lockGame,
+                            ' '
                         ),
                         _react2.default.createElement(
                             'span',
@@ -85665,7 +85703,9 @@ var RoundUpdate = function (_Component) {
                             " ",
                             '  '
                         ),
-                        _react2.default.createElement(_reactBootstrap.Button, { className: 'btn btn-danger glyphicon glyphicon-lock btn-xs', type: 'checkbox', value: '' })
+                        _react2.default.createElement(_reactBootstrap.Button, { onClick: function onClick(e) {
+                                _this4.lockRoundSingle(e, x._id, x.lock);
+                            }, className: className, value: '' })
                     )
                 );
             });
@@ -85673,7 +85713,7 @@ var RoundUpdate = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             return _react2.default.createElement(
                 _reactBootstrap.Panel,
@@ -85696,7 +85736,7 @@ var RoundUpdate = function (_Component) {
                         'Select Season: '
                     ),
                     _react2.default.createElement(_roundItem2.default, { onCallback: function onCallback(season) {
-                            _this4.setState({
+                            _this5.setState({
                                 season: season
                             });
                         }, draw: removeDouble(this.props.draw, 'season'), term: this.state.seasonTerm })
@@ -85711,12 +85751,12 @@ var RoundUpdate = function (_Component) {
                     ),
                     _react2.default.createElement(_roundItem2.default, { onCallback: function onCallback(division) {
                             //console.log(`callback div:`, division)
-                            _this4.setState({
+                            _this5.setState({
                                 division: division
                             });
 
                             //make get request for a filtered draw of division & season
-                            _this4.setupRounds(division);
+                            _this5.setupRounds(division);
                         }, draw: removeDouble(this.props.draw, 'divCode'), term: "Division" })
                 ),
                 _react2.default.createElement(
@@ -85732,12 +85772,12 @@ var RoundUpdate = function (_Component) {
                             {
                                 /* console.log('this click is working') */
                             }
-                            _this4.setState({
+                            _this5.setState({
                                 getRoundTerm: getRoundTerm,
                                 lockTermRound: getRoundTerm,
                                 wait: true
                             });
-                            _this4.getRound(getRoundTerm);
+                            _this5.getRound(getRoundTerm);
                         }, draw: removeDouble(this.props.drawRound, 'roundNumber'), term: "Round" }),
                     _react2.default.createElement(
                         'span',
@@ -85756,7 +85796,7 @@ var RoundUpdate = function (_Component) {
                 _react2.default.createElement(
                     _reactBootstrap.Form,
                     { onSubmit: function onSubmit(e) {
-                            _this4.handleSubmit(e);
+                            _this5.handleSubmit(e);
                         } },
                     _react2.default.createElement(
                         _reactBootstrap.Table,
@@ -85808,8 +85848,8 @@ var RoundUpdate = function (_Component) {
                     ),
                     _react2.default.createElement(
                         _reactBootstrap.Button,
-                        { onClick: function onClick(e) {
-                                _this4.lockRound(e);
+                        { disabled: this.state.submit, onClick: function onClick(e) {
+                                _this5.lockRound(e);
                             }, className: 'btn btn-danger glyphicon glyphicon-lock pull-left' },
                         'Lock'
                     ),
@@ -85824,7 +85864,7 @@ var RoundUpdate = function (_Component) {
                         _reactBootstrap.Button,
                         { onClick: function onClick(e) {
                                 e.preventDefault();
-                                _this4.setData(_this4.props.round);
+                                _this5.setData(_this5.props.round);
                             }, className: 'btn btn-info glyphicon glyphicon-refresh pull-left' },
                         'Cancel'
                     )

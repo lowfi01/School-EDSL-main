@@ -51,6 +51,7 @@ class RoundUpdate extends Component {
 
 
         this.state = ({
+            submit: true,
             defaultSeason: "2017 - 2018",
             seasonTerm: "Season",
             wait: true,
@@ -109,6 +110,7 @@ class RoundUpdate extends Component {
         this.setData = this.setData.bind(this);
         this.lockRound = this.lockRound.bind(this);
         this.findLock = this.findLock.bind(this);
+        this.disableSubmit = this.disableSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -129,6 +131,7 @@ class RoundUpdate extends Component {
 
         if (nextProps.round.length > 1) {
             this.setData(nextProps.round)
+            this.disableSubmit(nextProps.round)
         }
 
     }
@@ -153,7 +156,26 @@ class RoundUpdate extends Component {
         });
 
         this.getRound(drawResult[0]);
-    // console.log(`result of holdArray:  ${lockResult}  drawResults:  ${drawResult}`);
+    }
+
+
+    disableSubmit(data) {
+        data.map((x, index) => {
+            const {home, away} = this.state.data[index];
+            if (home == 0 && away == 0) {
+                console.log(`VALUE IS  = to 0`);
+                this.setState({
+                    submit: true
+                })
+            } else if (home !== 0 && away !== 0) {
+                // console.log(`away:`, away);
+                // console.log(`home:`, home);
+                console.log(`VALUE IS = to null`);
+                this.setState({
+                    submit: false
+                })
+            }
+        })
     }
 
     setData(data) {
@@ -240,6 +262,14 @@ class RoundUpdate extends Component {
         this.getRound(this.state.getRoundTerm);
     }
 
+    lockRoundSingle(e, _id, lock) {
+        e.preventDefault();
+
+        this.props.patchRoundLock(!lock, _id);
+        this.getRound(this.state.lockTermRound);
+
+    }
+
     renderForms() {
 
 
@@ -250,6 +280,8 @@ class RoundUpdate extends Component {
 
             const classNameHome = `${this.state.data[`${index}`].home? `success`: `error`}`;
             const classNameAway = `${this.state.data[`${index}`].away? `success`: `error`}`;
+            const className = x.lock ? `btn-success glyphicon glyphicon-remove-sign btn-xs` : `btn btn-danger glyphicon glyphicon-lock btn-xs`;
+            const lockGame = x.lock ? `Unlock game` : `lock game`;
             let disable = false;
             if (x.lock) {
                 disable = true;
@@ -263,11 +295,11 @@ class RoundUpdate extends Component {
                   <td>
                     <FormGroup validationState={ classNameHome }>
                       <ControlLabel>Gaols</ControlLabel>
-                      <FormControl onChange={ e => {
-                                                  this.onChangeHandler(e, index, `home`, x._id)
-                                                  console.log(this.state)
-                                              } } type="text" placeholder={ x.goalsHome } value={ this.state.data[`${index}`].home || " " } disabled={ disable } style={ { width: "50px" } }
-                      />
+                      <FormControl id={ `${x.homeTeam}-home` } name={ `${x.homeTeam}-home` } type="text" placeholder={ x.goalsHome } value={ this.state.data[`${index}`].home || " " } disabled={ disable }
+                        style={ { width: "50px" } } onChange={ e => {
+                                                                   this.onChangeHandler(e, index, `home`, x._id)
+                                                                   console.log(this.state)
+                                                               } } />
                     </FormGroup>
                   </td>
                   <td>
@@ -276,16 +308,19 @@ class RoundUpdate extends Component {
                   <td>
                     <FormGroup validationState={ classNameAway }>
                       <ControlLabel>Goals</ControlLabel>
-                      <FormControl onChange={ e => {
-                                                  this.onChangeHandler(e, index, `away`, x._id);
-                                              } } type="text" placeholder={ x.goalsAway } value={ this.state.data[`${index}`].away || " " } disabled={ disable } style={ { width: "50px" } }
-                      />
+                      <FormControl id={ `${x.awayTeam}-away` } name={ `${x.awayTeam}-away` } type="text" placeholder={ x.goalsAway } value={ this.state.data[`${index}`].away || " " } disabled={ disable }
+                        style={ { width: "50px" } } onChange={ e => {
+                                                                   this.onChangeHandler(e, index, `away`, x._id);
+                                                               } } />
                     </FormGroup>
                   </td>
                   <td>
-                    <label>Lock Game </label>
+                    <label>
+                      { lockGame } </label>
                     <span>{ " " }  </span>
-                    <Button className="btn btn-danger glyphicon glyphicon-lock btn-xs" type="checkbox" value="" />
+                    <Button onClick={ (e) => {
+                                          this.lockRoundSingle(e, x._id, x.lock);
+                                      } } className={ className } value="" />
                   </td>
                 </tr>
 
@@ -367,10 +402,12 @@ class RoundUpdate extends Component {
                     { this.renderForms() }
                   </tbody>
                 </Table>
-                <Button type="submit" className="btn btn-success pull-right">Save</Button>
-                <Button onClick={ e => {
-                                      this.lockRound(e)
-                                  } } className="btn btn-danger glyphicon glyphicon-lock pull-left">Lock</Button>
+                <Button type="submit" className="btn btn-success pull-right">
+                  Save
+                </Button>
+                <Button disabled={ this.state.submit } onClick={ e => {
+                                                                     this.lockRound(e)
+                                                                 } } className="btn btn-danger glyphicon glyphicon-lock pull-left">Lock</Button>
                 <span> { ' ' } </span>
                 <Button onClick={ e => {
                                       e.preventDefault();
