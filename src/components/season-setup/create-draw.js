@@ -47,6 +47,7 @@ class CreateDraw extends Component {
 
         const divNames1 = _.map(division1, 'teamName')
         let div1 = robin(division1.length, division1)
+        console.log(`list of teams:`, divNames1);
 
         const division2 = _.remove(team2, team => {
             //console.log(`lodash remove:`, team.division.divCode)
@@ -382,14 +383,14 @@ class CreateDraw extends Component {
                 </Table>
               </div>
               <span className="pull-right">
-                                                    <input type="text" placeholder="Insert Label for draw"></input>
-                                                    <Button
+                                                                <input type="text" placeholder="Insert Label for draw"></input>
+                                                                <Button
                         className="btn pull-right"
                         onClick={ e => {
                                       this
                                           .saveDraw(e)
                                   } }>Save Draw</Button>
-                                                    </span>
+                                                                </span>
             </Panel>
         )
     }

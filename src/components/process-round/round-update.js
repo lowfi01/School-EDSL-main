@@ -294,7 +294,7 @@ class RoundUpdate extends Component {
                   </td>
                   <td>
                     <FormGroup validationState={ classNameHome }>
-                      <ControlLabel>Gaols</ControlLabel>
+                      <ControlLabel>Goals</ControlLabel>
                       <FormControl id={ `${x.homeTeam}-home` } name={ `${x.homeTeam}-home` } type="text" placeholder={ x.goalsHome } value={ this.state.data[`${index}`].home || " " } disabled={ disable }
                         style={ { width: "50px" } } onChange={ e => {
                                                                    this.onChangeHandler(e, index, `home`, x._id)

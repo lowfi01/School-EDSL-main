@@ -13,6 +13,7 @@ import SignUpContainer from './components/login';
 import SeasonSetup from './components/season-setup.js';
 import ProcessRound from './components/process-round';
 import roundUpdateLocal from './components/process-round/round-update-local';
+import Ladder from './components/ladder.js';
 
 
 // IMPORT REDUCERS
@@ -34,6 +35,7 @@ ReactDOM.render(
           <Route exact path="/round" component={ ProcessRound } />
           <Route exact path="/login" component={ SignUpContainer } />
           <Route exact path="/local" component={ roundUpdateLocal } />
+          <Route exact path="/ladder" component={ Ladder } />
           <Route component={ () => <div>Not found</div> } />
         </Switch>
       </div>
