@@ -52,6 +52,128 @@ app.use(function(req, res, next) {
 var Clubs = require('./models/clubs');
 var Teams = require('./models/teams');
 var Rounds = require('./models/rounds');
+var Table = require('./models/table');
+var Dates = require('./models/dates');
+
+
+// ------>> dates <<< --------
+app.get('/dates', (req, res) => {
+    Dates
+        .find({})
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+app.post('/dates', (req, res) => {
+
+    let dates = req.body.dates;
+    var date = new Dates({
+        dates
+    });
+
+    // save doc & send back
+    date
+        .save()
+        .then((doc) => {
+            res.send(doc);
+        }, (e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+// ------>> TABLE <<< --------
+app.get('/tables/season/:currentSeason/:div', (req, res) => {
+    const currentSeason = req.params.currentSeason;
+    const division = req.params.div
+    Table
+        .find({
+            currentSeason,
+            division
+        })
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+// app.get('/tables', (req, res) => {
+//     Table
+//         .find({})
+//         .then((docs) => {
+//             // we could use todos[0], but passing an object allows for more customization
+//             // {todos, text: 'example'}
+//             res.send(docs);
+
+//         })
+//         .catch((e) => {
+//             res
+//                 .status(400)
+//                 .send(e);
+//         });
+// });
+
+app.get('/tables/seasons', (req, res) => {
+    Table
+        .find({}, {
+            currentSeason: 1,
+            division: 1,
+            _id: 0
+        })
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+app.post('/tables/:div/:season', (req, res) => {
+
+    // create document - using req.body.text
+    console.log("hello world");
+    let div = req.params.div;
+    let currentSeason = req.params.season
+    let term = req.body.term;
+    var table = new Table({
+        table: term,
+        division: div,
+        currentSeason
+    });
+
+    // save doc & send back
+    table
+        .save()
+        .then((doc) => {
+            console.log(`/POST table: `, doc)
+            res.send(doc);
+        }, (e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
 
 // ------>> ROUND <<< --------
 app.patch('/rounds/:lock/:id', (req, res) => {

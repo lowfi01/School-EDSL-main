@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Table, ButtonToolbar, SplitButton, MenuItem, Panel } from 'react-bootstrap'
 
 //IMPORT ACTIONS
-import { getTeams, postRound } from './../../action';
+import { getTeams, postRound, postTable, postDates } from './../../action';
 
 class CreateDraw extends Component {
     constructor() {
@@ -194,6 +194,7 @@ class CreateDraw extends Component {
         this.setState({
             dates: array
         })
+        this.props.postDates(array)
     }
 
     onSplitButton(text) {
@@ -222,6 +223,9 @@ class CreateDraw extends Component {
 
 
         let div = `div${term}`
+        this.setState({
+            currentDiv: `div${term}`
+        })
         let holdMeBaby = this.state.draw[`${div}`]
         // console.log(`draw`, this.state.draw[`${div}`])
 
@@ -239,6 +243,8 @@ class CreateDraw extends Component {
             }
         }
 
+
+
         let newDraw = [];
         for (var i = 0; i < holdMeBaby.length; i++) {
             for (var o = 0; o < holdMeBaby[0].length; o++) {
@@ -253,20 +259,22 @@ class CreateDraw extends Component {
                     goalsHome: 0,
                     goalsAway: 0,
                     lock: false,
-                    season: `${this.state.startingDate} - ${this.state.endingDate}`,
+                    season: `${this.state.startingDate}-${this.state.endingDate}`,
                 })
             }
         }
 
         this.setState({
-            currentDraw: newDraw
+            currentDraw: newDraw,
+            currentSeason: `${this.state.startingDate}-${this.state.endingDate}`
         })
         console.log(`holdMeBaby:`, holdMeBaby);
         console.log(newDraw);
 
         // this.props.postRound(newDraw[1]) console.log(`roundsArray`, roundsArray)
         this.setState({
-            drawTeam: roundsArray
+            drawTeam: roundsArray,
+            holdMeBaby
         })
         console.log('this be draw team', roundsArray);
     // console.log(`drawTeam:`, roundsArray); console.log(`date:`,
@@ -281,6 +289,9 @@ class CreateDraw extends Component {
                 .props
                 .postRound(x)
         })
+
+
+        this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason);
     }
     render() {
 
@@ -294,7 +305,7 @@ class CreateDraw extends Component {
                 // should be 0 or 1`, roundNum % 1)
 
                 const num = this.state.draw[`div${this.state.term}`][0].length
-                // console.log(`drawTeam`, this.state.drawTeam)
+                //console.log(`draw`, this.state.draw[`div${this.state.term}`][0])
                 let roundNum = (index / num + 1);
                 // console.log(`result mod`, (roundNum % 1)) for (let x = 0; x <
                 // this.props.season.season.other.length; x++) {     const check =
@@ -353,8 +364,7 @@ class CreateDraw extends Component {
         return (
             <Panel className="draw-panel">
               <div className="draw-content" style={ { 'padding-left': '1em', 'padding-bottom': '1em' } }>
-                <Button className="btn btn-primary" onClick={ this
-                                                                  .createDraw
+                <Button className="btn btn-primary" onClick={ this.createDraw
                                                                   .bind(this) } disabled={ !this.state.value }>Create Draw</Button>
                 <SplitButton disabled={ this.state.value } title={ `View division ${this.state.divTerm} draw` } pullRight id="split-button-pull-right">
                   <MenuItem onClick={ (event) => {
@@ -383,14 +393,13 @@ class CreateDraw extends Component {
                 </Table>
               </div>
               <span className="pull-right">
-                                                                <input type="text" placeholder="Insert Label for draw"></input>
-                                                                <Button
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <Button
                         className="btn pull-right"
                         onClick={ e => {
                                       this
                                           .saveDraw(e)
                                   } }>Save Draw</Button>
-                                                                </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </span>
             </Panel>
         )
     }
@@ -405,5 +414,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     getTeams,
-    postRound
+    postRound,
+    postTable,
+    postDates
 })(CreateDraw);

@@ -14,6 +14,7 @@ import SeasonSetup from './components/season-setup.js';
 import ProcessRound from './components/process-round';
 import roundUpdateLocal from './components/process-round/round-update-local';
 import Ladder from './components/ladder.js';
+import Table from './components/table.js';
 
 
 // IMPORT REDUCERS
@@ -36,6 +37,7 @@ ReactDOM.render(
           <Route exact path="/login" component={ SignUpContainer } />
           <Route exact path="/local" component={ roundUpdateLocal } />
           <Route exact path="/ladder" component={ Ladder } />
+          <Route exact path="/table" component={ Table } />
           <Route component={ () => <div>Not found</div> } />
         </Switch>
       </div>

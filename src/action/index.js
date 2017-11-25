@@ -140,3 +140,80 @@ export function patchRoundLock(lock, id) {
   }
 
 }
+
+
+export function postTable(term, div, season) {
+  const request = axios.post(`/tables/${div}/${season}`, {
+    term
+  });
+
+
+  return {
+    type: 'POST_TABLE',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+
+// export function getTable() {
+//   const request = axios.get(`/tables`);
+
+//   // console.log(`Request: `, request)
+
+//   return {
+//     type: 'GET_TABLE',
+//     // Send promise back as payload
+//     payload: request,
+//   };
+// }
+
+export function getTable(season, division) {
+  const request = axios.get(`/tables/season/${season}/${division}`);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_TABLE',
+    // Send promise back as payload
+    payload: request,
+  };
+}
+
+
+export function getSeasonTable() {
+  const request = axios.get(`/tables/seasons`);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_TABLESEASON',
+    // Send promise back as payload
+    payload: request,
+  };
+}
+export function postDates(dates) {
+  const request = axios.post(`/dates`, {
+    dates
+  });
+
+
+  return {
+    type: 'POST_DATES',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+
+export function getDate() {
+  const request = axios.get(`/dates`);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_DATES',
+    // Send promise back as payload
+    payload: request,
+  };
+}

@@ -9436,6 +9436,11 @@ exports.getDrawRound = getDrawRound;
 exports.getDraw = getDraw;
 exports.patchRound = patchRound;
 exports.patchRoundLock = patchRoundLock;
+exports.postTable = postTable;
+exports.getTable = getTable;
+exports.getSeasonTable = getSeasonTable;
+exports.postDates = postDates;
+exports.getDate = getDate;
 
 var _axios = __webpack_require__(664);
 
@@ -9574,6 +9579,77 @@ function patchRoundLock(lock, id) {
 
   return {
     type: 'LOCK_ROUND',
+    payload: request
+  };
+}
+
+function postTable(term, div, season) {
+  var request = _axios2.default.post('/tables/' + div + '/' + season, {
+    term: term
+  });
+
+  return {
+    type: 'POST_TABLE',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+// export function getTable() {
+//   const request = axios.get(`/tables`);
+
+//   // console.log(`Request: `, request)
+
+//   return {
+//     type: 'GET_TABLE',
+//     // Send promise back as payload
+//     payload: request,
+//   };
+// }
+
+function getTable(season, division) {
+  var request = _axios2.default.get('/tables/season/' + season + '/' + division);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_TABLE',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+function getSeasonTable() {
+  var request = _axios2.default.get('/tables/seasons');
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_TABLESEASON',
+    // Send promise back as payload
+    payload: request
+  };
+}
+function postDates(dates) {
+  var request = _axios2.default.post('/dates', {
+    dates: dates
+  });
+
+  return {
+    type: 'POST_DATES',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+function getDate() {
+  var request = _axios2.default.get('/dates');
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_DATES',
+    // Send promise back as payload
     payload: request
   };
 }
@@ -25835,18 +25911,18 @@ var Menu = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.NavItem,
-              { eventKey: 3, href: '/round' },
+              { eventKey: 3, href: '/table' },
+              'View Table'
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.NavItem,
+              { eventKey: 4, href: '/round' },
               'Process Round'
             ),
             _react2.default.createElement(
               _reactBootstrap.NavItem,
-              { eventKey: 4, href: '/ladder' },
+              { eventKey: 5, href: '/ladder' },
               'Ladder'
-            ),
-            _react2.default.createElement(
-              _reactBootstrap.NavItem,
-              { eventKey: 5, href: '/contacts' },
-              'Contact Us'
             )
           ),
           _react2.default.createElement(
@@ -54443,6 +54519,10 @@ var _ladder = __webpack_require__(695);
 
 var _ladder2 = _interopRequireDefault(_ladder);
 
+var _table = __webpack_require__(703);
+
+var _table2 = _interopRequireDefault(_table);
+
 var _reducers = __webpack_require__(697);
 
 var _reducers2 = _interopRequireDefault(_reducers);
@@ -54452,10 +54532,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // class App extends Component{     render(){         return(             <div>
 //          <AddTeamDivision />             </div>         )     } }
 
-// IMPORT COMPONENTS
 var createStoreWithMiddleware = (0, _redux.applyMiddleware)(_reduxPromise2.default, _reduxLogger2.default)(_redux.createStore);
 
 // IMPORT REDUCERS
+
+
+// IMPORT COMPONENTS
 
 
 _reactDom2.default.render(_react2.default.createElement(
@@ -54477,6 +54559,7 @@ _reactDom2.default.render(_react2.default.createElement(
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/login', component: _login2.default }),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/local', component: _roundUpdateLocal2.default }),
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/ladder', component: _ladder2.default }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/table', component: _table2.default }),
         _react2.default.createElement(_reactRouterDom.Route, { component: function component() {
             return _react2.default.createElement(
               'div',
@@ -84935,6 +85018,7 @@ var CreateDraw = function (_Component) {
             this.setState({
                 dates: array
             });
+            this.props.postDates(array);
         }
     }, {
         key: 'onSplitButton',
@@ -84959,6 +85043,9 @@ var CreateDraw = function (_Component) {
 
 
             var div = 'div' + term;
+            this.setState({
+                currentDiv: 'div' + term
+            });
             var holdMeBaby = this.state.draw['' + div];
             // console.log(`draw`, this.state.draw[`${div}`])
 
@@ -84990,20 +85077,22 @@ var CreateDraw = function (_Component) {
                         goalsHome: 0,
                         goalsAway: 0,
                         lock: false,
-                        season: this.state.startingDate + ' - ' + this.state.endingDate
+                        season: this.state.startingDate + '-' + this.state.endingDate
                     });
                 }
             }
 
             this.setState({
-                currentDraw: newDraw
+                currentDraw: newDraw,
+                currentSeason: this.state.startingDate + '-' + this.state.endingDate
             });
             console.log('holdMeBaby:', holdMeBaby);
             console.log(newDraw);
 
             // this.props.postRound(newDraw[1]) console.log(`roundsArray`, roundsArray)
             this.setState({
-                drawTeam: roundsArray
+                drawTeam: roundsArray,
+                holdMeBaby: holdMeBaby
             });
             console.log('this be draw team', roundsArray);
             // console.log(`drawTeam:`, roundsArray); console.log(`date:`,
@@ -85019,6 +85108,8 @@ var CreateDraw = function (_Component) {
             this.state.currentDraw.map(function (x) {
                 _this2.props.postRound(x);
             });
+
+            this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason);
         }
     }, {
         key: 'render',
@@ -85032,7 +85123,7 @@ var CreateDraw = function (_Component) {
                 // should be 0 or 1`, roundNum % 1)
 
                 var num = _this3.state.draw['div' + _this3.state.term][0].length;
-                // console.log(`drawTeam`, this.state.drawTeam)
+                //console.log(`draw`, this.state.draw[`div${this.state.term}`][0])
                 var roundNum = index / num + 1;
                 // console.log(`result mod`, (roundNum % 1)) for (let x = 0; x <
                 // this.props.season.season.other.length; x++) {     const check =
@@ -85188,7 +85279,6 @@ var CreateDraw = function (_Component) {
                 _react2.default.createElement(
                     'span',
                     { className: 'pull-right' },
-                    _react2.default.createElement('input', { type: 'text', placeholder: 'Insert Label for draw' }),
                     _react2.default.createElement(
                         _reactBootstrap.Button,
                         {
@@ -85215,7 +85305,9 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, {
     getTeams: _action.getTeams,
-    postRound: _action.postRound
+    postRound: _action.postRound,
+    postTable: _action.postTable,
+    postDates: _action.postDates
 })(CreateDraw);
 
 /***/ }),
@@ -85517,7 +85609,8 @@ var RoundUpdate = function (_Component) {
             });
 
             this.setState({
-                lockTermRound: drawResult[0]
+                lockTermRound: drawResult[0],
+                getRoundTerm: drawResult[0]
             });
 
             this.getRound(drawResult[0]);
@@ -85646,6 +85739,7 @@ var RoundUpdate = function (_Component) {
                 var className = x.lock ? 'btn-success glyphicon glyphicon-remove-sign btn-xs' : 'btn btn-danger glyphicon glyphicon-lock btn-xs';
                 var lockGame = x.lock ? 'Unlock game' : 'lock game';
                 var disable = false;
+                var lockPad = x.goalsHome && x.awayTeam ? false : true;
                 if (x.lock) {
                     disable = true;
                 }
@@ -85714,7 +85808,7 @@ var RoundUpdate = function (_Component) {
                         ),
                         _react2.default.createElement(_reactBootstrap.Button, { onClick: function onClick(e) {
                                 _this4.lockRoundSingle(e, x._id, x.lock);
-                            }, className: className, value: '' })
+                            }, className: className, value: '', disabled: lockPad })
                     )
                 );
             });
@@ -86409,13 +86503,23 @@ var _drawReducer = __webpack_require__(701);
 
 var _drawReducer2 = _interopRequireDefault(_drawReducer);
 
+var _tableReducer = __webpack_require__(705);
+
+var _tableReducer2 = _interopRequireDefault(_tableReducer);
+
+var _dateReducer = __webpack_require__(707);
+
+var _dateReducer2 = _interopRequireDefault(_dateReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rootReducer = (0, _redux.combineReducers)({
     teams: _teamsReducers2.default,
     divisions: _divisionReducers2.default,
     season: _seasonSetupReducers2.default,
-    draw: _drawReducer2.default
+    draw: _drawReducer2.default,
+    table: _tableReducer2.default,
+    dates: _dateReducer2.default
 });
 
 exports.default = rootReducer;
@@ -86497,19 +86601,26 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { season: [] };
-    var action = arguments[1];
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    season: [],
+    table: []
+  };
+  var action = arguments[1];
 
-    switch (action.type) {
-        case 'ADD_SEASON':
-            return { season: action.payload };
-    }
+  switch (action.type) {
+    case 'ADD_SEASON':
+      return {
+        season: action.payload
+      };
+      break;
 
-    return state;
+  }
+
+  return state;
 };
 
 /***/ }),
@@ -86526,21 +86637,30 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { draw: [], drawSetup: [], round: [] };
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+        draw: [],
+        drawSetup: [],
+        round: []
+    };
     var action = arguments[1];
 
     // create switch statement
     switch (action.type) {
         case 'GET_DRAW':
             //console.log(action.payload)
-            return _extends({}, state, { draw: [].concat(_toConsumableArray(action.payload.data))
+            return _extends({}, state, {
+                draw: [].concat(_toConsumableArray(action.payload.data))
                 // alternative code return state.concat([action.payload.data]);
             });break;
         case 'GET_DRAW_SETUP':
-            return _extends({}, state, { drawSetup: [].concat(_toConsumableArray(action.payload.data)) });
+            return _extends({}, state, {
+                drawSetup: [].concat(_toConsumableArray(action.payload.data))
+            });
             break;
         case 'GET_DRAW_ROUND':
-            return _extends({}, state, { round: [].concat(_toConsumableArray(action.payload.data)) });
+            return _extends({}, state, {
+                round: [].concat(_toConsumableArray(action.payload.data))
+            });
             break;
     }
     return state;
@@ -86619,6 +86739,461 @@ var LadderItem = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = LadderItem;
+
+/***/ }),
+/* 703 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _tableDisplay = __webpack_require__(704);
+
+var _tableDisplay2 = _interopRequireDefault(_tableDisplay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//Component
+
+
+var Table = function (_Component) {
+  _inherits(Table, _Component);
+
+  function Table() {
+    _classCallCheck(this, Table);
+
+    return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));
+  }
+
+  _createClass(Table, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(_tableDisplay2.default, null);
+    }
+  }]);
+
+  return Table;
+}(_react.Component);
+
+exports.default = Table;
+
+/***/ }),
+/* 704 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(41);
+
+var _reactBootstrap = __webpack_require__(28);
+
+var _tableItem = __webpack_require__(706);
+
+var _tableItem2 = _interopRequireDefault(_tableItem);
+
+var _action = __webpack_require__(57);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// ACTIONS
+
+
+function removeDouble(a, term) {
+  // a = draw term = drop down menu item
+  var seen = {};
+  var out = [];
+  var len = a.length;
+  var j = 0;
+  for (var i = 0; i < len; i++) {
+    var item = a[i]['' + term];
+    if (seen[item] !== 1) {
+      seen[item] = 1;
+      out[j++] = item;
+    }
+  }
+  return out;
+}
+
+var TableDisplay = function (_Component) {
+  _inherits(TableDisplay, _Component);
+
+  function TableDisplay() {
+    _classCallCheck(this, TableDisplay);
+
+    var _this = _possibleConstructorReturn(this, (TableDisplay.__proto__ || Object.getPrototypeOf(TableDisplay)).call(this));
+
+    _this.state = {
+      seasonTerm: "Season"
+    };
+
+    _this.onSubmit = _this.onSubmit.bind(_this);
+    _this.renderTable = _this.renderTable.bind(_this);
+    _this.setupData = _this.setupData.bind(_this);
+    return _this;
+  }
+
+  _createClass(TableDisplay, [{
+    key: 'onSubmit',
+    value: function onSubmit(e) {
+      e.preventDefault();
+      // console.log(`render button`, this.state)
+      // console.log(`props`, this.props)
+    }
+  }, {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.getSeasonTable();
+      this.props.getDate();
+      //this.props.getTable("2017-2018");
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      console.log('nextProps', nextProps);
+      if (this.props.tables !== nextProps.tables) {
+        this.setupData(nextProps.tables);
+      }
+    }
+  }, {
+    key: 'setupData',
+    value: function setupData(arr) {
+      // arr.map((array, index) => {
+      //   this.setState({
+      //     [array.table[0][0].division.divCode]: array
+      //   })
+      // // console.log('ARRAY', array.table);
+      // // console.log('state', this.state);
+      // })
+    }
+  }, {
+    key: 'renderTable',
+    value: function renderTable(data, i) {
+      var _this2 = this;
+
+      console.log(data);
+
+      return data.map(function (x, index) {
+        var num = data.length;
+        var roundNum = index / num + 1;
+
+        if (roundNum % 1 === 0) {
+          return _react2.default.createElement(
+            'tr',
+            { key: index },
+            _react2.default.createElement(
+              'td',
+              null,
+              _this2.props.dates.dates[i]
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              x[0].teamName
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              _react2.default.createElement(
+                'a',
+                { href: 'https://www.google.com/maps/place/' + encodeURI(x[0].club.location).replace(/%20/g, "+") },
+                x[0].club.location
+              )
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              x[1].teamName
+            )
+          );
+        } else {
+          return _react2.default.createElement(
+            'tr',
+            { key: index },
+            _react2.default.createElement('td', null),
+            _react2.default.createElement(
+              'td',
+              null,
+              x[0].teamName
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              _react2.default.createElement(
+                'a',
+                { href: 'https://www.google.com/maps/place/' + encodeURI(x[0].club.location).replace(/%20/g, "+") },
+                x[0].club.location
+              )
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              x[1].teamName
+            )
+          );
+        }
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'label',
+            { htmlFor: '' },
+            'Select Season: '
+          ),
+          _react2.default.createElement(_tableItem2.default, { onCallback: function onCallback(season) {
+              _this3.setState({
+                season: season
+              });
+            }, draw: removeDouble(this.props.tableSeason, 'currentSeason'), term: this.state.seasonTerm }),
+          _react2.default.createElement(_tableItem2.default, { onCallback: function onCallback(division) {
+              _this3.setState({
+                division: division
+              });
+              _this3.props.getTable(_this3.state.season, division);
+            }, draw: removeDouble(this.props.tableSeason, 'division'), term: "Division" })
+        ),
+        _react2.default.createElement(
+          'table',
+          { className: 'table table-hover' },
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                'time'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Home'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Location'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Away'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            this.props.tables.map(this.renderTable.bind(this))
+          )
+        )
+      );
+    }
+  }]);
+
+  return TableDisplay;
+}(_react.Component);
+
+function mapStateToProps(state) {
+  return {
+    tables: state.table.table,
+    tableSeason: state.table.tableSeason,
+    dates: state.dates.dates
+  };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, {
+  getTable: _action.getTable,
+  getSeasonTable: _action.getSeasonTable,
+  getDate: _action.getDate
+})(TableDisplay);
+
+/***/ }),
+/* 705 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    table: [],
+    tableSeason: [],
+    dates: []
+  };
+  var action = arguments[1];
+
+  switch (action.type) {
+    case 'GET_TABLE':
+      //console.log(`GET_TABLE DATA `, action.payload.data[0].table)
+      return _extends({}, state, {
+        table: action.payload.data[0].table
+      });
+      break;
+    case 'GET_TABLESEASON':
+      return _extends({}, state, {
+        tableSeason: action.payload.data
+      });
+      break;
+
+  }
+
+  return state;
+};
+
+/***/ }),
+/* 706 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = __webpack_require__(28);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var tableItem = function (_React$Component) {
+  _inherits(tableItem, _React$Component);
+
+  function tableItem(props) {
+    _classCallCheck(this, tableItem);
+
+    var _this = _possibleConstructorReturn(this, (tableItem.__proto__ || Object.getPrototypeOf(tableItem)).call(this, props));
+
+    _this.state = {
+      value: false
+    };
+    return _this;
+  }
+
+  _createClass(tableItem, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var item = this.props.draw.map(function (x, index) {
+        return _react2.default.createElement(
+          _reactBootstrap.MenuItem,
+          { onClick: function onClick(e) {
+              _this2.props.onCallback(x);
+              _this2.setState({
+                term: x,
+                value: true
+              });
+            }, key: index },
+          x
+        );
+      });
+      return _react2.default.createElement(
+        _reactBootstrap.SplitButton,
+        { id: '2323', className: 'dropdown-round', disabled: false, title: !this.state.value ? this.props.term : this.state.term, pullRight: true },
+        item
+      );
+    }
+  }]);
+
+  return tableItem;
+}(_react2.default.Component);
+
+exports.default = tableItem;
+
+/***/ }),
+/* 707 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    dates: {}
+  };
+  var action = arguments[1];
+
+  // create switch statement
+  switch (action.type) {
+    case 'GET_DATES':
+      console.log('action', action.payload.data[0]);
+      return _extends({}, state, {
+        dates: action.payload.data[0]
+      });
+      break;
+
+  }
+  return state;
+};
 
 /***/ })
 /******/ ]);

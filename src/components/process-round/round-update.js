@@ -152,7 +152,8 @@ class RoundUpdate extends Component {
         })
 
         this.setState({
-            lockTermRound: drawResult[0]
+            lockTermRound: drawResult[0],
+            getRoundTerm: drawResult[0]
         });
 
         this.getRound(drawResult[0]);
@@ -283,6 +284,7 @@ class RoundUpdate extends Component {
             const className = x.lock ? `btn-success glyphicon glyphicon-remove-sign btn-xs` : `btn btn-danger glyphicon glyphicon-lock btn-xs`;
             const lockGame = x.lock ? `Unlock game` : `lock game`;
             let disable = false;
+            let lockPad = x.goalsHome && x.awayTeam ? false : true;
             if (x.lock) {
                 disable = true;
             }
@@ -320,7 +322,7 @@ class RoundUpdate extends Component {
                     <span>{ " " }  </span>
                     <Button onClick={ (e) => {
                                           this.lockRoundSingle(e, x._id, x.lock);
-                                      } } className={ className } value="" />
+                                      } } className={ className } value="" disabled={ lockPad } />
                   </td>
                 </tr>
 
