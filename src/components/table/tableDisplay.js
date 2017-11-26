@@ -139,10 +139,10 @@ class TableDisplay extends Component {
                                     this.props.getTable(this.state.season, division);
                                   } } draw={ removeDouble(this.props.tableSeason, 'division') } term={ "Division" } />
         </div>
-        <table className="table table-hover">
+        <Table bordered condensed hover>
           <thead>
             <tr>
-              <th>time</th>
+              <th>Round</th>
               <th>Home</th>
               <th>Location</th>
               <th>Away</th>
@@ -151,7 +151,7 @@ class TableDisplay extends Component {
           <tbody>
             { this.props.tables.map(this.renderTable.bind(this)) }
           </tbody>
-        </table>
+        </Table>
       </div>
       );
   }
