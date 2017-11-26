@@ -347,6 +347,8 @@ class LadderDisplay extends Component {
   render() {
     return (
       <div>
+        <center>
+          <h4>Ladder</h4></center>
         <div id="id1">
           <label htmlFor="">Select Season: </label>
           <LadderItem onCallback={ season => {
