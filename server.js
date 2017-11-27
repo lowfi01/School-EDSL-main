@@ -92,9 +92,35 @@ app.post('/dates', (req, res) => {
 });
 
 // ------>> TABLE <<< --------
+app.get('/tableslock/season/:currentSeason/:div', (req, res) => {
+    const currentSeason = req.params.currentSeason;
+    const division = req.params.div;
+
+    Table
+        .find({
+            currentSeason,
+            division,
+            lock: true
+        })
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+
+
+
 app.get('/tables/season/:currentSeason/:div', (req, res) => {
     const currentSeason = req.params.currentSeason;
-    const division = req.params.div
+    const division = req.params.div;
+
     Table
         .find({
             currentSeason,
@@ -149,17 +175,23 @@ app.get('/tables/seasons', (req, res) => {
         });
 });
 
-app.post('/tables/:div/:season', (req, res) => {
+app.post('/tables/:div/:season/:time', (req, res) => {
 
     // create document - using req.body.text
-    console.log("hello world");
+    console.log("app.post/tables");
     let div = req.params.div;
     let currentSeason = req.params.season
     let term = req.body.term;
+    const time = req.params.time;
+    const dates = req.body.dates;
+    console.log('dates:', dates);
+    console.log('time:', time);
     var table = new Table({
         table: term,
         division: div,
-        currentSeason
+        currentSeason,
+        time,
+        dates
     });
 
     // save doc & send back
@@ -260,7 +292,35 @@ app.get('/rounds/:division/:season/:round', (req, res) => {
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
-            console.log(docs)
+            //console.log(docs)
+            res.send(docs);
+
+        })
+        .catch((e) => {
+            res
+                .status(400)
+                .send(e);
+        });
+});
+app.get('/roundslock/:division/:season', (req, res) => {
+    var season = req.params.season;
+    var division = req.params.division;
+
+    console.log(`division: ${division} - Season: ${season}`)
+    console.log("HELLO WORLD !! ")
+    console.log("HELLO WORLD !! ")
+    console.log("HELLO WORLD !! ")
+
+    Rounds
+        .find({
+            season: season,
+            divCode: division,
+            lock: true
+        })
+        .then((docs) => {
+            // we could use todos[0], but passing an object allows for more customization
+            // {todos, text: 'example'}
+            //console.log(docs)
             res.send(docs);
 
         })
@@ -288,7 +348,7 @@ app.get('/rounds/:division/:season', (req, res) => {
         .then((docs) => {
             // we could use todos[0], but passing an object allows for more customization
             // {todos, text: 'example'}
-            console.log(docs)
+            //console.log(docs)
             res.send(docs);
 
         })
@@ -322,7 +382,7 @@ app.post('/rounds', (req, res) => {
     // create document - using req.body.text
     console.log("hello world");
     let body = req.body.term;
-    console.log(`POST /round:term  : `, body);
+    //console.log(`POST /round:term  : `, body);
     var round = new Rounds({
         roundNumber: body.roundNumber,
         game: body.game,
@@ -340,7 +400,7 @@ app.post('/rounds', (req, res) => {
     round
         .save()
         .then((doc) => {
-            console.log(`/POST round.homeTeam: `, round.homeTeam)
+            //console.log(`/POST round.homeTeam: `, round.homeTeam)
             res.send(doc);
         }, (e) => {
             res

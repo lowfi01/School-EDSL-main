@@ -5,7 +5,9 @@ var mongoose = require('mongoose');
 var tableSchema = mongoose.Schema({
   table: Array,
   division: String,
-  currentSeason: String
+  currentSeason: String,
+  dates: Array,
+  time: String
 });
 
 //teams : [{type: mongoose.Schema.Types.ObjectId}]

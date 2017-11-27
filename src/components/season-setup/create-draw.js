@@ -256,8 +256,8 @@ class CreateDraw extends Component {
                     awayTeam: holdMeBaby[i][o][1].teamName,
                     date: this.state.dates[i],
                     divCode: div,
-                    goalsHome: 0,
-                    goalsAway: 0,
+                    goalsHome: null,
+                    goalsAway: null,
                     lock: false,
                     season: `${this.state.startingDate}-${this.state.endingDate}`,
                 })
@@ -290,8 +290,9 @@ class CreateDraw extends Component {
                 .postRound(x)
         })
 
-
-        this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason);
+        console.log('this.state.time', this.state.time);
+        console.log('this.state.dates', this.state.dates);
+        this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason, this.state.time, this.state.dates);
     }
     render() {
 
@@ -393,13 +394,13 @@ class CreateDraw extends Component {
                 </Table>
               </div>
               <span className="pull-right">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <Button
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <Button
                         className="btn pull-right"
                         onClick={ e => {
                                       this
                                           .saveDraw(e)
                                   } }>Save Draw</Button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
             </Panel>
         )
     }

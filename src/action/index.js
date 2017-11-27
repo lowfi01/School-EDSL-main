@@ -142,9 +142,10 @@ export function patchRoundLock(lock, id) {
 }
 
 
-export function postTable(term, div, season) {
-  const request = axios.post(`/tables/${div}/${season}`, {
-    term
+export function postTable(term, div, season, time, dates) {
+  const request = axios.post(`/tables/${div}/${season}/${time}`, {
+    term,
+    dates
   });
 
 
@@ -216,4 +217,32 @@ export function getDate() {
     // Send promise back as payload
     payload: request,
   };
+}
+
+
+export function getLockTable(season, division) {
+  const request = axios.get(`/tableslock/season/${season}/${division}`);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_LOCK_TABLE',
+    // Send promise back as payload
+    payload: request,
+  };
+}
+
+
+
+export function getDrawLockSetup(season, division) {
+
+  const request = axios.get(`/roundslock/${division}/${season}`);
+
+
+  console.log(request)
+  return {
+    type: 'GET_DRAW_LOCK_SETUP',
+    payload: request
+  }
+
 }

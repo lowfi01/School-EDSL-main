@@ -2,15 +2,15 @@
 
 var mongoose = require('mongoose');
 
-var roundSchema = mongoose.Schema({ 
+var roundSchema = mongoose.Schema({
     roundNumber: String,
     game: Number,
-    divCode: String, 
+    divCode: String,
     date: String,
     homeTeam: String,
     awayTeam: String,
-    goalsAway: Number,
-    goalsHome: Number,
+    goalsAway: String,
+    goalsHome: String,
     season: String,
     lock: Boolean,
     season: String

@@ -5,7 +5,7 @@ import { Table, Panel } from "react-bootstrap";
 import _ from "lodash";
 
 //Import Actions
-import { getTeams, getDraw, getDrawSetup, getDrawRound } from "./../../action/index";
+import { getDrawLockSetup, getTeams, getDraw, getDrawSetup, getDrawRound } from "./../../action/index";
 
 //Components
 import LadderItem from "./ladder-item";
@@ -127,7 +127,7 @@ class LadderDisplay extends Component {
   setupRounds(div) {
     // Get draw data
     let {season, division} = this.state;
-    this.props.getDrawSetup(season, div);
+    this.props.getDrawLockSetup(season, div);
   }
 
   componentWillReceiveProps(nextProp, props) {
@@ -140,7 +140,7 @@ class LadderDisplay extends Component {
     }
 
     if (nextProp.drawRound !== this.props.drawRound) {
-      console.log("HELLO WORLD THIS IS DRAWROUND");
+      // console.log("HELLO WORLD THIS IS DRAWROUND");
       this.createLadder(nextProp.drawRound);
     }
   }
@@ -150,7 +150,7 @@ class LadderDisplay extends Component {
     for (var o = 0; o < drawRound.length; o++) {
       // console.log("First for loop");
       // Iterate over parent array
-      console.log("LENGTH", drawRound.length);
+      // console.log("LENGTH", drawRound.length);
 
       // enter each round array
       // console.log("Second for loop");
@@ -162,8 +162,9 @@ class LadderDisplay extends Component {
           o
         ];
 
+
         this.state[this.state.division].map((x, index) => {
-          console.log("XX", x);
+          // console.log("XX", x);
           if (this.state.ladder[`${index}`].teamName == homeTeam) {
             this.setState({
               ...this.state,
@@ -173,8 +174,8 @@ class LadderDisplay extends Component {
                   ...this.state.ladder[index],
                   win: this.state.ladder[index].win + 1,
                   points: this.state.ladder[index].points + 4,
-                  goals: this.state.ladder[index].goals + goalsHome,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsAway
+                  goals: this.state.ladder[index].goals + parseInt(goalsHome),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                 })
               }
             });
@@ -183,7 +184,7 @@ class LadderDisplay extends Component {
           }
 
           if (this.state.ladder[`${index}`].teamName == awayTeam) {
-            console.log("ADD LOSS TO FCKING TEAM:");
+            // console.log("ADD LOSS TO FCKING TEAM:");
             this.setState({
               ...this.state,
               ladder: {
@@ -191,8 +192,8 @@ class LadderDisplay extends Component {
                 ...(this.state.ladder[index] = {
                   ...this.state.ladder[index],
                   loss: this.state.ladder[index].loss + 1,
-                  goals: this.state.ladder[index].goals + goalsAway,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsHome
+                  goals: this.state.ladder[index].goals + parseInt(goalsAway),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                 })
               }
             });
@@ -213,8 +214,8 @@ class LadderDisplay extends Component {
                   ...this.state.ladder[index],
                   win: this.state.ladder[index].win + 1,
                   points: this.state.ladder[index].points + 4,
-                  goals: this.state.ladder[index].goals + goalsAway,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsHome
+                  goals: this.state.ladder[index].goals + parseInt(goalsAway),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                 })
               }
             });
@@ -231,15 +232,18 @@ class LadderDisplay extends Component {
                 ...(this.state.ladder[index] = {
                   ...this.state.ladder[index],
                   loss: this.state.ladder[index].loss + 1,
-                  goals: this.state.ladder[index].goals + goalsHome,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsAway
+                  goals: this.state.ladder[index].goals + parseInt(goalsHome),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                 })
               }
             });
           }
         });
-      } else {
+      } else if (drawRound[o].goalsHome === drawRound[o].goalsAway && drawRound[o].goalsHome !== null) {
         // DRAWS
+        // console.log("Value goalsHome: ", drawRound[0].goalsHome)
+        // console.log("Value goalsaway: ", drawRound[0].goalsAway)
+        // console.log(typeof (drawRound[0].goalsHome))
         this.state[this.state.division].map((x, index) => {
           const {homeTeam, awayTeam, goalsAway, goalsHome, divcode, goalsAgainst} = drawRound[o];
 
@@ -252,8 +256,8 @@ class LadderDisplay extends Component {
                   ...this.state.ladder[index],
                   draw: this.state.ladder[index].draw + 1,
                   points: this.state.ladder[index].points + 2,
-                  goals: this.state.ladder[index].goals + goalsAway,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsHome
+                  goals: this.state.ladder[index].goals + parseInt(goalsAway),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                 })
               }
             });
@@ -271,8 +275,8 @@ class LadderDisplay extends Component {
                   ...this.state.ladder[index],
                   draw: this.state.ladder[index].draw + 1,
                   points: this.state.ladder[index].points + 2,
-                  goals: this.state.ladder[index].goals + goalsHome,
-                  goalsAgainst: this.state.ladder[index].goalsAgainst + goalsAway
+                  goals: this.state.ladder[index].goals + parseInt(goalsHome),
+                  goalsAgainst: this.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                 })
               }
             });
@@ -281,21 +285,39 @@ class LadderDisplay extends Component {
       }
     }
     newLadder = this.state.ladder;
-
+    console.log(`newLadder:`, newLadder);
     // Calculates percentage
     for (var i = 0; i < this.state[this.state.division].length; i++) {
       newLadder[`${i}`].percent = (newLadder[`${i}`].goals /
       newLadder[`${i}`].goalsAgainst *
       100).toFixed(2);
+      if (newLadder[`${i}`].goals === 0) {
+        newLadder[`${i}`].percent = 0
+      }
+      newLadder[`${i}`].percent = parseInt(newLadder[`${i}`].percent)
+
     }
     //sorting algorithm by points
 
+
     for (var i = 1; i < this.state[this.state.division].length; i++) {
       var j = i;
-      while (j > 0 && newLadder[`${j - 1}`].points < newLadder[`${j}`].points) {
+      while (
+        j > 0 &&
+        newLadder[`${j - 1}`].points <= newLadder[`${j}`].points
+      ) {
         var temp = newLadder[`${j}`];
         newLadder[`${j}`] = newLadder[`${j - 1}`];
         newLadder[`${j - 1}`] = temp;
+
+        if (
+          newLadder[`${j - 1}`].percent < newLadder[`${j}`].percent &&
+          newLadder[`${j - 1}`].points == newLadder[`${j}`].points
+        ) {
+          var temp = newLadder[`${j}`];
+          newLadder[`${j}`] = newLadder[`${j - 1}`];
+          newLadder[`${j - 1}`] = temp;
+        }
         j -= 1;
       }
     }
@@ -328,6 +350,9 @@ class LadderDisplay extends Component {
             </td>
             <td>
               { this.state.ladder[index].loss }
+            </td>
+            <td>
+              { this.state.ladder[index].draw }
             </td>
             <td>
               { this.state.ladder[index].goals }
@@ -376,7 +401,8 @@ class LadderDisplay extends Component {
                 <th>points</th>
                 <th>win</th>
                 <th>Loss</th>
-                <th>Goals</th>
+                <th>Draw</th>
+                <th>Goals For</th>
                 <th>Goals Against</th>
                 <th>%</th>
               </tr>
@@ -392,7 +418,7 @@ class LadderDisplay extends Component {
 function mapStateToProps(state) {
   return {
     draw: state.draw.draw,
-    drawRound: state.draw.drawSetup,
+    drawRound: state.draw.drawLock,
     teams: state.teams
   };
 }
@@ -400,6 +426,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   getDraw,
   getDrawSetup,
+  getDrawLockSetup,
   getDrawRound,
   getTeams
 })(LadderDisplay);

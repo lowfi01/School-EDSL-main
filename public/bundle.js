@@ -8308,6 +8308,8 @@ exports.getTable = getTable;
 exports.getSeasonTable = getSeasonTable;
 exports.postDates = postDates;
 exports.getDate = getDate;
+exports.getLockTable = getLockTable;
+exports.getDrawLockSetup = getDrawLockSetup;
 
 var _axios = __webpack_require__(664);
 
@@ -8450,9 +8452,10 @@ function patchRoundLock(lock, id) {
   };
 }
 
-function postTable(term, div, season) {
-  var request = _axios2.default.post('/tables/' + div + '/' + season, {
-    term: term
+function postTable(term, div, season, time, dates) {
+  var request = _axios2.default.post('/tables/' + div + '/' + season + '/' + time, {
+    term: term,
+    dates: dates
   });
 
   return {
@@ -8517,6 +8520,29 @@ function getDate() {
   return {
     type: 'GET_DATES',
     // Send promise back as payload
+    payload: request
+  };
+}
+
+function getLockTable(season, division) {
+  var request = _axios2.default.get('/tableslock/season/' + season + '/' + division);
+
+  // console.log(`Request: `, request)
+
+  return {
+    type: 'GET_LOCK_TABLE',
+    // Send promise back as payload
+    payload: request
+  };
+}
+
+function getDrawLockSetup(season, division) {
+
+  var request = _axios2.default.get('/roundslock/' + division + '/' + season);
+
+  console.log(request);
+  return {
+    type: 'GET_DRAW_LOCK_SETUP',
     payload: request
   };
 }
@@ -85074,8 +85100,8 @@ var CreateDraw = function (_Component) {
                         awayTeam: holdMeBaby[i][o][1].teamName,
                         date: this.state.dates[i],
                         divCode: div,
-                        goalsHome: 0,
-                        goalsAway: 0,
+                        goalsHome: null,
+                        goalsAway: null,
                         lock: false,
                         season: this.state.startingDate + '-' + this.state.endingDate
                     });
@@ -85109,7 +85135,9 @@ var CreateDraw = function (_Component) {
                 _this2.props.postRound(x);
             });
 
-            this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason);
+            console.log('this.state.time', this.state.time);
+            console.log('this.state.dates', this.state.dates);
+            this.props.postTable(this.state.holdMeBaby, this.state.currentDiv, this.state.currentSeason, this.state.time, this.state.dates);
         }
     }, {
         key: 'render',
@@ -86445,7 +86473,7 @@ var LadderDisplay = function (_Component) {
           season = _state.season,
           division = _state.division;
 
-      this.props.getDrawSetup(season, div);
+      this.props.getDrawLockSetup(season, div);
     }
   }, {
     key: "componentWillReceiveProps",
@@ -86459,7 +86487,7 @@ var LadderDisplay = function (_Component) {
       }
 
       if (nextProp.drawRound !== this.props.drawRound) {
-        console.log("HELLO WORLD THIS IS DRAWROUND");
+        // console.log("HELLO WORLD THIS IS DRAWROUND");
         this.createLadder(nextProp.drawRound);
       }
     }
@@ -86472,7 +86500,7 @@ var LadderDisplay = function (_Component) {
       for (var o = 0; o < drawRound.length; o++) {
         // console.log("First for loop");
         // Iterate over parent array
-        console.log("LENGTH", drawRound.length);
+        // console.log("LENGTH", drawRound.length);
 
         // enter each round array
         // console.log("Second for loop");
@@ -86490,14 +86518,14 @@ var LadderDisplay = function (_Component) {
 
 
             _this3.state[_this3.state.division].map(function (x, index) {
-              console.log("XX", x);
+              // console.log("XX", x);
               if (_this3.state.ladder["" + index].teamName == homeTeam) {
                 _this3.setState(_extends({}, _this3.state, {
                   ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                     win: _this3.state.ladder[index].win + 1,
                     points: _this3.state.ladder[index].points + 4,
-                    goals: _this3.state.ladder[index].goals + goalsHome,
-                    goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsAway
+                    goals: _this3.state.ladder[index].goals + parseInt(goalsHome),
+                    goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                   }))
                 }));
 
@@ -86505,12 +86533,12 @@ var LadderDisplay = function (_Component) {
               }
 
               if (_this3.state.ladder["" + index].teamName == awayTeam) {
-                console.log("ADD LOSS TO FCKING TEAM:");
+                // console.log("ADD LOSS TO FCKING TEAM:");
                 _this3.setState(_extends({}, _this3.state, {
                   ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                     loss: _this3.state.ladder[index].loss + 1,
-                    goals: _this3.state.ladder[index].goals + goalsAway,
-                    goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsHome
+                    goals: _this3.state.ladder[index].goals + parseInt(goalsAway),
+                    goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                   }))
                 }));
               }
@@ -86534,8 +86562,8 @@ var LadderDisplay = function (_Component) {
                 ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                   win: _this3.state.ladder[index].win + 1,
                   points: _this3.state.ladder[index].points + 4,
-                  goals: _this3.state.ladder[index].goals + goalsAway,
-                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsHome
+                  goals: _this3.state.ladder[index].goals + parseInt(goalsAway),
+                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                 }))
               }));
 
@@ -86547,14 +86575,17 @@ var LadderDisplay = function (_Component) {
               _this3.setState(_extends({}, _this3.state, {
                 ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                   loss: _this3.state.ladder[index].loss + 1,
-                  goals: _this3.state.ladder[index].goals + goalsHome,
-                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsAway
+                  goals: _this3.state.ladder[index].goals + parseInt(goalsHome),
+                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                 }))
               }));
             }
           });
-        } else {
+        } else if (drawRound[o].goalsHome === drawRound[o].goalsAway && drawRound[o].goalsHome !== null) {
           // DRAWS
+          // console.log("Value goalsHome: ", drawRound[0].goalsHome)
+          // console.log("Value goalsaway: ", drawRound[0].goalsAway)
+          // console.log(typeof (drawRound[0].goalsHome))
           this.state[this.state.division].map(function (x, index) {
             var _drawRound$o3 = drawRound[o],
                 homeTeam = _drawRound$o3.homeTeam,
@@ -86570,8 +86601,8 @@ var LadderDisplay = function (_Component) {
                 ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                   draw: _this3.state.ladder[index].draw + 1,
                   points: _this3.state.ladder[index].points + 2,
-                  goals: _this3.state.ladder[index].goals + goalsAway,
-                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsHome
+                  goals: _this3.state.ladder[index].goals + parseInt(goalsAway),
+                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsHome)
                 }))
               }));
 
@@ -86584,8 +86615,8 @@ var LadderDisplay = function (_Component) {
                 ladder: _extends({}, _this3.state.ladder, _this3.state.ladder[index] = _extends({}, _this3.state.ladder[index], {
                   draw: _this3.state.ladder[index].draw + 1,
                   points: _this3.state.ladder[index].points + 2,
-                  goals: _this3.state.ladder[index].goals + goalsHome,
-                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + goalsAway
+                  goals: _this3.state.ladder[index].goals + parseInt(goalsHome),
+                  goalsAgainst: _this3.state.ladder[index].goalsAgainst + parseInt(goalsAway)
                 }))
               }));
             }
@@ -86593,19 +86624,30 @@ var LadderDisplay = function (_Component) {
         }
       }
       newLadder = this.state.ladder;
-
+      console.log("newLadder:", newLadder);
       // Calculates percentage
       for (var i = 0; i < this.state[this.state.division].length; i++) {
         newLadder["" + i].percent = (newLadder["" + i].goals / newLadder["" + i].goalsAgainst * 100).toFixed(2);
+        if (newLadder["" + i].goals === 0) {
+          newLadder["" + i].percent = 0;
+        }
+        newLadder["" + i].percent = parseInt(newLadder["" + i].percent);
       }
       //sorting algorithm by points
 
+
       for (var i = 1; i < this.state[this.state.division].length; i++) {
         var j = i;
-        while (j > 0 && newLadder["" + (j - 1)].points < newLadder["" + j].points) {
+        while (j > 0 && newLadder["" + (j - 1)].points <= newLadder["" + j].points) {
           var temp = newLadder["" + j];
           newLadder["" + j] = newLadder["" + (j - 1)];
           newLadder["" + (j - 1)] = temp;
+
+          if (newLadder["" + (j - 1)].percent < newLadder["" + j].percent && newLadder["" + (j - 1)].points == newLadder["" + j].points) {
+            var temp = newLadder["" + j];
+            newLadder["" + j] = newLadder["" + (j - 1)];
+            newLadder["" + (j - 1)] = temp;
+          }
           j -= 1;
         }
       }
@@ -86652,6 +86694,11 @@ var LadderDisplay = function (_Component) {
               "td",
               null,
               _this4.state.ladder[index].loss
+            ),
+            _react2.default.createElement(
+              "td",
+              null,
+              _this4.state.ladder[index].draw
             ),
             _react2.default.createElement(
               "td",
@@ -86756,7 +86803,12 @@ var LadderDisplay = function (_Component) {
                 _react2.default.createElement(
                   "th",
                   null,
-                  "Goals"
+                  "Draw"
+                ),
+                _react2.default.createElement(
+                  "th",
+                  null,
+                  "Goals For"
                 ),
                 _react2.default.createElement(
                   "th",
@@ -86783,7 +86835,7 @@ var LadderDisplay = function (_Component) {
 function mapStateToProps(state) {
   return {
     draw: state.draw.draw,
-    drawRound: state.draw.drawSetup,
+    drawRound: state.draw.drawLock,
     teams: state.teams
   };
 }
@@ -86791,6 +86843,7 @@ function mapStateToProps(state) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, {
   getDraw: _index.getDraw,
   getDrawSetup: _index.getDrawSetup,
+  getDrawLockSetup: _index.getDrawLockSetup,
   getDrawRound: _index.getDrawRound,
   getTeams: _index.getTeams
 })(LadderDisplay);
@@ -87408,39 +87461,45 @@ exports.default = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 exports.default = function () {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-        draw: [],
-        drawSetup: [],
-        round: []
-    };
-    var action = arguments[1];
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    draw: [],
+    drawSetup: [],
+    round: [],
+    drawLock: []
+  };
+  var action = arguments[1];
 
-    // create switch statement
-    switch (action.type) {
-        case 'GET_DRAW':
-            //console.log(action.payload)
-            return _extends({}, state, {
-                draw: [].concat(_toConsumableArray(action.payload.data))
-                // alternative code return state.concat([action.payload.data]);
-            });break;
-        case 'GET_DRAW_SETUP':
-            return _extends({}, state, {
-                drawSetup: [].concat(_toConsumableArray(action.payload.data))
-            });
-            break;
-        case 'GET_DRAW_ROUND':
-            return _extends({}, state, {
-                round: [].concat(_toConsumableArray(action.payload.data))
-            });
-            break;
-    }
-    return state;
+  // create switch statement
+  switch (action.type) {
+    case 'GET_DRAW':
+      //console.log(action.payload)
+      return _extends({}, state, {
+        draw: [].concat(_toConsumableArray(action.payload.data))
+        // alternative code return state.concat([action.payload.data]);
+      });break;
+    case 'GET_DRAW_SETUP':
+      return _extends({}, state, {
+        drawSetup: [].concat(_toConsumableArray(action.payload.data))
+      });
+      break;
+    case 'GET_DRAW_LOCK_SETUP':
+      return _extends({}, state, {
+        drawLock: [].concat(_toConsumableArray(action.payload.data))
+      });
+      break;
+    case 'GET_DRAW_ROUND':
+      return _extends({}, state, {
+        round: [].concat(_toConsumableArray(action.payload.data))
+      });
+      break;
+  }
+  return state;
 };
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
