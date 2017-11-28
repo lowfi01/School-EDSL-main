@@ -78,7 +78,7 @@ app.post('/dates', (req, res) => {
     var date = new Dates({
         dates
     });
-
+    // JAMES IS A FUCKING FAGGOT AND A HYPOCRITE WITH NO STYLE/////////////////////
     // save doc & send back
     date
         .save()
